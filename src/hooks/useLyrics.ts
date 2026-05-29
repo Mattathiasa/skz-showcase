@@ -88,7 +88,7 @@ async function translateBatch(lines: string[]): Promise<string[]> {
       if (!res.ok) return;
       const data = await res.json();
       const translated: string = data?.responseData?.translatedText ?? '';
-      const parts = translated.split(SEP.trim()).map((s: string) => s.trim());
+      const parts = translated.split('\n').map((s: string) => s.trim());
       indices.forEach((originalIdx, partIdx) => {
         results[originalIdx] = parts[partIdx] ?? '';
       });
