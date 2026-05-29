@@ -16,7 +16,7 @@ interface Props {
   accentColor?: string;
 }
 
-export default function LyricsPanel({ title, artist, accentColor = '#a78bfa' }: Props) {
+export default function LyricsPanel({ title, artist, accentColor = '#d4a853' }: Props) {
   const { lyrics, loading } = useLyrics(title, artist);
   const [mode, setMode] = useState<Mode>('original');
 
@@ -24,13 +24,20 @@ export default function LyricsPanel({ title, artist, accentColor = '#a78bfa' }: 
   const hasAny = lyrics && (lyrics.original.length || lyrics.romanized.length || lyrics.english.length);
 
   return (
-    <div className="rounded-2xl overflow-hidden" style={{ background: '#141420', border: '1px solid #ffffff0d' }}>
+    <div className="rounded-2xl overflow-hidden"
+      style={{
+        background: 'linear-gradient(135deg, #0e0e18, #0b0b14)',
+        border: '1px solid #d4a85320',
+      }}>
       {/* Header */}
       <div className="px-6 pt-5 pb-4 flex items-center justify-between gap-4 flex-wrap"
-        style={{ borderBottom: '1px solid #ffffff08' }}>
+        style={{ borderBottom: '1px solid #d4a85315' }}>
         <div className="flex items-center gap-2">
-          <Music2 size={14} style={{ color: accentColor }} />
-          <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#6b7280' }}>
+          <div className="w-6 h-6 rounded-lg flex items-center justify-center"
+            style={{ background: accentColor + '18', border: `1px solid ${accentColor}30` }}>
+            <Music2 size={11} style={{ color: accentColor }} />
+          </div>
+          <span className="text-xs font-bold uppercase tracking-widest" style={{ color: accentColor }}>
             Lyrics
           </span>
         </div>
@@ -45,15 +52,15 @@ export default function LyricsPanel({ title, artist, accentColor = '#a78bfa' }: 
                 key={tab.key}
                 onClick={() => setMode(tab.key)}
                 disabled={!hasContent && !loading}
-                className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
                 style={{
-                  background: active && hasContent ? accentColor + '25' : '#ffffff08',
-                  border: `1px solid ${active && hasContent ? accentColor + '50' : 'transparent'}`,
-                  color: active && hasContent ? accentColor : hasContent ? '#6b7280' : '#374151',
+                  background: active && hasContent ? accentColor + '22' : '#ffffff08',
+                  border: `1px solid ${active && hasContent ? accentColor + '45' : 'transparent'}`,
+                  color: active && hasContent ? accentColor : hasContent ? '#5a4f3a' : '#2a2018',
                   cursor: !hasContent && !loading ? 'not-allowed' : 'pointer',
-                  opacity: !hasContent && !loading ? 0.4 : 1,
-                }}
-              >
+                  opacity: !hasContent && !loading ? 0.35 : 1,
+                  boxShadow: active && hasContent ? `0 0 12px ${accentColor}20` : 'none',
+                }}>
                 {tab.label}
               </button>
             );
@@ -68,7 +75,7 @@ export default function LyricsPanel({ title, artist, accentColor = '#a78bfa' }: 
             {[...Array(8)].map((_, i) => (
               <div key={i} className="h-4 rounded"
                 style={{
-                  background: '#ffffff08',
+                  background: '#d4a85510',
                   width: `${55 + (i % 3) * 15}%`,
                   animation: 'pulse 1.5s ease-in-out infinite',
                   animationDelay: `${i * 0.1}s`,
@@ -78,31 +85,26 @@ export default function LyricsPanel({ title, artist, accentColor = '#a78bfa' }: 
         ) : !hasAny ? (
           <div className="py-8 text-center">
             <Music2 size={28} className="mx-auto mb-3 opacity-20" style={{ color: accentColor }} />
-            <p className="text-sm" style={{ color: '#4b5563' }}>No lyrics found</p>
+            <p className="text-sm font-medium" style={{ color: '#3a3020' }}>No lyrics found</p>
           </div>
         ) : !lines.length ? (
           <div className="py-8 text-center">
-            <p className="text-sm" style={{ color: '#4b5563' }}>
+            <p className="text-sm" style={{ color: '#3a3020' }}>
               {mode === 'romanized' ? 'No romanized lyrics available' : 'No English translation available'}
             </p>
-            <p className="text-xs mt-1" style={{ color: '#374151' }}>
-              Switch to Original to read the lyrics
-            </p>
+            <p className="text-xs mt-1" style={{ color: '#2a2018' }}>Switch to Original</p>
           </div>
         ) : (
           <div className="flex flex-col gap-0.5">
             {lines.map((line, i) => (
-              <p
-                key={i}
-                className="text-sm leading-relaxed py-0.5"
+              <p key={i}
+                className="text-sm py-0.5"
                 style={{
-                  color: line ? '#d1d5db' : 'transparent',
-                  borderBottom: line ? 'none' : 'none',
+                  color: line ? '#8a7860' : 'transparent',
                   minHeight: line ? 'auto' : '0.75rem',
-                  fontFamily: mode === 'original' ? 'inherit' : 'inherit',
-                  lineHeight: 1.75,
-                }}
-              >
+                  lineHeight: 1.8,
+                  letterSpacing: mode === 'original' ? '0.01em' : undefined,
+                }}>
                 {line || '\u00A0'}
               </p>
             ))}

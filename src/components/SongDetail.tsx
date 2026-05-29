@@ -1,14 +1,15 @@
-import { ArrowLeft, BookOpen, BookMarked, Lightbulb, Tag } from 'lucide-react';
+import { ArrowLeft, BookOpen, BookMarked, Lightbulb, Tag, Sparkles } from 'lucide-react';
 import { type Song, EMOTION_COLORS, EMOTION_LABELS, EMOTIONAL_AXES, TECHNICAL_AXES, SUBCATEGORY_LABELS, SUBCATEGORY_COLORS } from '../data/songs';
 import VibeRadar from './VibeRadar';
 import AlbumArt from './AlbumArt';
 import LyricsPanel from './LyricsPanel';
 import MusicPlayer from './MusicPlayer';
 
-interface Props {
-  song: Song;
-  onBack: () => void;
-}
+const GOLD = '#d4a853';
+const GOLD_DIM = '#d4a85320';
+const GOLD_BORDER = '#d4a85338';
+
+interface Props { song: Song; onBack: () => void; }
 
 function getDominant(stats: Song['stats']): [string, number] {
   return EMOTIONAL_AXES
@@ -28,57 +29,82 @@ export default function SongDetail({ song, onBack }: Props) {
     .map(k => [k, song.stats[k as keyof typeof song.stats]] as [string, number]);
 
   return (
-    <div className="min-h-screen" style={{ background: '#0a0a0f' }}>
+    <div className="min-h-screen" style={{ background: '#07070b' }}>
+
+      {/* Ambient glow */}
+      <div style={{
+        position: 'fixed', top: 0, left: '50%', transform: 'translateX(-50%)',
+        width: 700, height: 350, borderRadius: '50%', pointerEvents: 'none', zIndex: 0,
+        background: `radial-gradient(ellipse, ${color}0a 0%, transparent 70%)`,
+      }} />
+
       {/* Header */}
-      <div className="sticky top-0 z-10 px-6 py-4 flex items-center gap-4 backdrop-blur-xl"
-        style={{ background: 'rgba(10,10,15,0.85)', borderBottom: '1px solid #ffffff0d' }}>
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 text-sm font-medium transition-colors"
-          style={{ color: '#6b7280' }}
-          onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
-          onMouseLeave={e => (e.currentTarget.style.color = '#6b7280')}
-        >
-          <ArrowLeft size={16} />
-          Back
+      <div className="sticky top-0 z-10 px-6 py-4 flex items-center gap-4"
+        style={{
+          background: 'rgba(7,7,11,0.92)',
+          borderBottom: '1px solid #d4a85320',
+          backdropFilter: 'blur(20px)',
+        }}>
+        <button onClick={onBack}
+          className="flex items-center gap-2 text-sm font-semibold transition-all px-3 py-1.5 rounded-lg"
+          style={{ color: '#5a4f3a', background: 'transparent', border: '1px solid transparent' }}
+          onMouseEnter={e => { e.currentTarget.style.color = GOLD; e.currentTarget.style.background = GOLD_DIM; e.currentTarget.style.borderColor = GOLD_BORDER; }}
+          onMouseLeave={e => { e.currentTarget.style.color = '#5a4f3a'; e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'transparent'; }}>
+          <ArrowLeft size={15} /> Back
         </button>
         <div className="flex-1" />
-        <span className="text-sm" style={{ color: '#4b5563' }}>{song.year}</span>
+        <span className="text-xs font-semibold px-3 py-1.5 rounded-full"
+          style={{ background: GOLD_DIM, color: GOLD, border: `1px solid ${GOLD_BORDER}` }}>
+          {song.year}
+        </span>
       </div>
 
-      <div className="max-w-2xl mx-auto px-6 py-10">
+      <div className="max-w-2xl mx-auto px-6 py-10 relative z-10">
+
         {/* Title block */}
         <div className="mb-8">
-          <div className="flex items-start gap-4">
-            <AlbumArt album={song.album} artist={song.artist} size={80} accentColor={color} />
+          {/* Gold rule */}
+          <div className="h-px mb-6 w-16" style={{ background: `linear-gradient(90deg, ${GOLD}, transparent)` }} />
+
+          <div className="flex items-start gap-5">
+            <div style={{ position: 'relative' }}>
+              <AlbumArt album={song.album} artist={song.artist} size={88} accentColor={GOLD} />
+              <div style={{
+                position: 'absolute', inset: -2, borderRadius: 14, pointerEvents: 'none',
+                background: `linear-gradient(135deg, ${GOLD}40, transparent 60%)`,
+              }} />
+            </div>
             <div className="flex-1 min-w-0">
-              <h1 className="text-3xl font-black text-white leading-tight mb-1">{song.title}</h1>
-              <p className="font-semibold" style={{ color }}>{song.artist}</p>
-              <p className="text-sm mt-0.5" style={{ color: '#6b7280' }}>{song.album} · {song.year}</p>
+              <h1 className="text-3xl font-black leading-tight mb-1" style={{ color: '#f0ead8' }}>{song.title}</h1>
+              <p className="font-bold text-base" style={{ color: GOLD }}>{song.artist}</p>
+              <p className="text-sm mt-1" style={{ color: '#3a3528' }}>{song.album} · {song.year}</p>
             </div>
           </div>
 
+          {/* Subcategories */}
           {song.subcategories && song.subcategories.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-3">
+            <div className="flex flex-wrap gap-2 mt-4">
               {song.subcategories.map(sc => (
                 <span key={sc}
-                  className="text-xs px-2.5 py-1 rounded-full font-medium"
+                  className="text-xs px-3 py-1 rounded-full font-semibold"
                   style={{
-                    background: (SUBCATEGORY_COLORS[sc] ?? '#a78bfa') + '22',
-                    color: SUBCATEGORY_COLORS[sc] ?? '#a78bfa',
-                    border: `1px solid ${(SUBCATEGORY_COLORS[sc] ?? '#a78bfa')}40`,
+                    background: (SUBCATEGORY_COLORS[sc] ?? GOLD) + '20',
+                    color: SUBCATEGORY_COLORS[sc] ?? GOLD,
+                    border: `1px solid ${(SUBCATEGORY_COLORS[sc] ?? GOLD)}38`,
                   }}>
                   {SUBCATEGORY_LABELS[sc] ?? sc}
                 </span>
               ))}
             </div>
           )}
+
+          {/* Tags */}
           <div className="flex flex-wrap gap-2 mt-3">
             {song.tags.map(tag => (
               <span key={tag}
-                className="flex items-center gap-1 text-xs px-3 py-1 rounded-full"
-                style={{ background: '#ffffff08', color: '#9ca3af', border: '1px solid #ffffff0d' }}>
-                <Tag size={10} />
+                className="flex items-center gap-1.5 text-xs px-3 py-1 rounded-full"
+                style={{ background: '#ffffff06', color: '#4a4035', border: '1px solid #ffffff08' }}>
+                <Tag size={9} />
                 {tag}
               </span>
             ))}
@@ -86,110 +112,159 @@ export default function SongDetail({ song, onBack }: Props) {
         </div>
 
         {/* Music Player */}
-        <div className="mb-4">
-          <MusicPlayer title={song.title} artist={song.artist} accentColor={color} />
+        <div className="mb-5">
+          <MusicPlayer title={song.title} artist={song.artist} accentColor={GOLD} />
         </div>
 
-        {/* Intro */}
+        {/* Read Before Listening */}
         <div className="rounded-2xl p-5 mb-4"
-          style={{ background: color + '0d', border: `1px solid ${color}30` }}>
+          style={{
+            background: 'linear-gradient(135deg, #d4a85310, #d4a85306)',
+            border: `1px solid ${GOLD_BORDER}`,
+            boxShadow: `0 0 30px ${GOLD}08`,
+          }}>
           <div className="flex items-center gap-2 mb-3">
-            <BookOpen size={14} style={{ color }} />
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color }}>
+            <div className="w-6 h-6 rounded-lg flex items-center justify-center"
+              style={{ background: GOLD_DIM, border: `1px solid ${GOLD_BORDER}` }}>
+              <BookOpen size={12} style={{ color: GOLD }} />
+            </div>
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: GOLD }}>
               Read Before Listening
             </span>
           </div>
-          <p className="text-sm leading-relaxed" style={{ color: '#e5e7eb' }}>{song.intro}</p>
+          <p className="text-sm leading-relaxed" style={{ color: '#c8b898' }}>{song.intro}</p>
         </div>
 
-        {/* Gist */}
+        {/* What It's About */}
         <div className="rounded-2xl p-5 mb-4"
-          style={{ background: '#141420', border: '1px solid #ffffff0d' }}>
+          style={{
+            background: 'linear-gradient(135deg, #111118, #0e0e16)',
+            border: '1px solid #1e1e2e',
+          }}>
           <div className="flex items-center gap-2 mb-3">
-            <Lightbulb size={14} style={{ color: '#fbbf24' }} />
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#fbbf24' }}>
+            <div className="w-6 h-6 rounded-lg flex items-center justify-center"
+              style={{ background: '#fbbf2415', border: '1px solid #fbbf2430' }}>
+              <Lightbulb size={12} style={{ color: '#fbbf24' }} />
+            </div>
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#fbbf24' }}>
               What It's About
             </span>
           </div>
-          <p className="text-sm leading-relaxed" style={{ color: '#d1d5db' }}>{song.gist}</p>
+          <p className="text-sm leading-relaxed" style={{ color: '#8a7860' }}>{song.gist}</p>
         </div>
 
         {/* Lyrics Analysis */}
         {song.lyricsAnalysis && (
           <div className="rounded-2xl p-5 mb-8"
-            style={{ background: '#0d0d1a', border: '1px solid #ffffff0d' }}>
+            style={{
+              background: 'linear-gradient(135deg, #0d0d1a, #0b0b16)',
+              border: '1px solid #1a1a28',
+            }}>
             <div className="flex items-center gap-2 mb-3">
-              <BookMarked size={14} style={{ color }} />
-              <span className="text-xs font-semibold uppercase tracking-widest" style={{ color }}>
+              <div className="w-6 h-6 rounded-lg flex items-center justify-center"
+                style={{ background: color + '18', border: `1px solid ${color}30` }}>
+                <BookMarked size={12} style={{ color }} />
+              </div>
+              <span className="text-xs font-bold uppercase tracking-widest" style={{ color }}>
                 Lyrics Analysis
               </span>
             </div>
-            <p className="text-sm leading-relaxed" style={{ color: '#d1d5db' }}>{song.lyricsAnalysis}</p>
+            <p className="text-sm leading-relaxed" style={{ color: '#8a7860' }}>{song.lyricsAnalysis}</p>
           </div>
         )}
 
         {/* Vibe Radar */}
-        <div className="rounded-2xl p-6 mb-6"
-          style={{ background: '#141420', border: '1px solid #ffffff0d' }}>
-          <h2 className="text-sm font-semibold uppercase tracking-widest mb-6" style={{ color: '#6b7280' }}>
-            Vibe Radar
-          </h2>
+        <div className="rounded-2xl p-6 mb-5"
+          style={{
+            background: 'linear-gradient(135deg, #0e0e18, #0b0b14)',
+            border: '1px solid #d4a85320',
+            boxShadow: '0 4px 24px #00000040',
+          }}>
+          <div className="flex items-center gap-2 mb-6">
+            <Sparkles size={14} style={{ color: GOLD }} />
+            <h2 className="text-xs font-bold uppercase tracking-widest" style={{ color: GOLD }}>
+              Vibe Radar
+            </h2>
+          </div>
           <VibeRadar stats={song.stats} size={300} />
         </div>
 
         {/* Lyrics */}
-        <div className="mb-6">
-          <LyricsPanel title={song.title} artist={song.artist} accentColor={color} />
+        <div className="mb-5">
+          <LyricsPanel title={song.title} artist={song.artist} accentColor={GOLD} />
         </div>
 
         {/* Emotion Breakdown */}
-        <div className="rounded-2xl p-6" style={{ background: '#141420', border: '1px solid #ffffff0d' }}>
-          <h2 className="text-sm font-semibold uppercase tracking-widest mb-5" style={{ color: '#6b7280' }}>
-            Emotion Breakdown
-          </h2>
-
-          {/* Emotional Profile */}
-          <h3 className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: '#4b5563' }}>
-            Emotional Profile
-          </h3>
-          <div className="flex flex-col gap-3 mb-6">
-            {sortedEmotional.map(([key, val]) => (
-              <div key={key} className="flex items-center gap-3">
-                <span className="w-24 text-xs font-medium shrink-0" style={{ color: EMOTION_COLORS[key] }}>
-                  {EMOTION_LABELS[key]}
-                </span>
-                <div className="flex-1 h-2 rounded-full" style={{ background: '#ffffff08' }}>
-                  <div
-                    className="h-2 rounded-full transition-all duration-500"
-                    style={{ width: `${val}%`, background: EMOTION_COLORS[key] }}
-                  />
-                </div>
-                <span className="w-8 text-xs text-right shrink-0" style={{ color: '#6b7280' }}>{val}%</span>
-              </div>
-            ))}
+        <div className="rounded-2xl overflow-hidden"
+          style={{
+            background: 'linear-gradient(135deg, #0e0e18, #0b0b14)',
+            border: '1px solid #d4a85320',
+          }}>
+          {/* Header */}
+          <div className="px-6 pt-6 pb-4 flex items-center gap-2"
+            style={{ borderBottom: '1px solid #d4a85315' }}>
+            <Sparkles size={14} style={{ color: GOLD }} />
+            <h2 className="text-xs font-bold uppercase tracking-widest" style={{ color: GOLD }}>
+              Emotion Breakdown
+            </h2>
           </div>
 
-          {/* Production Profile */}
-          <h3 className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: '#4b5563' }}>
-            Production Profile
-          </h3>
-          <div className="flex flex-col gap-3 rounded-xl p-4" style={{ background: '#1a1a2e' }}>
-            {technicalStats.map(([key, val]) => (
-              <div key={key} className="flex items-center gap-3">
-                <span className="w-24 text-xs font-medium shrink-0" style={{ color: EMOTION_COLORS[key] }}>
-                  {EMOTION_LABELS[key]}
-                </span>
-                <div className="flex-1 h-2 rounded-full" style={{ background: '#ffffff08' }}>
-                  <div
-                    className="h-2 rounded-full transition-all duration-500"
-                    style={{ width: `${val}%`, background: EMOTION_COLORS[key] }}
-                  />
+          <div className="p-6">
+            {/* Emotional Profile */}
+            <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: '#3a3528' }}>
+              Emotional Profile
+            </p>
+            <div className="flex flex-col gap-3 mb-8">
+              {sortedEmotional.map(([key, val]) => (
+                <div key={key} className="flex items-center gap-3">
+                  <span className="w-24 text-xs font-semibold shrink-0" style={{ color: EMOTION_COLORS[key] }}>
+                    {EMOTION_LABELS[key]}
+                  </span>
+                  <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: '#1a1a28' }}>
+                    <div className="h-1.5 rounded-full transition-all duration-700"
+                      style={{
+                        width: `${val}%`,
+                        background: `linear-gradient(90deg, ${EMOTION_COLORS[key]}88, ${EMOTION_COLORS[key]})`,
+                        boxShadow: `0 0 8px ${EMOTION_COLORS[key]}40`,
+                      }} />
+                  </div>
+                  <span className="w-9 text-xs text-right shrink-0 font-semibold" style={{ color: EMOTION_COLORS[key] }}>
+                    {val}%
+                  </span>
                 </div>
-                <span className="w-8 text-xs text-right shrink-0" style={{ color: '#6b7280' }}>{val}%</span>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* Production Profile */}
+            <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: '#3a3528' }}>
+              Production Profile
+            </p>
+            <div className="flex flex-col gap-3 rounded-xl p-4"
+              style={{ background: '#0a0a12', border: '1px solid #1a1a28' }}>
+              {technicalStats.map(([key, val]) => (
+                <div key={key} className="flex items-center gap-3">
+                  <span className="w-24 text-xs font-semibold shrink-0" style={{ color: EMOTION_COLORS[key] }}>
+                    {EMOTION_LABELS[key]}
+                  </span>
+                  <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: '#1a1a28' }}>
+                    <div className="h-1.5 rounded-full transition-all duration-700"
+                      style={{
+                        width: `${val}%`,
+                        background: `linear-gradient(90deg, ${EMOTION_COLORS[key]}88, ${EMOTION_COLORS[key]})`,
+                      }} />
+                  </div>
+                  <span className="w-9 text-xs text-right shrink-0 font-semibold" style={{ color: EMOTION_COLORS[key] }}>
+                    {val}%
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
+
+        {/* Footer spacer */}
+        <div className="mt-12 h-px" style={{ background: 'linear-gradient(90deg, transparent, #d4a85330, transparent)' }} />
+        <p className="text-center text-xs mt-4" style={{ color: '#2a2018' }}>Vibe Showcase</p>
       </div>
     </div>
   );

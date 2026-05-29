@@ -12,32 +12,38 @@ export default function VibeRadar({ stats, size = 260 }: Props) {
   }));
 
   const dominantKey = EMOTIONAL_AXES.reduce((a, b) => (stats[b] ?? 0) > (stats[a] ?? 0) ? b : a);
-  const dominantColor = EMOTION_COLORS[dominantKey] || '#a78bfa';
+  const dominantColor = EMOTION_COLORS[dominantKey] || '#d4a853';
 
   return (
     <ResponsiveContainer width="100%" height={size}>
       <RadarChart data={data} margin={{ top: 10, right: 20, bottom: 10, left: 20 }}>
-        <PolarGrid stroke="#ffffff10" />
+        <PolarGrid stroke="#d4a85318" />
         <PolarAngleAxis
           dataKey="subject"
-          tick={{ fill: '#9ca3af', fontSize: 11, fontWeight: 500 }}
+          tick={{ fill: '#6b5f4a', fontSize: 11, fontWeight: 600 }}
         />
         <Radar
           name="Vibe"
           dataKey="value"
           stroke={dominantColor}
           fill={dominantColor}
-          fillOpacity={0.2}
+          fillOpacity={0.15}
           strokeWidth={2}
           dot={{ fill: dominantColor, strokeWidth: 0, r: 3 }}
         />
         <Tooltip
-          contentStyle={{ background: '#1a1a2e', border: '1px solid #333', borderRadius: 8, fontSize: 12 }}
+          contentStyle={{
+            background: '#0e0e18',
+            border: '1px solid #d4a85328',
+            borderRadius: 10,
+            fontSize: 12,
+            boxShadow: '0 8px 24px #00000060',
+          }}
           formatter={(v, _, entry) => {
             const k = (entry?.payload as { key?: string })?.key;
             return [
-              <span style={{ color: k ? EMOTION_COLORS[k] : '#fff' }}>{v}%</span>,
-              EMOTION_LABELS[k || ''] || k,
+              <span style={{ color: k ? EMOTION_COLORS[k] : '#d4a853', fontWeight: 700 }}>{v}%</span>,
+              <span style={{ color: '#6b5f4a' }}>{EMOTION_LABELS[k || ''] || k}</span>,
             ];
           }}
         />
