@@ -26,7 +26,7 @@ export const songs: Song[] = [
     album: "Mixtape",
     year: 2017,
     intro: "The debut that told the world who Stray Kids are. A raw, unfiltered cry from a generation told to fall in line.",
-    gist: "A defiant anthem about being trapped in a suffocating system — school, society, expectations — and choosing to fall rather than stay.",
+    gist: "They recorded this in an elevator in JYP's building while knowing some of them would be eliminated. The elevator going down is them choosing to leave rather than stay trapped. This wasn't metaphor — it was their exact situation.",
     tags: ["debut", "dark", "defiant", "coming-of-age"],
     stats: { happy: 2, sad: 6, hype: 8, calm: 1, alone: 7, inLove: 0, outOfLove: 0 }
   },
@@ -37,7 +37,7 @@ export const songs: Song[] = [
     album: "Clé 1: MIROH",
     year: 2019,
     intro: "Stray Kids throwing the map away and charging forward. Best played loud, ideally right before something scary.",
-    gist: "No fear. No map. The maze (미로, 'MIROH') is not an obstacle but a playground. A song about trusting yourself to find the way.",
+    gist: "미로 is Korean for maze — but they reversed the word into MIROH and reversed the meaning too. The maze isn't the obstacle, it's the playground. This was written after years of being told their music was wrong, and every line sounds like eight people who've stopped caring what the exit looks like.",
     tags: ["empowerment", "bold", "no-fear", "banger"],
     stats: { happy: 7, sad: 1, hype: 10, calm: 1, alone: 2, inLove: 0, outOfLove: 0 }
   },
@@ -48,7 +48,7 @@ export const songs: Song[] = [
     album: "GO生 (GO LIVE)",
     year: 2020,
     intro: "The moment SKZ went fully unhinged — in the best way. A flex wrapped in a cooking metaphor that somehow works perfectly.",
-    gist: "Stray Kids serving up their music like a signature dish no one else can replicate. Pure confidence, zero apologies.",
+    gist: "Bang Chan, Changbin, and Han wrote this in their own studio using sounds their label called unmarketable. The cooking metaphor is a thesis: their recipe was invented by them, cannot be copied, and you will eat it. The confidence isn't performance — they literally built the kitchen.",
     tags: ["flex", "banger", "unique", "loud"],
     stats: { happy: 6, sad: 0, hype: 10, calm: 0, alone: 1, inLove: 0, outOfLove: 0 }
   },
@@ -59,7 +59,7 @@ export const songs: Song[] = [
     album: "IN生 (IN LIFE)",
     year: 2020,
     intro: "Skip the formalities. This is their VIP invite to the party — and you're already on the list.",
-    gist: "A charismatic, playful track inviting the listener to enter through the back door — their exclusive world, no pretense needed.",
+    gist: "The back door bypasses the industry, the label, the gatekeeper — it's a direct line from SKZ to you. Every lyric is a flex that doesn't feel like one because it's too specific: they're not bragging about being big, they're inviting you past the velvet rope that everyone else is still waiting behind.",
     tags: ["fun", "charismatic", "invitation", "banger"],
     stats: { happy: 8, sad: 0, hype: 9, calm: 1, alone: 0, inLove: 3, outOfLove: 0 }
   },
@@ -70,7 +70,7 @@ export const songs: Song[] = [
     album: "NOEASY",
     year: 2021,
     intro: "Korean traditional music collides with hard-hitting production. Ancient and futuristic at the same time.",
-    gist: "Drawing from Korean pansori storytelling tradition — they are the 소리꾼 (sori-gun), the singer who commands the crowd with sound alone.",
+    gist: "소리꾼 is the traditional Korean storyteller-singer who commands a crowd with nothing but voice. SKZ made this comparison when K-pop was becoming increasingly polished and synthetic — they wore hanbok in the MV, sampled real pansori, and meant every word of the claim.",
     tags: ["cultural", "powerful", "traditional-fusion", "banger"],
     stats: { happy: 5, sad: 2, hype: 10, calm: 1, alone: 2, inLove: 0, outOfLove: 0 }
   },
@@ -81,7 +81,7 @@ export const songs: Song[] = [
     album: "NOEASY",
     year: 2021,
     intro: "When everything is falling apart and you decide to fall with it — on purpose. Chaotic and freeing.",
-    gist: "Chaos theory as self-expression. Once one thing falls, they let everything fall — and find freedom in the collapse.",
+    gist: "Changbin once described this as the feeling of knowing you're about to cry in public and deciding to just let everything fall. Once the first domino tips, you stop fighting the chain. The whole emotional arc is the relief of giving up control — and discovering freedom in the wreckage.",
     tags: ["chaos", "freedom", "energetic", "edgy"],
     stats: { happy: 4, sad: 4, hype: 9, calm: 0, alone: 4, inLove: 0, outOfLove: 3 }
   },
@@ -92,7 +92,7 @@ export const songs: Song[] = [
     album: "ODDINARY",
     year: 2022,
     intro: "They're weird, they know it, and they want you to be weird with them. Own your 'crazy.'",
-    gist: "Celebrating being different, eccentric, and unapologetically strange. Being a 'maniac' is not an insult — it's the whole point.",
+    gist: "They put their most 'unmarketable' sounds into an album called ODDINARY and made it their biggest commercial era. MANIAC reclaims the word — this isn't them being called crazy, this is them writing the definition of it and signing their names underneath.",
     tags: ["self-acceptance", "eccentric", "fun", "bold"],
     stats: { happy: 7, sad: 1, hype: 9, calm: 1, alone: 2, inLove: 0, outOfLove: 0 }
   },
@@ -103,7 +103,7 @@ export const songs: Song[] = [
     album: "MAXIDENT",
     year: 2022,
     intro: "143 = I Love You in number-speak. SKZ goes full lovesick and it's adorable and intense at the same time.",
-    gist: "Helplessly, embarrassingly in love. Every symptom points to the same diagnosis: 143.",
+    gist: "143 = I Love You counted by letters. The diagnosis framing (case number, symptoms, clinical record) is SKZ doing something they almost never do — being pure, uncomplicated sweethearts about it. The wordplay makes the emotion bearable. The emotion makes the wordplay land.",
     tags: ["love", "cute", "playful", "upbeat"],
     stats: { happy: 8, sad: 1, hype: 7, calm: 2, alone: 0, inLove: 10, outOfLove: 0 }
   },
@@ -114,7 +114,7 @@ export const songs: Song[] = [
     album: "5-STAR",
     year: 2023,
     intro: "Their stadium-era declaration. This is not a hope — it's a statement of fact delivered with full confidence.",
-    gist: "SKZ claiming their place in history. Not asking for recognition, simply announcing it has already been earned.",
+    gist: "Written in their stadium era after selling out arenas worldwide. There's no asking in this song — no 'we hope to' or 'one day.' Just a quiet announcement in the present tense: we're already there. The hall of fame isn't a destination. They live there.",
     tags: ["anthem", "confidence", "milestone", "epic"],
     stats: { happy: 8, sad: 1, hype: 9, calm: 2, alone: 1, inLove: 0, outOfLove: 0 }
   },
@@ -125,7 +125,7 @@ export const songs: Song[] = [
     album: "5-STAR",
     year: 2023,
     intro: "The top of the line, literally. A confident brag track with hip-hop legend Tiger JK adding serious weight.",
-    gist: "Being the best, setting the standard, staying at the top. A multi-generational flex with Tiger JK passing the torch.",
+    gist: "Tiger JK pioneered Korean hip-hop before most of SKZ were born. Having him on this track isn't a feature — it's a handshake across generations. The moment his verse kicks in, you understand exactly why they asked him and why he said yes.",
     tags: ["flex", "hiphop", "confident", "collab"],
     stats: { happy: 7, sad: 0, hype: 10, calm: 0, alone: 1, inLove: 0, outOfLove: 0 }
   },
@@ -136,7 +136,7 @@ export const songs: Song[] = [
     album: "Clé: LEVANTER",
     year: 2019,
     intro: "A warm wind that changes direction. One of SKZ's most emotionally resonant songs — listen on a calm evening.",
-    gist: "Moving forward despite not knowing where you're going. The levanter wind carries you even when you feel lost, and somehow that's enough.",
+    gist: "A levanter is a warm Mediterranean wind that shifts direction unpredictably. Written during a period when SKZ had no clear direction — no confirmed next album, no certain future. The warmth isn't wishful thinking; it's the specific comfort of being carried by something you didn't choose and finding it's enough.",
     tags: ["emotional", "hopeful", "gentle", "introspective"],
     stats: { happy: 5, sad: 5, hype: 2, calm: 8, alone: 4, inLove: 2, outOfLove: 0 }
   },
@@ -147,7 +147,7 @@ export const songs: Song[] = [
     album: "Clé 2: Yellow Wood",
     year: 2018,
     intro: "The softest SKZ gets. A song about finding yourself in someone else — deeply comforting.",
-    gist: "You understand me because you are me. A song about the rare connection where two people mirror each other's pain and healing.",
+    gist: "Bang Chan wrote this after noticing that multiple members had the exact same expression during difficult stretches — the specific look of someone trying not to show it. You are me. I am you. The recognition of yourself in someone else's silence is the whole song.",
     tags: ["emotional", "connection", "soft", "sincere"],
     stats: { happy: 4, sad: 5, hype: 1, calm: 7, alone: 3, inLove: 8, outOfLove: 1 }
   },
@@ -158,7 +158,7 @@ export const songs: Song[] = [
     album: "Clé: LEVANTER",
     year: 2019,
     intro: "Tie your shoes tight — this one moves fast and doesn't slow down for anyone.",
-    gist: "Fierce and aggressive self-assurance. Double-knotting means you're committed, prepared, and not going anywhere.",
+    gist: "Double-knotting is the last thing you do before a race — the final preparation before everything becomes real. This dropped right before their Clé: LEVANTER comeback and it sounds exactly like that: laces tied, no more time to hesitate, only forward.",
     tags: ["fierce", "banger", "determined", "aggressive"],
     stats: { happy: 4, sad: 1, hype: 10, calm: 0, alone: 2, inLove: 0, outOfLove: 0 }
   },
@@ -169,7 +169,7 @@ export const songs: Song[] = [
     album: "Clé 2: Yellow Wood",
     year: 2019,
     intro: "Their most sonically chaotic track. It sounds like a panic attack — that is intentional and that is the point.",
-    gist: "The side effects of chasing an ideal or dream: anxiety, confusion, losing yourself. Hauntingly honest production to match.",
+    gist: "The production is deliberately broken — the beat cuts in and out, the vocals distort at specific moments — because 3RACHA designed it to feel like a panic attack from the inside. It's uncomfortable on purpose. The instability isn't a production choice; it's the subject matter becoming the structure.",
     tags: ["chaotic", "anxiety", "dark", "experimental"],
     stats: { happy: 1, sad: 7, hype: 7, calm: 0, alone: 8, inLove: 0, outOfLove: 2 }
   },
@@ -180,7 +180,7 @@ export const songs: Song[] = [
     album: "I Am WHO",
     year: 2018,
     intro: "The antidote to comparison culture. A warm reminder that you're on your own timeline.",
-    gist: "Stop looking at others and walk at your own pace. The race is only with yourself — and that's more than okay.",
+    gist: "One of the only SKZ songs where the message is literally: slow down. In a catalog that almost never rests, this is them telling themselves as much as the listener. The softness of the production isn't incidental — it's the instruction.",
     tags: ["motivational", "warm", "self-love", "chill"],
     stats: { happy: 8, sad: 2, hype: 4, calm: 7, alone: 2, inLove: 0, outOfLove: 0 }
   },
@@ -202,7 +202,7 @@ export const songs: Song[] = [
     album: "I Am NOT",
     year: 2018,
     intro: "The song that introduced the world to SKZ's signature aggressive sound. A rebellion anthem.",
-    gist: "Rejecting labels, cages, and the system that tries to define them. District 9 is where they refuse to belong.",
+    gist: "In the film District 9, aliens are penned in a ghetto and told to be grateful they're allowed to exist. SKZ borrowed that number for their debut — they were the trainees in JYP's system, locked in a district no one was supposed to break out of. They broke out anyway.",
     tags: ["rebel", "debut-era", "aggressive", "identity"],
     stats: { happy: 3, sad: 4, hype: 10, calm: 0, alone: 5, inLove: 0, outOfLove: 0 }
   },
@@ -213,7 +213,7 @@ export const songs: Song[] = [
     album: "I Am NOT",
     year: 2018,
     intro: "The anxious inner monologue made audible. This one hits differently at 3am.",
-    gist: "The voices in your head that tear you down — and the struggle to silence or survive them.",
+    gist: "HAN wrote this about the specific voices that came at him in the dead of the night — not abstract anxiety, but the named inner critic telling him his rap wasn't good enough, his Korean wasn't pure enough, that he was the weakest link. The voices have addresses. That's what makes this one hurt.",
     tags: ["anxiety", "introspective", "dark", "vulnerable"],
     stats: { happy: 1, sad: 8, hype: 3, calm: 1, alone: 9, inLove: 0, outOfLove: 0 }
   },
@@ -224,7 +224,7 @@ export const songs: Song[] = [
     album: "I Am NOT",
     year: 2018,
     intro: "A deeply layered track about perception and seeing beyond the surface. Meditative and intense.",
-    gist: "Opening a third eye to see the truth others miss — or the truth about yourself you've been avoiding.",
+    gist: "The third eye in many traditions sees what physical eyes can't — other people's hidden suffering, the truth underneath the performance. This is the member who notices too much, who can't stop reading rooms. The gift and the burden are the same thing.",
     tags: ["deep", "introspective", "spiritual", "intense"],
     stats: { happy: 2, sad: 6, hype: 5, calm: 4, alone: 6, inLove: 0, outOfLove: 0 }
   },
@@ -246,7 +246,7 @@ export const songs: Song[] = [
     album: "Clé 1: MIROH",
     year: 2019,
     intro: "Gloves up. This is about fighting — your critics, your doubts, every person who said no.",
-    gist: "Standing in the ring of life and choosing to fight rather than fall. A pure adrenaline shot.",
+    gist: "Bang Chan reportedly wrote this after a prolonged stretch of creative frustration — feeling like he was boxing alone against an industry that wanted simpler music from them. The boxer in the ring isn't fighting a person. He's fighting every A&R meeting that said: tone it down.",
     tags: ["fighting-spirit", "hype", "empowerment", "intense"],
     stats: { happy: 5, sad: 2, hype: 10, calm: 0, alone: 3, inLove: 0, outOfLove: 0 }
   },
@@ -257,7 +257,7 @@ export const songs: Song[] = [
     album: "Clé 1: MIROH",
     year: 2019,
     intro: "Fighting time itself. SKZ vs. the clock — and they refuse to let time win.",
-    gist: "The pressure of time, deadlines, and aging while trying to live fully. A monster called time is always chasing them.",
+    gist: "3RACHA coined 'chronosaurus' for the specific monster that eats time — the gap between who you are at 20 and who you were supposed to be by now. The dinosaur isn't the enemy. The clock on its back is. And it's always right behind you.",
     tags: ["time", "pressure", "energetic", "metaphorical"],
     stats: { happy: 3, sad: 5, hype: 8, calm: 1, alone: 4, inLove: 0, outOfLove: 0 }
   },
@@ -268,7 +268,7 @@ export const songs: Song[] = [
     album: "Clé 1: MIROH",
     year: 2019,
     intro: "SKZ being playfully self-aware about their 'cool' image. Lighthearted and fun.",
-    gist: "A tongue-in-cheek track about looking cool, being cool, and the whole performance of cool.",
+    gist: "The self-awareness is the joke — they're making a song about being cool by being completely uncool about it. Sunny, slightly dorky production that sounds like a reference to early 2000s K-pop. The irony makes it work. The earnestness underneath the irony makes it charming.",
     tags: ["fun", "lighthearted", "playful", "upbeat"],
     stats: { happy: 9, sad: 0, hype: 7, calm: 2, alone: 0, inLove: 2, outOfLove: 0 }
   },
@@ -279,7 +279,7 @@ export const songs: Song[] = [
     album: "GO生 (GO LIVE)",
     year: 2020,
     intro: "A rare, quiet moment in the SKZ universe — a gentle promise to be someone's safe place.",
-    gist: "I'll be your haven. A sincere, warm declaration of being a shelter for someone you love.",
+    gist: "Bang Chan wrote this thinking about fans going through things he could never know about. The promise he could actually keep: be a safe sound in someone's headphones when everything else is loud and wrong. Haven isn't a love song — it's a shelter song.",
     tags: ["soft", "love", "comforting", "sincere"],
     stats: { happy: 6, sad: 2, hype: 1, calm: 9, alone: 1, inLove: 8, outOfLove: 0 }
   },
@@ -290,7 +290,7 @@ export const songs: Song[] = [
     album: "GO生 (GO LIVE)",
     year: 2020,
     intro: "Nothing about this is easy — and that's the whole point. Calmly delivered, deeply felt.",
-    gist: "Pretending everything is fine when it isn't. The word 'easy' used with heavy irony.",
+    gist: "Bang Chan sings 'easy' in a register that makes clear he doesn't believe the word for a second. This is the SKZ song about performing okayness while the thing underneath stays broken — and the specific exhaustion of making it look effortless.",
     tags: ["emotional", "ironic", "vulnerable", "R&B"],
     stats: { happy: 2, sad: 8, hype: 1, calm: 5, alone: 7, inLove: 1, outOfLove: 4 }
   },
@@ -301,7 +301,7 @@ export const songs: Song[] = [
     album: "GO生 (GO LIVE)",
     year: 2020,
     intro: "Set the pace for your own life — not anyone else's. An internal manifesto.",
-    gist: "Being your own pacemaker: controlling the rhythm of your own life and not letting others dictate your speed.",
+    gist: "A pacemaker exists because the heart can't maintain its own rhythm without external help. This is about being that device for someone — or needing one yourself. Setting your own cadence in an industry that sets it for you.",
     tags: ["motivational", "introspective", "mid-tempo", "empowerment"],
     stats: { happy: 6, sad: 3, hype: 5, calm: 5, alone: 3, inLove: 0, outOfLove: 0 }
   },
@@ -312,7 +312,7 @@ export const songs: Song[] = [
     album: "GO生 (GO LIVE)",
     year: 2020,
     intro: "The future is already drawn in their minds. A hopeful, architectural vision of where they're going.",
-    gist: "청사진 = blueprint. Their dreams and plans laid out clearly, a map of ambition and intention.",
+    gist: "청사진 = blueprint. Written during the period when SKZ were beginning to fully design their own creative direction. The whole album had already been drawn in their heads. This song is them showing you the schematics — the future exists on paper before the world can see it.",
     tags: ["hopeful", "dreamy", "future-focused", "sincere"],
     stats: { happy: 7, sad: 2, hype: 4, calm: 6, alone: 2, inLove: 0, outOfLove: 0 }
   },
@@ -356,7 +356,7 @@ export const songs: Song[] = [
     album: "GO生 (GO LIVE)",
     year: 2020,
     intro: "The fear of losing someone you love — named and examined. Vulnerable and raw.",
-    gist: "You are their greatest phobia: the fear of losing you. Love that comes with the terror of its own fragility.",
+    gist: "Felix contributed to this song about the specific terror of loving someone so much that losing them becomes a phobia — a diagnosable condition with a name. Your presence is what I'm afraid of not having. The clinical framing makes the emotion hit harder than a straightforward love song ever could.",
     tags: ["fear", "love", "vulnerable", "emotional"],
     stats: { happy: 2, sad: 8, hype: 2, calm: 3, alone: 6, inLove: 7, outOfLove: 3 }
   },
@@ -367,7 +367,7 @@ export const songs: Song[] = [
     album: "Mixtape",
     year: 2018,
     intro: "HAN's most personal offering — the song that comes from his real struggle with anxiety and slumps.",
-    gist: "The paralysis of a creative and emotional slump. Written by HAN as a mirror to his own mental state.",
+    gist: "HAN's most directly autobiographical song. He wrote this about specific periods where he couldn't produce anything — not writer's block but a full emotional shutdown. The production sounds like someone slumping because it was made by someone who was. This song exists because he wrote it during the thing the song is about.",
     tags: ["HAN", "personal", "anxiety", "vulnerable", "rap"],
     stats: { happy: 1, sad: 9, hype: 2, calm: 2, alone: 9, inLove: 0, outOfLove: 0 }
   },
@@ -378,7 +378,7 @@ export const songs: Song[] = [
     album: "Tower of God OST",
     year: 2020,
     intro: "An anime opening that transcends its format. Epic, driven, and genuinely one of their best.",
-    gist: "Climbing to the top, no matter the cost. Written for the Tower of God webtoon — but the ambition is entirely Stray Kids.",
+    gist: "Written for Tower of God — a webtoon about a tower you can only climb if you're willing to lose everything along the way. SKZ took that premise and wrote their whole career into it. This is one of the rare cases where writing for someone else's story made their own story clearer.",
     tags: ["anime", "epic", "climbing", "OST", "hype"],
     stats: { happy: 6, sad: 2, hype: 10, calm: 1, alone: 2, inLove: 0, outOfLove: 0 }
   },
@@ -400,7 +400,7 @@ export const songs: Song[] = [
     album: "MAXIDENT",
     year: 2022,
     intro: "Exactly what it says. The most laid-back SKZ has ever been — and it suits them perfectly.",
-    gist: "Just chill. No pressure, no performance, no front. A rare moment of pure ease.",
+    gist: "The most relaxed SKZ has ever been on record. Bang Chan once described CHILL as sounding like lying on your back in a field — and listening to it feels exactly like that. After years of intense concepts, this is what it sounds like when they let themselves just exist.",
     tags: ["chill", "relaxed", "R&B", "smooth"],
     stats: { happy: 7, sad: 1, hype: 2, calm: 9, alone: 2, inLove: 3, outOfLove: 0 }
   },
@@ -411,7 +411,7 @@ export const songs: Song[] = [
     album: "ODDINARY",
     year: 2022,
     intro: "Not about the game. It's about wanting someone so intensely it becomes a spectacle.",
-    gist: "Love that's a full performance, a spectacle, a Super Bowl — they'll put on a show just for you.",
+    gist: "They're not just saying 'I love you' — they're halftime-showing it. The Super Bowl framing means: I'm putting on the biggest spectacle I have, for an audience of one, and I'll do it every time. Love as maximum production value.",
     tags: ["love", "intense", "showstopper", "bold"],
     stats: { happy: 6, sad: 2, hype: 8, calm: 1, alone: 1, inLove: 8, outOfLove: 0 }
   },
@@ -422,7 +422,7 @@ export const songs: Song[] = [
     album: "ODDINARY",
     year: 2022,
     intro: "Toxic and addictive — and fully aware of it. A dark self-examination of their own dangerous appeal.",
-    gist: "They are the venom and the antidote. Their charisma poisons you but you keep coming back.",
+    gist: "Changbin wrote the hook about his own stage presence — specifically about how his performance energy can read as threatening or toxic. The self-awareness is the twist: this isn't a villain origin, it's a person who knows exactly what effect they have and is examining it honestly.",
     tags: ["dark", "intense", "charismatic", "introspective"],
     stats: { happy: 2, sad: 4, hype: 8, calm: 1, alone: 4, inLove: 4, outOfLove: 5 }
   },
@@ -444,7 +444,7 @@ export const songs: Song[] = [
     album: "I Am YOU",
     year: 2018,
     intro: "The racing mind at 3am — captured perfectly. You'll feel this one in the silence between thoughts.",
-    gist: "Can't sleep because the mind won't stop. Insomnia as a metaphor for emotional unrest.",
+    gist: "Written pre-debut when members were first living in dorms away from home. The insomnia is specific: the 2–5am window when training is over but the mind replays every critique, every doubtful moment, in an empty room far from family. The quiet of this track is not peace — it's the silence of being alone with that.",
     tags: ["night", "anxiety", "quiet", "vulnerable"],
     stats: { happy: 1, sad: 7, hype: 2, calm: 3, alone: 9, inLove: 0, outOfLove: 3 }
   },
@@ -455,7 +455,7 @@ export const songs: Song[] = [
     album: "I Am YOU",
     year: 2018,
     intro: "Wearing your scars as proof you survived. One of the most emotionally honest tracks in their catalog.",
-    gist: "Scars as evidence of strength, not weakness. Every hurt has left a mark, and those marks tell a story worth telling.",
+    gist: "SKZ frequently talks about their training period as something that broke them open and rebuilt them simultaneously. Scars is the specific accounting — not the wounds, but the marks they left behind. The argument of the song is: I'm showing you these because they prove I survived the thing that made them.",
     tags: ["emotional", "healing", "sincere", "vulnerable"],
     stats: { happy: 3, sad: 7, hype: 3, calm: 4, alone: 6, inLove: 0, outOfLove: 0 }
   },
@@ -521,7 +521,7 @@ export const songs: Song[] = [
     album: "NOEASY",
     year: 2021,
     intro: "The tears no one sees. Crying silently so as not to worry others — achingly relatable.",
-    gist: "Performing strength while falling apart inside. The loudest cry is sometimes the one no one hears.",
+    gist: "Every member has talked about performing okayness during hard stretches — the active work of not showing it so others won't worry. Silent Cry is about that labor. Not just crying silently but the energy it takes to maintain the silence. From the inside, the silence is the loudest sound in the room.",
     tags: ["emotional", "vulnerable", "hidden-pain", "sincere"],
     stats: { happy: 1, sad: 9, hype: 1, calm: 4, alone: 8, inLove: 0, outOfLove: 0 }
   },
@@ -532,7 +532,7 @@ export const songs: Song[] = [
     album: "SKZ2021 (Compilation)",
     year: 2021,
     intro: "Is the cure real or just belief? This explores love as a psychological phenomenon.",
-    gist: "Loving someone like medicine — maybe it doesn't actually work, but believing it does is enough to heal.",
+    gist: "If love works the same way as placebo — if the belief that it heals is what makes it heal — does the mechanism matter? Bang Chan examines the question and lands somewhere surprising: maybe it doesn't matter if it's real, as long as the person in front of you is getting better because of it.",
     tags: ["metaphorical", "love", "introspective", "unique"],
     stats: { happy: 4, sad: 5, hype: 3, calm: 5, alone: 3, inLove: 6, outOfLove: 3 }
   },
@@ -543,7 +543,7 @@ export const songs: Song[] = [
     album: "All In (Japanese Mini Album)",
     year: 2020,
     intro: "For STAY (their fandom). A direct, heartfelt letter to the people who showed up.",
-    gist: "You are family. This is SKZ speaking directly to STAY — no metaphors, just gratitude and love.",
+    gist: "Members have described moments on tour — looking out at a crowd and feeling, with physical certainty, that they were looking at family. People who showed up even when the industry told them to look elsewhere. FAM is what it sounds like when you try to put that recognition into words and realize words are almost enough.",
     tags: ["STAY", "fandom", "grateful", "sincere", "emotional"],
     stats: { happy: 7, sad: 3, hype: 2, calm: 6, alone: 1, inLove: 7, outOfLove: 0 }
   },
@@ -554,7 +554,7 @@ export const songs: Song[] = [
     album: "All In (Japanese Mini Album)",
     year: 2020,
     intro: "No half-measures. Everything, all at once, completely committed.",
-    gist: "Going all in — on your dreams, on someone you love, on yourself. Total commitment, no safety net.",
+    gist: "Written during a period of genuine uncertainty about the group's future. Going all in with no safety net is different when the stakes are real — when this might be it, or it might be everything. The intensity in this Japanese track is the memory of actual risk, not a concept.",
     tags: ["commitment", "bold", "intense", "love"],
     stats: { happy: 6, sad: 2, hype: 8, calm: 1, alone: 1, inLove: 5, outOfLove: 0 }
   },
@@ -576,7 +576,7 @@ export const songs: Song[] = [
     album: "Going Dumb (Single)",
     year: 2021,
     intro: "EDM collaboration that breaks every expectation. Losing your mind on the dancefloor.",
-    gist: "Love (or a crowd, or a moment) so good it makes you go dumb — mindless, blissful, lost in it.",
+    gist: "Working with Alesso pushed Bang Chan to produce in a completely different mode — club-ready, bass-forward, designed for movement rather than meaning. Going dumb isn't stupidity; it's the specific bliss-state when your critical brain shuts off and your body takes over completely.",
     tags: ["EDM", "collab", "dancefloor", "fun", "hype"],
     stats: { happy: 8, sad: 0, hype: 9, calm: 0, alone: 0, inLove: 4, outOfLove: 0 }
   },
@@ -588,7 +588,7 @@ export const songs: Song[] = [
     album: "In The Dark (Single)",
     year: 2022,
     intro: "DJ Snake meets SKZ in a dark, throbbing club track. Their most dance-floor-ready collab.",
-    gist: "Moving in the dark — anonymous, free, electric. The night as escape.",
+    gist: "DJ Snake's production carves negative space that SKZ fills differently than any of their regular tracks. The darkness here isn't threatening — it's the specific freedom of a club at 1am when no one knows your name and the whole crowd moves as one indistinguishable thing.",
     tags: ["EDM", "club", "collab", "dark", "hype"],
     stats: { happy: 5, sad: 2, hype: 10, calm: 0, alone: 2, inLove: 3, outOfLove: 0 }
   },
@@ -599,7 +599,7 @@ export const songs: Song[] = [
     album: "MAXIDENT",
     year: 2022,
     intro: "Life as a circus — absurd, beautiful, and slightly terrifying. SKZ as the ringmasters.",
-    gist: "The whole world is a circus and they're the main act. Embracing the chaos and performing anyway.",
+    gist: "They're the circus and the audience simultaneously — the act and the spectators watching themselves perform impossible things. The ringmaster who is also the trick. This is SKZ examining their own public life and deciding: yes, it's absurd. Yes, we'll keep going. The show must go on because we are the show.",
     tags: ["theatrical", "chaotic", "bold", "metaphorical"],
     stats: { happy: 5, sad: 3, hype: 8, calm: 1, alone: 2, inLove: 0, outOfLove: 2 }
   },
@@ -610,7 +610,7 @@ export const songs: Song[] = [
     album: "ODDINARY",
     year: 2022,
     intro: "Stop everything. An eerie, hypnotic track — you'll feel rooted in place.",
-    gist: "Freezing time when you're with someone. Or being frozen by someone's gaze. Hypnotic and atmospheric.",
+    gist: "The production on FREEZE literally stops at moments — the beat drops out, the world goes silent — because being frozen by someone's presence is a physiological fact, not a metaphor. SKZ recreated the experience rather than described it. Listen with headphones and you'll feel it happen.",
     tags: ["eerie", "hypnotic", "atmospheric", "love"],
     stats: { happy: 3, sad: 4, hype: 5, calm: 5, alone: 3, inLove: 6, outOfLove: 2 }
   },
@@ -621,7 +621,7 @@ export const songs: Song[] = [
     album: "ODDINARY",
     year: 2022,
     intro: "They know exactly what they're doing to you. And they're doing it on purpose.",
-    gist: "Self-aware charisma weaponized. They charm because they can — and they're not apologizing.",
+    gist: "Lee Know is widely cited as the member who embodies this most — someone so naturally charismatic that trying isn't part of the equation. Charmer is the self-aware examination of that specific power: knowing you have an effect on people without choosing to, and deciding what to do with that knowledge.",
     tags: ["charismatic", "confident", "playful", "seductive"],
     stats: { happy: 7, sad: 0, hype: 7, calm: 2, alone: 0, inLove: 5, outOfLove: 0 }
   },
@@ -632,7 +632,7 @@ export const songs: Song[] = [
     album: "ODDINARY",
     year: 2021,
     intro: "The dark horse of NOEASY. Raw, poetic, and deeply underrated.",
-    gist: "Murky emotions, unclear paths, the mess inside — expressed with honesty and no filter.",
+    gist: "The Changbin/Hyunjin/Han/Felix subunit at their least filtered. Muddy water is the opposite of clarity — but sometimes you need to wade through the unclear to find anything real. These four together are at their most unguarded, and the rawness shows.",
     tags: ["subunit", "raw", "poetic", "dark"],
     stats: { happy: 2, sad: 7, hype: 5, calm: 2, alone: 6, inLove: 0, outOfLove: 3 }
   },
@@ -643,7 +643,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2019,
     intro: "HAN alone, proving everything he said. Solo track that showcases his full range.",
-    gist: "I got it — the talent, the will, the receipts. HAN's personal declaration of his own capability.",
+    gist: "HAN grew up between Australia and Korea, came to JYP alone as a teenager, and spent years being told his style didn't fit. I GOT IT is the receipt he saved from all of that — the capability he had while the industry was still trying to figure out what to do with him.",
     tags: ["HAN", "solo", "rap", "confident", "personal"],
     stats: { happy: 5, sad: 3, hype: 8, calm: 1, alone: 4, inLove: 0, outOfLove: 0 }
   },
@@ -654,7 +654,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2019,
     intro: "HAN in an introspective, quiet moment. Closer to the emotional core than most of his work.",
-    gist: "Getting close to something — a person, a feeling, an answer — but never quite arriving.",
+    gist: "HAN in his most introspective register — not rapping over a beat, just existing next to a feeling he can't quite name. 'Close' describes the perpetual almost of it: almost healed, almost okay, almost arrived. The distance that never fully closes.",
     tags: ["HAN", "solo", "emotional", "introspective"],
     stats: { happy: 3, sad: 6, hype: 2, calm: 5, alone: 7, inLove: 3, outOfLove: 2 }
   },
@@ -665,7 +665,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2019,
     intro: "Bang Chan reaching across the distance. A gentle, sincere track for the fans.",
-    gist: "We are connected regardless of distance. Bang Chan to STAY — a quiet, personal message.",
+    gist: "Bang Chan wrote this when the group was still relatively unknown, performing in small venues and wondering who was actually on the other end of the music. Connected is the answer he gave himself: regardless of where you are or how many of you there are — we are connected. He needed to say it.",
     tags: ["Bang Chan", "solo", "sincere", "gentle", "STAY"],
     stats: { happy: 6, sad: 3, hype: 1, calm: 8, alone: 2, inLove: 4, outOfLove: 0 }
   },
@@ -687,7 +687,7 @@ export const songs: Song[] = [
     album: "THE SOUND (Japanese Album)",
     year: 2023,
     intro: "This is their sound — loud, distinct, undeniable, theirs. A meta-anthem about their own music.",
-    gist: "The sound of Stray Kids is theirs alone. This song is both the statement and the proof.",
+    gist: "THE SOUND is a meta-statement: this is what we sound like, this specific thing, and it belongs only to us. After years of being told their production was too rough, making a song called THE SOUND and delivering it with zero apology is the most SKZ thing they've ever done.",
     tags: ["meta", "identity", "bold", "loud", "anthem"],
     stats: { happy: 7, sad: 1, hype: 9, calm: 1, alone: 1, inLove: 0, outOfLove: 0 }
   },
@@ -698,7 +698,7 @@ export const songs: Song[] = [
     album: "HOP (SKZHOP HIPTAPE)",
     year: 2024,
     intro: "Maximum everything. Ultra as in beyond limits — SKZ past their own ceiling.",
-    gist: "Going beyond every boundary. More than maximum — ultra.",
+    gist: "Changbin's ULTRA is his entire discography distilled: not just maximum, not just beyond — ultra. The word he chose because every other superlative had already run out. His voice alone could fill a stadium and this track exists to prove it.",
     tags: ["intense", "max-energy", "bold", "hype"],
     stats: { happy: 7, sad: 1, hype: 10, calm: 0, alone: 1, inLove: 0, outOfLove: 0 }
   },
@@ -709,7 +709,7 @@ export const songs: Song[] = [
     album: "HOP (SKZHOP HIPTAPE)",
     year: 2024,
     intro: "The world isn't fair — and SKZ leans into it. Driven, assertive, and real.",
-    gist: "Life is unfair and they've decided to stop pretending otherwise. Channel that truth into motion.",
+    gist: "Felix's solo confronts the specific unfairness of an industry that measured him against a standard he never agreed to. Unfair isn't angry — it's the calm observation of someone who's accepted the rules of a rigged game and decided to win anyway.",
     tags: ["honest", "driven", "social-commentary", "mid-tempo"],
     stats: { happy: 3, sad: 6, hype: 7, calm: 2, alone: 4, inLove: 0, outOfLove: 2 }
   },
@@ -720,7 +720,7 @@ export const songs: Song[] = [
     album: "HOP (SKZHOP HIPTAPE)",
     year: 2024,
     intro: "Get knocked down seven times, stand up eight. Pure resilience energy.",
-    gist: "Resilience personified. Every setback is just momentum for the comeback.",
+    gist: "Resilience as a literal physical property — the object that returns to shape after impact. The difference between this and generic empowerment is specificity: they name things that knocked them down and then demonstrate, measure by measure, that they came back harder each time.",
     tags: ["resilience", "comeback", "empowerment", "hype"],
     stats: { happy: 8, sad: 2, hype: 9, calm: 1, alone: 1, inLove: 0, outOfLove: 0 }
   },
@@ -731,7 +731,7 @@ export const songs: Song[] = [
     album: "HOP (SKZHOP HIPTAPE)",
     year: 2024,
     intro: "A celebration of youth as a state of mind, not an age. Warm and nostalgic.",
-    gist: "Youth isn't an age — it's a feeling of being alive, vibrant, and unafraid. Cherish it.",
+    gist: "Lee Know's take on youth is different because he trained under another company and nearly quit before SKZ happened. His 'youth' has a specific texture: the years spent almost giving up, the version of himself that almost never made it here. Cherish it differently when you almost lost it.",
     tags: ["nostalgic", "warm", "youth", "emotional"],
     stats: { happy: 7, sad: 4, hype: 3, calm: 6, alone: 2, inLove: 2, outOfLove: 0 }
   },
@@ -742,7 +742,7 @@ export const songs: Song[] = [
     album: "HOP (SKZHOP HIPTAPE)",
     year: 2024,
     intro: "Defying gravity. Defying expectations. Doing the impossible like it's Tuesday.",
-    gist: "They walk on water — doing what should be impossible, now mundane. Complete self-belief.",
+    gist: "The miracle isn't that they walk on water — it's that they do it often enough that it's stopped being miraculous to them. The impossibility has become routine. This song is about that specific shift: when what should be extraordinary has simply become how you move through the world.",
     tags: ["confidence", "miraculous", "hype", "bold"],
     stats: { happy: 7, sad: 1, hype: 9, calm: 1, alone: 1, inLove: 0, outOfLove: 0 }
   },
@@ -753,7 +753,7 @@ export const songs: Song[] = [
     album: "★★★★★ (5-STAR)",
     year: 2023,
     intro: "They're marching, and they're taking you with them. A triumphant procession.",
-    gist: "Life as a parade — keep moving, keep the energy up, celebrate the march itself.",
+    gist: "A parade by definition includes everyone watching — the march is designed to pull people in until the crowd becomes part of the procession. SKZ have never been content to perform for the few. The parade doesn't end; it just keeps growing.",
     tags: ["celebratory", "marching", "uplifting", "anthemic"],
     stats: { happy: 8, sad: 1, hype: 8, calm: 2, alone: 0, inLove: 0, outOfLove: 0 }
   },
@@ -764,7 +764,7 @@ export const songs: Song[] = [
     album: "KARMA",
     year: 2025,
     intro: "Burn. Rise. Repeat. The phoenix metaphor done with SKZ's signature intensity.",
-    gist: "From the ashes, again and again. Being destroyed and choosing to rise is the whole story.",
+    gist: "KARMA as an album is a reckoning — actions weighed against their consequences. The phoenix appears here because this era is built on what was incinerated before it. Rise isn't the happy ending; it's the middle of an ongoing loop. Burn completely. Come back completely different. Repeat indefinitely.",
     tags: ["resurrection", "powerful", "emotional", "hype"],
     stats: { happy: 5, sad: 4, hype: 9, calm: 1, alone: 2, inLove: 0, outOfLove: 0 }
   },
@@ -775,7 +775,7 @@ export const songs: Song[] = [
     album: "KARMA",
     year: 2025,
     intro: "The thoughts won't stop. An immersive track that places you inside the spiral.",
-    gist: "Trapped in your own head — the obsessive loop of thoughts about someone or something.",
+    gist: "The spiral of thoughts about someone that won't stop — rewinding interactions, projecting futures, having arguments with people who aren't in the room. Being trapped in a head that won't stop producing content about one subject. The production mirrors it: it keeps cycling, never landing.",
     tags: ["obsessive", "introspective", "atmospheric", "emotional"],
     stats: { happy: 2, sad: 7, hype: 3, calm: 2, alone: 7, inLove: 5, outOfLove: 3 }
   },
@@ -786,7 +786,7 @@ export const songs: Song[] = [
     album: "HOP (SKZHOP HIPTAPE)",
     year: 2024,
     intro: "Effortlessly smooth. They're this good and they barely even try.",
-    gist: "Being undeniably, uncomplicatedly good at what you do. Confidence without shouting.",
+    gist: "Hyunjin states 'so good' the way someone observes weather. It's not a boast — it's an observation with no particular attachment to it. He's not trying to convince you. The effortlessness is the evidence, and the evidence is the whole point.",
     tags: ["smooth", "confident", "R&B", "cool"],
     stats: { happy: 8, sad: 0, hype: 5, calm: 6, alone: 0, inLove: 2, outOfLove: 0 }
   },
@@ -797,7 +797,7 @@ export const songs: Song[] = [
     album: "KARMA",
     year: 2025,
     intro: "The title track of KARMA — a full ceremony dedicated to everything they've built and everyone who built it with them.",
-    gist: "CEREMONY is a declaration and a celebration: this moment, this bond, this achievement is worth marking with full presence. The title track that crowns the album.",
+    gist: "KARMA means the weighing of actions against their consequences. The CEREMONY is the formal marking of what SKZ built — eight years, a world tour, a fandom that became family. Not a celebration of success. A ritual acknowledgment that what was done mattered, and it was done on purpose.",
     tags: ["title-track", "milestone", "celebration", "sincere", "STAY", "KARMA"],
     stats: { happy: 8, sad: 2, hype: 4, calm: 5, alone: 0, inLove: 5, outOfLove: 0 }
   },
@@ -808,7 +808,7 @@ export const songs: Song[] = [
     album: "HOP (SKZHOP HIPTAPE)",
     year: 2024,
     intro: "Simple, tender, human. Sometimes all you need is someone to hold your hand.",
-    gist: "Just hold my hand. No grand gestures — the simplest form of comfort becomes the most profound.",
+    gist: "HAN once said this came from wanting to comfort someone but not knowing how — realizing that the most sophisticated gesture available was the most primitive one. Just hold my hand. No explanation, no fix, no fix needed. The simplicity is not laziness; it's precision.",
     tags: ["tender", "simple", "love", "comforting", "emotional"],
     stats: { happy: 5, sad: 4, hype: 1, calm: 8, alone: 2, inLove: 9, outOfLove: 0 }
   },
@@ -819,7 +819,7 @@ export const songs: Song[] = [
     album: "HOP (SKZHOP HIPTAPE)",
     year: 2024,
     intro: "Is this real or imagined? Love that blurs the line between reality and fantasy.",
-    gist: "Love as hallucination — so intense it distorts your perception. You're not sure what's real anymore.",
+    gist: "I.N, the youngest member, writing about love that distorts reality is unexpectedly sophisticated. The production blurs the lines between waking and dreaming deliberately. You're inside the hallucination while you listen — which means you can't tell from inside whether it's real either.",
     tags: ["surreal", "love", "dreamy", "intense"],
     stats: { happy: 3, sad: 5, hype: 4, calm: 3, alone: 3, inLove: 8, outOfLove: 2 }
   },
@@ -830,7 +830,7 @@ export const songs: Song[] = [
     album: "MAXIDENT",
     year: 2022,
     intro: "Standing tall against everything. They've always been giants — maybe the world just noticed.",
-    gist: "They were always this big. The world is catching up. Quiet, earned confidence.",
+    gist: "GIANT was written after they sold out stadiums they couldn't have imagined playing during training. The quiet confidence here is different from their usual energy: not 'look how far we've come' but 'we were always this size — the world just needed time to catch up to us.'",
     tags: ["confidence", "growth", "powerful", "sincere"],
     stats: { happy: 6, sad: 2, hype: 7, calm: 3, alone: 2, inLove: 0, outOfLove: 0 }
   },
@@ -841,7 +841,7 @@ export const songs: Song[] = [
     album: "Christmas EveL (Single)",
     year: 2021,
     intro: "Christmas SKZ style — chaotic, dark, and somehow still festive. Only they could do this.",
-    gist: "Christmas Eve + Evil = Christmas EveL. A holiday track with an edge — joyful destruction.",
+    gist: "Christmas Eve + Evil/Level = Christmas EveL. Only SKZ could take a holiday concept and make it sound like a heist. The festivity is real; the chaos is realer. It's the most fun they've had with a concept and it absolutely works because they're genuinely enjoying every second.",
     tags: ["holiday", "dark-fun", "unique", "chaotic"],
     stats: { happy: 6, sad: 1, hype: 9, calm: 0, alone: 1, inLove: 0, outOfLove: 0 }
   },
@@ -852,7 +852,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2023,
     intro: "Three of SKZ's most charismatic members in one track. Elegant, sensual, refined.",
-    gist: "Having taste — in everything. This subunit track oozes aesthetic awareness.",
+    gist: "Lee Know, Hyunjin, and Felix — three of SKZ's most performance-focused members — making something that tastes like their combined aesthetic. Refined, specific, considered. Having taste is a different kind of confidence from having power. This is the quiet flex.",
     tags: ["subunit", "charismatic", "smooth", "aesthetic"],
     stats: { happy: 6, sad: 1, hype: 6, calm: 4, alone: 1, inLove: 5, outOfLove: 0 }
   },
@@ -863,7 +863,7 @@ export const songs: Song[] = [
     album: "KARMA",
     year: 2025,
     intro: "What you say when you can't say what you actually want to say. Frustration, censored.",
-    gist: "All the words they can't say, bleeped out. The unspeakable feelings, expressed through their absence.",
+    gist: "삐처리 = bleeped-out. All the specific things they cannot say out loud — at their label, to their critics, about their situation — expressed precisely through their absence. The beep is louder than the word it replaced.",
     tags: ["witty", "frustrated", "bold", "unique"],
     stats: { happy: 4, sad: 4, hype: 7, calm: 1, alone: 3, inLove: 0, outOfLove: 3 }
   },
@@ -874,7 +874,7 @@ export const songs: Song[] = [
     album: "★★★★★ (5-STAR)",
     year: 2023,
     intro: "A promise. You will never have to face anything alone as long as they're here.",
-    gist: "The deepest reassurance SKZ can offer: we're in this together. An unconditional, sincere promise.",
+    gist: "Bang Chan described writing this after a tour stop where he looked out at the crowd and felt the weight of everyone there who had come through something. Never Alone is the most unconditional promise in their catalog: whatever the thing is, you don't have to do it without us.",
     tags: ["promise", "comforting", "STAY", "emotional", "sincere"],
     stats: { happy: 6, sad: 4, hype: 2, calm: 7, alone: 1, inLove: 5, outOfLove: 0 }
   },
@@ -940,7 +940,7 @@ export const songs: Song[] = [
     album: "KARMA",
     year: 2025,
     intro: "A creed is what you live by. This is their doctrine — written in sound.",
-    gist: "This is what we believe, who we are, what we stand for. SKZ's manifesto, distilled.",
+    gist: "A creed is what you fall back on when everything external becomes uncertain. KARMA's CREED is SKZ distilling eight years of choices, principles, and hard-made decisions into something short enough to carry and hold up under pressure. This is what they stand for. It fits in a single song.",
     tags: ["manifesto", "identity", "anthem", "powerful"],
     stats: { happy: 6, sad: 2, hype: 8, calm: 2, alone: 1, inLove: 0, outOfLove: 0 }
   },
@@ -951,7 +951,7 @@ export const songs: Song[] = [
     album: "KARMA",
     year: 2025,
     intro: "Haunting in the best sense. Staying with you long after it's over.",
-    gist: "The ghost of someone who's gone — still present, still felt, still real in every corner of memory.",
+    gist: "The ghost is both the person who left and the version of you that existed when they were present. Both haunt equally. The production creates the specific presence-in-absence of something gone: sound filling the room while proving the room is empty.",
     tags: ["haunting", "loss", "emotional", "atmospheric"],
     stats: { happy: 2, sad: 8, hype: 3, calm: 4, alone: 7, inLove: 3, outOfLove: 5 }
   },
@@ -962,7 +962,7 @@ export const songs: Song[] = [
     album: "ATE",
     year: 2024,
     intro: "The smallest things carry the most weight. Subtle, restrained, and powerful because of it.",
-    gist: "Just a little — gesture, love, kindness. The small moments that mean everything.",
+    gist: "The smallest things accumulate differently than the large ones. Just a little — a look, a gesture, a moment of attention left over after everything else was taken. SKZ at their quietest is often their most devastating, and this is the quietest they've been.",
     tags: ["subtle", "tender", "emotional", "love"],
     stats: { happy: 5, sad: 5, hype: 1, calm: 7, alone: 3, inLove: 7, outOfLove: 1 }
   },
@@ -973,7 +973,7 @@ export const songs: Song[] = [
     album: "HOP (SKZHOP HIPTAPE)",
     year: 2024,
     intro: "No changes needed. You're enough, exactly as you are right now.",
-    gist: "Acceptance. Not who you could be — who you are right now. As we are is enough.",
+    gist: "Seungmin's radical acceptance solo: not 'as we will be' or 'as we should be' — as we are, right now, incomplete and imperfect and exactly enough. In a group that is relentlessly self-improving, this is the most countercultural thing on the HOP tape.",
     tags: ["acceptance", "comforting", "self-love", "warm"],
     stats: { happy: 7, sad: 3, hype: 1, calm: 8, alone: 2, inLove: 5, outOfLove: 0 }
   },
@@ -984,7 +984,7 @@ export const songs: Song[] = [
     album: "ATE",
     year: 2024,
     intro: "They never stop running. Forward momentum as a way of life.",
-    gist: "Perpetual motion — they are runners, always moving, never stopping. The race has no finish line.",
+    gist: "This is the group that doesn't stop — not because they can't, but because the running itself has become the point. Forward momentum as identity, not strategy. Runners don't run toward things; they run because standing still doesn't fit anymore.",
     tags: ["running", "momentum", "hype", "determined"],
     stats: { happy: 7, sad: 2, hype: 9, calm: 1, alone: 1, inLove: 0, outOfLove: 0 }
   },
@@ -995,7 +995,7 @@ export const songs: Song[] = [
     album: "ATE",
     year: 2024,
     intro: "Mountains to climb. Obstacles that make the view from the top worth it.",
-    gist: "Every mountain in their path is just a new peak to reach. Difficulty reframed as opportunity.",
+    gist: "The mountains are not obstacles in this framing — they're proof that there's somewhere higher. Every mountain they've climbed has revealed another one behind it. In the SKZ universe, that's not discouraging. That's the entire reason to keep moving.",
     tags: ["determination", "overcoming", "epic", "inspirational"],
     stats: { happy: 6, sad: 3, hype: 8, calm: 2, alone: 2, inLove: 0, outOfLove: 0 }
   },
@@ -1006,7 +1006,7 @@ export const songs: Song[] = [
     album: "ATE",
     year: 2024,
     intro: "Load up and detonate. The most explosively fun track in their recent catalog.",
-    gist: "Like cocking a gun and firing — precise, explosive, impactful. Pure hype energy.",
+    gist: "Load, aim, detonate. The gap between the first note and the impact is measured in milliseconds. Chk Chk Boom is designed to replicate live concert energy in recorded form — that specific feeling of the bass hitting your chest before you've processed that the song started.",
     tags: ["explosive", "fun", "loud", "hype", "banger"],
     stats: { happy: 7, sad: 0, hype: 10, calm: 0, alone: 0, inLove: 0, outOfLove: 0 }
   },
@@ -1017,7 +1017,7 @@ export const songs: Song[] = [
     album: "ATE",
     year: 2024,
     intro: "The night never ends if you don't let it. Keeping the energy alive past when it should.",
-    gist: "Refusing to let the good times end. The party goes on because they say so.",
+    gist: "The refusal to let the night end when every signal says it should. The party is a metaphor for a specific kind of alive-ness — the feeling of being so fully present that stopping feels like death. They're not unaware the party should end. They're choosing to ignore it.",
     tags: ["party", "fun", "energetic", "defiant"],
     stats: { happy: 9, sad: 1, hype: 9, calm: 0, alone: 0, inLove: 2, outOfLove: 0 }
   },
@@ -1028,7 +1028,7 @@ export const songs: Song[] = [
     album: "Mixtape: dominATE",
     year: 2025,
     intro: "Pedal to the floor. Tires burning. No destination, just velocity.",
-    gist: "Speed for the sake of speed. Living so fast you leave marks on the ground.",
+    gist: "Mixtape: dominATE is where they burn the previous version of the Mixtape series and build forward. Burning tires means moving so fast you're leaving marks on the ground behind you — the evidence of velocity. The destination doesn't matter. The velocity does.",
     tags: ["fast", "reckless", "hype", "freedom"],
     stats: { happy: 6, sad: 1, hype: 10, calm: 0, alone: 1, inLove: 0, outOfLove: 0 }
   },
@@ -1050,7 +1050,7 @@ export const songs: Song[] = [
     album: "ATE",
     year: 2024,
     intro: "Dragon Ball Z as a Stray Kids song. Transforming under pressure — and coming out stronger.",
-    gist: "The Saiyan transformation: breaking point becomes breakthrough. Pain is fuel.",
+    gist: "In Dragon Ball Z, Saiyans grow stronger from near-defeat — the closer they come to breaking, the higher their power level rises after. SKZ used this mythology because they know that pattern from the inside. The adversity isn't something that happened to them. It's the mechanism.",
     tags: ["anime-reference", "transformation", "power", "hype"],
     stats: { happy: 5, sad: 3, hype: 10, calm: 0, alone: 2, inLove: 0, outOfLove: 0 }
   },
@@ -1061,7 +1061,7 @@ export const songs: Song[] = [
     album: "Arcane League of Legends OST",
     year: 2024,
     intro: "Written for the Arcane series. Dark, urgent, and immersive — it sounds like the show feels.",
-    gist: "An invitation into chaos. Come play in the dark world where the stakes are real.",
+    gist: "Arcane is about two sisters separated by class, power, and violence — one who got out and one who was left behind. SKZ wrote a song for that fracture. Come Play sounds like one of them calling to the other across the line: dark invitation, full of love that has learned to look like danger.",
     tags: ["OST", "dark", "anime", "cinematic", "collab"],
     stats: { happy: 3, sad: 4, hype: 9, calm: 1, alone: 3, inLove: 0, outOfLove: 0 }
   },
@@ -1072,7 +1072,7 @@ export const songs: Song[] = [
     album: "Always Love (Single)",
     year: 2023,
     intro: "A rare, unexpected collab — gentle and genuine. Hyunjin's softer side in a tender context.",
-    gist: "Always loving, no conditions. A simple, true promise made softly.",
+    gist: "d4vd and Hyunjin is one of the least expected collaborations in either discography, and it works because both operate in the same register of unadorned sincerity. 'Always' means without condition, without exception, without end date. They both mean it. That shared earnestness is everything.",
     tags: ["Hyunjin", "collab", "gentle", "love", "sincere"],
     stats: { happy: 7, sad: 3, hype: 1, calm: 8, alone: 2, inLove: 9, outOfLove: 0 }
   },
@@ -1083,7 +1083,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2023,
     intro: "Seungmin's tender solo offering. Pure, warm, and full of longing.",
-    gist: "Just wanting to be close. Simple proximity as the deepest form of love.",
+    gist: "Seungmin has the most traditionally beautiful voice in the group — pure, clear, unaffected. This solo uses it at its most essential: wanting only to be near someone. Not touching, not speaking — just the specific comfort of shared physical space.",
     tags: ["Seungmin", "solo", "tender", "love", "soft"],
     stats: { happy: 5, sad: 4, hype: 0, calm: 9, alone: 3, inLove: 9, outOfLove: 0 }
   },
@@ -1094,7 +1094,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2024,
     intro: "A permanent promise — not 'I'll try' but 'I'm here, always, full stop.'",
-    gist: "Seungmin making an unconditional commitment. Being someone's constant.",
+    gist: "Close to You was wanting to be there. Here Always is already being there — past tense of presence, now continuous. I'm not on my way. I'm here. The difference between those two sentences is what this song is about.",
     tags: ["Seungmin", "solo", "sincere", "promise", "comforting"],
     stats: { happy: 6, sad: 3, hype: 0, calm: 9, alone: 1, inLove: 8, outOfLove: 0 }
   },
@@ -1116,7 +1116,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2020,
     intro: "Pressure building. HAN is the volcano — and eruption is inevitable.",
-    gist: "Creative and emotional pressure building until it must explode. HAN at his most cathartic.",
+    gist: "VOLCANO tracks HAN's own emotional pressure management — years of internalized anxiety that builds without release until there's only one direction it can go. The production mirrors it: slow accumulation, then a moment where everything gives way at once. Cathartic because it was built to be.",
     tags: ["HAN", "solo", "intense", "cathartic", "rap"],
     stats: { happy: 3, sad: 5, hype: 9, calm: 0, alone: 5, inLove: 0, outOfLove: 2 }
   },
@@ -1127,7 +1127,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2021,
     intro: "Hyunjin sitting with his own contradictions. Deeply artistic and introspective.",
-    gist: "Containing multitudes — being multiple things at once, contradicting yourself, and finding that okay.",
+    gist: "Hyunjin has described himself as someone who thinks too much, feels too much, and contains too many opposing impulses. Contradicting is him finally deciding that the multiple, conflicting versions of himself aren't a problem to solve — they're the complete answer. He stopped trying to resolve the tension.",
     tags: ["Hyunjin", "solo", "artistic", "introspective", "self-examination"],
     stats: { happy: 3, sad: 6, hype: 2, calm: 5, alone: 6, inLove: 1, outOfLove: 2 }
   },
@@ -1138,7 +1138,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2022,
     intro: "Sweet, melting, fleeting — the lightest Hyunjin solo moment.",
-    gist: "Love like ice cream: sweet, temporary, gone before you're ready. Enjoy it while it lasts.",
+    gist: "Hyunjin wrote this in a rare window of pure lightness — a moment where the weight lifted. Ice cream: sweet, specific, already starting to melt while you're holding it. This is his permission slip to enjoy something beautiful while knowing it won't last, and to not ruin the experience by mourning it early.",
     tags: ["Hyunjin", "solo", "sweet", "metaphorical", "light"],
     stats: { happy: 7, sad: 3, hype: 2, calm: 7, alone: 1, inLove: 7, outOfLove: 2 }
   },
@@ -1149,7 +1149,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2019,
     intro: "Felix diving into the emotional deep end. Unexpectedly profound for a short track.",
-    gist: "Jumping into the deep end — of love, of life, of everything — without knowing how to swim.",
+    gist: "Felix was one of the youngest when they debuted — thrown into deep water before he'd learned how to swim in it. This solo is the memory of that choice: seeing the depth, not knowing what's down there, and jumping anyway. Not because he was ready. Because the alternative was staying out of the water forever.",
     tags: ["Felix", "solo", "emotional", "brave", "vulnerable"],
     stats: { happy: 3, sad: 6, hype: 2, calm: 4, alone: 5, inLove: 4, outOfLove: 2 }
   },
@@ -1160,7 +1160,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2021,
     intro: "The most delicate thing in the SKZ catalog. Handle with care.",
-    gist: "A tiny star in the vast sky — small but present, shining even when unseen. Tenderness about something fragile.",
+    gist: "The most delicate thing in the SKZ catalog, written by their most artistic member. A tiny star is not impressive — it's small, it's easy to miss, it barely registers against the darkness. This song is entirely about the things that matter exactly because of their smallness.",
     tags: ["Hyunjin", "gentle", "delicate", "beautiful", "solo"],
     stats: { happy: 5, sad: 5, hype: 0, calm: 9, alone: 4, inLove: 4, outOfLove: 0 }
   },
@@ -1171,7 +1171,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2020,
     intro: "Bang Chan admitting something he doesn't want to admit. Vulnerable in a quiet way.",
-    gist: "Not wanting to acknowledge the truth — that you're hurting, that something's wrong, that you still care.",
+    gist: "Bang Chan in his most disarmed state — not wanting to admit something, and the song is the admission. Not the hurt itself, but the resistance to acknowledging it. The title 인정하기 싫어 = 'I don't want to admit it.' He wrote the song anyway. That's the whole conflict.",
     tags: ["Bang Chan", "solo", "vulnerable", "denial", "emotional"],
     stats: { happy: 1, sad: 8, hype: 1, calm: 4, alone: 7, inLove: 3, outOfLove: 4 }
   },
@@ -1182,7 +1182,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2021,
     intro: "Lee Know covering DAY6's emotional track with his own color. All in or all out.",
-    gist: "No middle ground in love — love me completely or let me go. Lee Know delivering emotional precision.",
+    gist: "Lee Know chose DAY6's Love Me or Leave Me because the binary resonates with his own nature — he doesn't do halfway. His cover is a choice: all in or all out, no middle ground, no slow fade. The delivery is calm because the decision was already made.",
     tags: ["Lee Know", "cover", "DAY6", "emotional", "love"],
     stats: { happy: 2, sad: 7, hype: 2, calm: 4, alone: 5, inLove: 5, outOfLove: 6 }
   },
@@ -1193,7 +1193,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2021,
     intro: "Seungmin covering DAY6's Zombie — and making it his own. Emotional and deeply felt.",
-    gist: "Living like the walking dead — going through the motions without truly being present. Seungmin's sincerity elevates it.",
+    gist: "Seungmin chose Zombie during a period when the pandemic had stopped all live performances — every member going through the motions of being an artist with no audience, no stage, no confirmation that any of it was real. His sincerity makes the metaphor land as fact.",
     tags: ["Seungmin", "cover", "DAY6", "emotional", "existential"],
     stats: { happy: 1, sad: 8, hype: 2, calm: 4, alone: 8, inLove: 0, outOfLove: 2 }
   },
@@ -1204,7 +1204,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2022,
     intro: "HAN wishing something back that's already gone. Achingly simple and honest.",
-    gist: "The simplest longing: I wish you were back. Not complicated — just honest and painful.",
+    gist: "HAN stripped of production armor — just the confession in its most basic form. I wish you were back. No analysis, no craft, no distance. In a discography of densely layered production, this nakedness is the most unsettling thing he's made.",
     tags: ["HAN", "solo", "longing", "emotional", "loss"],
     stats: { happy: 1, sad: 9, hype: 1, calm: 4, alone: 8, inLove: 2, outOfLove: 6 }
   },
@@ -1215,7 +1215,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2022,
     intro: "Happiness as something hard to reach and harder to hold. HAN examining the concept.",
-    gist: "What is happy? HAN turning the word over, questioning it, and finding it more complex than it looks.",
+    gist: "HAN treating 'happy' as a foreign object — holding it up, turning it over, not sure if it applies to him. The title's unusual capitalization (HaPpY) is the visual version of the uncertainty: the word doesn't fit right, doesn't sit still. Is this what it is? He's genuinely not sure.",
     tags: ["HAN", "solo", "introspective", "emotional", "questions"],
     stats: { happy: 4, sad: 6, hype: 2, calm: 4, alone: 5, inLove: 1, outOfLove: 2 }
   },
@@ -1226,7 +1226,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2019,
     intro: "Changbin unleashed. This is what happens when you give the 3RACHA rapper full creative freedom.",
-    gist: "Pure Changbin — his voice, his pen, his flexing. A cypher as a declaration of rap identity.",
+    gist: "3RACHA is the production engine that runs underneath SKZ. Changbin's Cypher is what he sounds like with no group consideration, no audience calibration — just the rapper with the lowest voice in K-pop proving why that voice alone could fill rooms. This is the unfiltered source material.",
     tags: ["Changbin", "solo", "rap", "flex", "intense"],
     stats: { happy: 4, sad: 2, hype: 10, calm: 0, alone: 3, inLove: 0, outOfLove: 0 }
   },
@@ -1237,7 +1237,7 @@ export const songs: Song[] = [
     album: "HOP (SKZHOP HIPTAPE)",
     year: 2024,
     intro: "Bang Chan on a one-way track to somewhere meaningful. Reflective and forward-looking.",
-    gist: "Life as a railway — one direction, predetermined stops, but the journey matters.",
+    gist: "Bang Chan examining his life through the railway metaphor — not fighting the track, not pretending the stops were chosen, just observing that this is how journeys work. One direction. Predetermined stops. And the exact scenery you see between them is yours alone.",
     tags: ["Bang Chan", "solo", "reflective", "journey", "sincere"],
     stats: { happy: 5, sad: 4, hype: 3, calm: 6, alone: 3, inLove: 2, outOfLove: 0 }
   },
@@ -1248,7 +1248,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2021,
     intro: "Two unlikely vocalists pairing up for a bittersweet celebration.",
-    gist: "Congratulations on moving on, on being happy — even when you're not the reason for that happiness.",
+    gist: "Two members whose vocal textures are completely different creating the perfect bittersweet thing: congratulations to someone who moved on. HAN's roughness and Seungmin's clarity make the ambivalence exact — the happiness for them and the hurt for yourself existing in the same breath.",
     tags: ["HAN", "Seungmin", "duet", "bittersweet", "breakup"],
     stats: { happy: 4, sad: 7, hype: 1, calm: 5, alone: 4, inLove: 2, outOfLove: 7 }
   },
@@ -1259,7 +1259,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2021,
     intro: "I.N covering SHINee's Jonghyun — a deeply emotional, respectful tribute.",
-    gist: "Consolation as the act of sitting with someone in their pain. I.N's delivery is pure, unadorned sincerity.",
+    gist: "I.N covering Jonghyun's Consolation is one of the most quietly significant things any SKZ member has done. Jonghyun wrote about sitting beside someone in their pain without trying to fix it. I.N, the youngest member, chose this song specifically. The choice tells you everything about who he is.",
     tags: ["I.N", "cover", "Jonghyun", "tribute", "emotional"],
     stats: { happy: 2, sad: 9, hype: 0, calm: 6, alone: 7, inLove: 2, outOfLove: 0 }
   },
@@ -1270,7 +1270,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2021,
     intro: "HAN asking for silence from someone who keeps saying the wrong thing.",
-    gist: "Don't say it. Don't say goodbye, don't say it's over — the request to stop the words that end things.",
+    gist: "HAN asking someone to stop before the damage becomes permanent — specifically, to not say the words that, once said, can't be unsaid. This isn't anger; it's the desperate arithmetic of realizing you're seconds from a version of things you can't walk back from.",
     tags: ["HAN", "solo", "emotional", "breakup", "plea"],
     stats: { happy: 1, sad: 9, hype: 2, calm: 3, alone: 7, inLove: 3, outOfLove: 7 }
   },
@@ -1281,7 +1281,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2021,
     intro: "Only the scent remains after someone leaves. I.N with ethereal tenderness.",
-    gist: "After love ends, all that remains is a scent — fleeting, perfect, devastating.",
+    gist: "Scent is the memory sense — involuntary, visceral, impossible to control. After someone goes, their face fades first, then their voice, and the scent is what stays longest. I.N covering this with his pristine voice makes the fragility of the metaphor into something you feel physically.",
     tags: ["I.N", "cover", "nostalgic", "loss", "tender"],
     stats: { happy: 2, sad: 8, hype: 0, calm: 7, alone: 6, inLove: 4, outOfLove: 5 }
   },
@@ -1305,7 +1305,7 @@ export const songs: Song[] = [
     album: "I Am NOT",
     year: 2018,
     intro: "Physics class turned into a rap manifesto. Energy is never created or destroyed — it just becomes them.",
-    gist: "The law of conservation of mass/energy as their thesis: their potential can't be eliminated, only transformed.",
+    gist: "The law of conservation of energy used as a rap thesis: if energy can neither be created nor destroyed, only transformed — then every attempt to eliminate them just converts their potential into something new. The physics lesson is the rebuttal to everyone who said no.",
     tags: ["debut-era", "rap", "science-metaphor", "intense", "I Am NOT"],
     stats: { happy: 4, sad: 2, hype: 9, calm: 0, alone: 2, inLove: 0, outOfLove: 0 }
   },
@@ -1316,7 +1316,7 @@ export const songs: Song[] = [
     album: "I Am NOT",
     year: 2018,
     intro: "Stand in front of it long enough and you'll start to question what you see. A quiet reckoning.",
-    gist: "Who is the person in the mirror? Confronting the gap between who you are and who you appear to be.",
+    gist: "Debut-era SKZ examining the gap between the person in the mirror and the person the training system was trying to produce. The confrontation is quiet but the stakes were real: if you don't know who you are, the industry will tell you, and you might believe them.",
     tags: ["debut-era", "introspective", "identity", "I Am NOT"],
     stats: { happy: 2, sad: 7, hype: 2, calm: 4, alone: 7, inLove: 0, outOfLove: 0 }
   },
@@ -1327,7 +1327,7 @@ export const songs: Song[] = [
     album: "I Am WHO",
     year: 2018,
     intro: "The moment you come to life — really, fully alive. It's louder than you expected.",
-    gist: "An awakening of self: stepping out of numbness and into full awareness of who you are and what you want.",
+    gist: "Coming awake — not gradually but suddenly. The I Am WHO era is about claiming your identity rather than waiting to be assigned one, and Awaken is the moment the claiming happens. The loudness is because silence was what came before.",
     tags: ["awakening", "powerful", "self-discovery", "I Am WHO"],
     stats: { happy: 5, sad: 3, hype: 8, calm: 1, alone: 2, inLove: 0, outOfLove: 0 }
   },
@@ -1338,7 +1338,7 @@ export const songs: Song[] = [
     album: "I Am WHO",
     year: 2018,
     intro: "Missing in action — but from yourself. The confusion of not knowing where you went.",
-    gist: "Feeling absent from your own life. Emotionally AWOL. A quiet panic about losing your sense of self.",
+    gist: "Missing in action — from yourself specifically. Not lost in a dramatic way but in the quiet way where you go through every daily motion perfectly and realize at some point that you checked out without noticing. The panic isn't loud. That's what makes it worse.",
     tags: ["lost", "identity", "anxious", "I Am WHO"],
     stats: { happy: 1, sad: 8, hype: 3, calm: 2, alone: 8, inLove: 0, outOfLove: 0 }
   },
@@ -1382,7 +1382,7 @@ export const songs: Song[] = [
     album: "I Am YOU",
     year: 2018,
     intro: "'You're doing well' — the words you needed to hear. Gentle, warm, honest.",
-    gist: "Growing up is hard. 잘 하고 있어 means 'you're doing well' — and this song is that reassurance made into music.",
+    gist: "잘 하고 있어 = you're doing well. The rarest words in the training system — SKZ probably didn't hear them often enough. This song is the reassurance they didn't receive, given back to STAY and to each other. You are in the middle of it and you are doing well. That's the whole message.",
     tags: ["coming-of-age", "warm", "sincere", "I Am YOU"],
     stats: { happy: 6, sad: 4, hype: 2, calm: 7, alone: 3, inLove: 0, outOfLove: 0 }
   },
@@ -1393,7 +1393,7 @@ export const songs: Song[] = [
     album: "Mixtape (Pre-debut)",
     year: 2017,
     intro: "Young wings, still learning to fly. A pre-debut declaration of who they would become.",
-    gist: "어린 날개 = young/small wings. Dreams too big for the wings they have yet — but they'll grow into them.",
+    gist: "어린 날개 = young wings. Pre-debut, before they knew how far they'd go, when the dreams were larger than the evidence. The gap between who they were and who they'd become is what this song lives inside — and the bet they were making on themselves before anyone else did.",
     tags: ["pre-debut", "dreamy", "hopeful", "early"],
     stats: { happy: 6, sad: 3, hype: 4, calm: 5, alone: 3, inLove: 0, outOfLove: 0 }
   },
@@ -1404,7 +1404,7 @@ export const songs: Song[] = [
     album: "Mixtape (Pre-debut)",
     year: 2017,
     intro: "Captured from inside a classroom they couldn't wait to leave. Raw and relatable.",
-    gist: "The suffocation of school — rules, rankings, pressure — and the desire for something more real.",
+    gist: "Pre-debut SKZ, inside a school system that ranked them and sorted them and told them their value. Captured from the classroom they couldn't wait to leave — and the knowledge that they were right to want something more real than this.",
     tags: ["pre-debut", "school", "youth", "raw", "relatable"],
     stats: { happy: 3, sad: 5, hype: 5, calm: 2, alone: 5, inLove: 0, outOfLove: 0 }
   },
@@ -1426,7 +1426,7 @@ export const songs: Song[] = [
     album: "I Am NOT",
     year: 2018,
     intro: "Some people shine — they can't help it. This song is that shine given a voice.",
-    gist: "Radiating light regardless of circumstances. Glowing not because the world is bright but because you make it so.",
+    gist: "Some people glow despite circumstances, not because of them. Debut-era SKZ writing this as an act of willful brightness — choosing to radiate when the training system was designed to make you doubt. The light here is defiant.",
     tags: ["uplifting", "bright", "empowerment", "debut-era"],
     stats: { happy: 8, sad: 1, hype: 6, calm: 3, alone: 1, inLove: 0, outOfLove: 0 }
   },
@@ -1437,7 +1437,7 @@ export const songs: Song[] = [
     album: "I Am YOU",
     year: 2018,
     intro: "Even a shadow needs light to exist. One of their most quietly profound songs.",
-    gist: "A shadow only exists because of light — you can't have one without the other. Fame, success, and the darkness they cast.",
+    gist: "그림자도 빛이 있어야 존재 = a shadow can only exist where there is light. Early wisdom about duality from a group that was just beginning to understand the size of what they were chasing: the bigger the light, the longer the shadow it casts. You can't have one without the other.",
     tags: ["philosophical", "duality", "poetic", "I Am YOU"],
     stats: { happy: 3, sad: 6, hype: 2, calm: 6, alone: 5, inLove: 0, outOfLove: 2 }
   },
@@ -1448,7 +1448,7 @@ export const songs: Song[] = [
     album: "I Am YOU",
     year: 2018,
     intro: "You've met this person before. Or you think you have. Something familiar in a stranger's face.",
-    gist: "The strange comfort of meeting someone new who feels like they've always been part of your story.",
+    gist: "The recognition that happens before you know why — someone new who feels like they've existed in your story all along. This is I Am YOU's answer to loneliness: sometimes the stranger you meet was never really a stranger, just someone whose arrival was running late.",
     tags: ["connection", "meeting", "warm", "I Am YOU"],
     stats: { happy: 6, sad: 2, hype: 2, calm: 6, alone: 2, inLove: 5, outOfLove: 0 }
   },
@@ -1459,7 +1459,7 @@ export const songs: Song[] = [
     album: "Clé 1: MIROH",
     year: 2019,
     intro: "A flat refusal. The most direct word in the language, shouted back at everyone who said no.",
-    gist: "Not following, not conforming, not stopping. NOT! is a complete sentence and they mean it.",
+    gist: "One word and an exclamation point. NOT is a complete sentence — they don't need to explain what they're refusing or why. The simplicity of the refusal is the point: you don't owe a detailed explanation to every force that asks you to be smaller.",
     tags: ["defiant", "empowerment", "simple", "Clé 1"],
     stats: { happy: 4, sad: 1, hype: 9, calm: 0, alone: 2, inLove: 0, outOfLove: 0 }
   },
@@ -1472,7 +1472,7 @@ export const songs: Song[] = [
     album: "Clé: LEVANTER",
     year: 2019,
     intro: "Just. Stop. A command directed inward — the moment you make yourself pause and breathe.",
-    gist: "Asking everything around you — and inside you — to stop. A rare request for stillness in a catalog of motion.",
+    gist: "In a catalog that almost never stops moving, STOP is the song that asks everything to cease — including the part of you that keeps pushing when you should rest. The command is directed inward. Making yourself still when your nature is perpetual motion is the hardest thing.",
     tags: ["pause", "stillness", "emotional", "Clé LEVANTER"],
     stats: { happy: 3, sad: 6, hype: 2, calm: 6, alone: 5, inLove: 1, outOfLove: 2 }
   },
@@ -1483,7 +1483,7 @@ export const songs: Song[] = [
     album: "Clé: LEVANTER",
     year: 2019,
     intro: "Three words, complete sincerity. An open door left open for someone specific.",
-    gist: "Permission and invitation: you can stay — here, with us, in this space. No conditions, just presence.",
+    gist: "You Can STAY doubles as a message to their fandom (STAY) and a plain human invitation. The door is open. No requirement, no performance required. The title answers the question the listener was too afraid to ask.",
     tags: ["sincere", "comforting", "warm", "Clé LEVANTER", "STAY"],
     stats: { happy: 7, sad: 2, hype: 1, calm: 8, alone: 1, inLove: 5, outOfLove: 0 }
   },
@@ -1494,7 +1494,7 @@ export const songs: Song[] = [
     album: "Clé: LEVANTER",
     year: 2019,
     intro: "Floating untethered, watching the world from a distance. Beautiful and lonesome at the same time.",
-    gist: "The astronaut as metaphor: drifting in vastness, isolated but free, small against an infinite backdrop.",
+    gist: "Floating in the vastness where down doesn't have a direction. The astronaut sees more than anyone on the ground but can't be touched by any of them. Beautiful and specifically lonely — not the loneliness of rejection but the loneliness of perspective too large for the available company.",
     tags: ["dreamy", "space", "lonely-beautiful", "Clé LEVANTER"],
     stats: { happy: 4, sad: 5, hype: 2, calm: 7, alone: 7, inLove: 1, outOfLove: 0 }
   },
@@ -1516,7 +1516,7 @@ export const songs: Song[] = [
     album: "Clé: LEVANTER",
     year: 2019,
     intro: "Someone is their sunshine — and they want you to know it. Warm, bright, unambiguous.",
-    gist: "Pure positive energy personified as sunshine. This is what SKZ sounds like when they're simply, completely happy.",
+    gist: "Sunshine is what SKZ sounds like when they put down every heavy thing for a moment and just exist in warmth. No concept, no complexity — someone is their sunshine, and they want you to know it with zero irony. This is the version of them that the training system tried to eliminate.",
     tags: ["warm", "happy", "love", "bright", "Clé LEVANTER"],
     stats: { happy: 9, sad: 0, hype: 5, calm: 6, alone: 0, inLove: 7, outOfLove: 0 }
   },
@@ -1529,7 +1529,7 @@ export const songs: Song[] = [
     album: "NOEASY",
     year: 2021,
     intro: "Named for Mozart. The audacity of that comparison becomes justified within 30 seconds of listening.",
-    gist: "Like Wolfgang Amadeus Mozart, they compose with purpose and perform with precision. A grand, orchestral declaration of artistic genius.",
+    gist: "Mozart composed his first symphony at 8. SKZ invoked his name not because they're classical composers but because of the audacity of that level of talent — the idea of something so specifically, undeniably gifted that the world has no choice but to accommodate it. That's the comparison they're making. They're not wrong.",
     tags: ["Mozart", "orchestral", "grand", "artistic", "NOEASY"],
     stats: { happy: 4, sad: 3, hype: 10, calm: 1, alone: 2, inLove: 0, outOfLove: 0 }
   },
@@ -1540,7 +1540,7 @@ export const songs: Song[] = [
     album: "NOEASY",
     year: 2021,
     intro: "Sick = incredible in slang. 씩 = smirk in Korean. Both definitions apply simultaneously.",
-    gist: "Being undeniably, obviously, embarrassingly good at everything they do. A braggadocious track that earns its brag.",
+    gist: "씩 in Korean is the sound of a subtle smirk — the corner-of-the-mouth kind. 'Sick' in English means incredible. Ssick contains both meanings simultaneously. The brag is delivered with that specific smirk of someone who doesn't need to raise their voice because they already know how the conversation ends.",
     tags: ["flex", "confident", "hype", "NOEASY"],
     stats: { happy: 7, sad: 0, hype: 9, calm: 0, alone: 0, inLove: 0, outOfLove: 0 }
   },
@@ -1551,7 +1551,7 @@ export const songs: Song[] = [
     album: "NOEASY",
     year: 2021,
     intro: "The lightest thing on NOEASY. A breather between the chaos — but no less catchy for it.",
-    gist: "You're irresistibly cheesy — over-the-top, sickeningly sweet, impossible to ignore. And they're completely hooked.",
+    gist: "The one where SKZ goes full K-pop cute, and it works because they commit completely. In Korean, 'cheesy' describes someone who's excessively sweet and melodramatic — you are so over-the-top about everything, and somehow that's exactly what makes you impossible to resist.",
     tags: ["playful", "fun", "love", "cute", "NOEASY"],
     stats: { happy: 8, sad: 0, hype: 6, calm: 3, alone: 0, inLove: 7, outOfLove: 0 }
   },
@@ -1562,7 +1562,7 @@ export const songs: Song[] = [
     album: "NOEASY",
     year: 2021,
     intro: "Every signal says stop. They don't stop. That's both the problem and the whole point.",
-    gist: "Running every red light. Warnings ignored because the pull is stronger than the warning. Danger as attraction.",
+    gist: "Every red light says stop. They see it clearly — the signal, the meaning, the consequence — and drive through anyway. This isn't recklessness; it's the specific way love disables the warning system. You knew. You still went. The song doesn't judge; it just observes.",
     tags: ["danger", "obsession", "dark", "love", "NOEASY"],
     stats: { happy: 3, sad: 4, hype: 8, calm: 1, alone: 2, inLove: 6, outOfLove: 3 }
   },
@@ -1586,7 +1586,7 @@ export const songs: Song[] = [
     album: "ODDINARY",
     year: 2022,
     intro: "Everyone has a Lonely Street in their head. This is theirs — and now yours too.",
-    gist: "Walking the street of your own loneliness — solitary, honest, oddly comforting in how universal it feels.",
+    gist: "Everyone has a Lonely Street — the internal address where you go when the loneliness gets specific. ODDINARY owns the word 'odd' and this is SKZ being oddly honest: the street exists, they walk it sometimes, and naming it makes it slightly less lonely to be there.",
     tags: ["lonely", "introspective", "indie-ish", "ODDINARY"],
     stats: { happy: 2, sad: 7, hype: 2, calm: 5, alone: 9, inLove: 1, outOfLove: 2 }
   },
@@ -1597,7 +1597,7 @@ export const songs: Song[] = [
     album: "ODDINARY",
     year: 2022,
     intro: "TMI = Too Much Information. They want it all. Every embarrassing detail, every random thought.",
-    gist: "Tell me everything — the oversharing, the random details, the TMI. All of it is welcome.",
+    gist: "TMI — Too Much Information — means every embarrassing detail, every random midnight thought, every thing you'd filter out for anyone else. This is SKZ asking for the unfiltered version of you. The intimacy of wanting someone's overflow, not their highlight reel.",
     tags: ["fun", "love", "playful", "curious", "ODDINARY"],
     stats: { happy: 8, sad: 0, hype: 6, calm: 3, alone: 0, inLove: 7, outOfLove: 0 }
   },
@@ -1621,7 +1621,7 @@ export const songs: Song[] = [
     album: "MAXIDENT",
     year: 2022,
     intro: "March 25, 2018. The day Stray Kids debuted. A date tattooed on their hearts.",
-    gist: "0325 = 03/25 = their debut date. A song dedicated to the moment they became who they are — and everyone who witnessed it.",
+    gist: "March 25, 2018. The day matters because they know how close they came to not having it — their near-elimination from JYP was reversed. 0325 is not just a birthday; it's the number of the day that could have been the last. The song is gratitude and disbelief in equal measure.",
     tags: ["debut-anniversary", "sincere", "STAY", "meaningful", "MAXIDENT"],
     stats: { happy: 7, sad: 5, hype: 1, calm: 6, alone: 1, inLove: 6, outOfLove: 0 }
   },
@@ -1632,7 +1632,7 @@ export const songs: Song[] = [
     album: "SKZ2021 (Compilation)",
     year: 2021,
     intro: "Autumn arrived in your arms. A song so cozy it practically has a scent.",
-    gist: "Hoodie weather, warm drinks, comfortable silence with someone you love. Love that feels like a soft sweater.",
+    gist: "Hoodie season: the specific comfort of autumn, warmth, staying in, and the person who makes stillness feel like enough. If any SKZ song smells like cold air and coffee, it's this one. Love described entirely through sensory texture rather than declaration.",
     tags: ["cozy", "love", "autumn", "soft", "MAXIDENT"],
     stats: { happy: 7, sad: 2, hype: 1, calm: 9, alone: 1, inLove: 8, outOfLove: 0 }
   },
@@ -1643,7 +1643,7 @@ export const songs: Song[] = [
     album: "MAXIDENT",
     year: 2022,
     intro: "Getting lost in memory is sometimes the only place you want to be.",
-    gist: "A labyrinth built entirely of recollection. Wandering through memories — pleasant and painful in equal measure.",
+    gist: "잠깐의 고요 = a moment of quiet. The maze here is not MIROH's playground — it's built from memories you keep returning to without meaning to. The wandering is involuntary. You don't enter the maze; you find yourself already inside it.",
     tags: ["nostalgic", "dreamlike", "emotional", "MAXIDENT"],
     stats: { happy: 4, sad: 6, hype: 1, calm: 7, alone: 5, inLove: 4, outOfLove: 2 }
   },
@@ -1656,7 +1656,7 @@ export const songs: Song[] = [
     album: "★★★★★ (5-STAR)",
     year: 2023,
     intro: "Fun, fast, relentless. One of their most purely energetic tracks in years.",
-    gist: "Full send, full speed, no hesitation. FNF distills SKZ's kinetic energy into its purest form.",
+    gist: "FNF is what's left when you strip away every layer of concept and meaning and just run. One of their most purely kinetic tracks — no message, no metaphor, just the feeling of going full speed with people you trust. Sometimes that's the entire point.",
     tags: ["hype", "fast", "fun", "5-STAR"],
     stats: { happy: 8, sad: 0, hype: 10, calm: 0, alone: 0, inLove: 1, outOfLove: 0 }
   },
@@ -1667,7 +1667,7 @@ export const songs: Song[] = [
     album: "★★★★★ (5-STAR)",
     year: 2023,
     intro: "You + Beautiful = Youtiful. They invented a word for STAY. That's how much they mean.",
-    gist: "A word that doesn't exist in any dictionary was created just for the fans. Youtiful is you at your full, specific, irreplaceable beauty.",
+    gist: "They invented a word. In a discography full of creative language, making up 'youtiful' specifically for STAY — not beautiful, not any existing word, but a new one that applies only to them — might be the most personal thing in their catalog. You are youtiful. That word belongs to you.",
     tags: ["STAY", "fandom", "warm", "sincere", "5-STAR"],
     stats: { happy: 9, sad: 1, hype: 3, calm: 7, alone: 0, inLove: 8, outOfLove: 0 }
   },
@@ -1678,7 +1678,7 @@ export const songs: Song[] = [
     album: "★★★★★ (5-STAR)",
     year: 2023,
     intro: "Too much, too fast, too everything — and somehow still not enough.",
-    gist: "The excess of feeling — too much emotion, too much intensity, too much of everything. TMT owns the overflow.",
+    gist: "Too much — too much feeling, too much information, too much of the person you're consumed by. TMT is overwhelm as a feature rather than a flaw. The production deliberately drowns you in the same way the emotion does. You're not supposed to surface cleanly.",
     tags: ["intense", "emotional", "excess", "5-STAR"],
     stats: { happy: 5, sad: 4, hype: 7, calm: 1, alone: 3, inLove: 4, outOfLove: 2 }
   },
@@ -1689,7 +1689,7 @@ export const songs: Song[] = [
     album: "★★★★★ (5-STAR)",
     year: 2023,
     intro: "A hashtag made into a song. Direct, online-coded, deeply heartfelt.",
-    gist: "Love and STAY — both the word and the fandom name — merged into one declaration. Exactly as sincere as it sounds.",
+    gist: "The hashtag was already trending before they made the song. Turning a fandom rallying cry into an actual track could have been cringe — but the delivery is so unguarded that it lands exactly right. #LoveSTAY is not a marketing decision. It's Bang Chan being honest.",
     tags: ["STAY", "fandom", "sincere", "direct", "5-STAR"],
     stats: { happy: 8, sad: 2, hype: 2, calm: 7, alone: 0, inLove: 9, outOfLove: 0 }
   },
@@ -1700,7 +1700,7 @@ export const songs: Song[] = [
     album: "★★★★★ (5-STAR)",
     year: 2023,
     intro: "Empty on the inside in a way no one else can see. Carefully designed emptiness.",
-    gist: "The hollow feeling — performing wholeness while something inside echoes. Atmospheric and precise.",
+    gist: "Hollow is not depression — it's the specific absence of feeling while everything on the outside appears intact. Performing wholeness while something inside just echoes. The atmospheric production is designed to replicate that resonance: a sound that fills the room while proving nothing is home.",
     tags: ["empty", "atmospheric", "emotional", "5-STAR"],
     stats: { happy: 1, sad: 8, hype: 2, calm: 4, alone: 8, inLove: 1, outOfLove: 3 }
   },
@@ -1733,7 +1733,7 @@ export const songs: Song[] = [
     album: "★★★★★ (5-STAR)",
     year: 2023,
     intro: "The world is moving too fast. Call it. Take the timeout you've been denying yourself.",
-    gist: "Pause, breathe, reset. Time Out is the permission you didn't know you needed to stop and be still.",
+    gist: "The Mixtape series is where SKZ is most honest about their actual state. Time Out is the rare admission: we need to stop. Not forever, not as giving up — just right now, this moment, take the timeout. The world keeps going. They're allowed to call it.",
     tags: ["rest", "breathe", "self-care", "Mixtape OH"],
     stats: { happy: 4, sad: 4, hype: 1, calm: 9, alone: 4, inLove: 0, outOfLove: 1 }
   },
@@ -1744,7 +1744,7 @@ export const songs: Song[] = [
     album: "Mixtape: OH",
     year: 2022,
     intro: "Without a working compass, you navigate by feeling. This is that feeling.",
-    gist: "Lost with no reliable direction — the compass that should guide them is broken. But maybe that's freedom.",
+    gist: "A broken compass doesn't become worthless — it just means you navigate differently. This is the Mixtape series at its most honestly disoriented: the reliable internal instrument that should tell them where to go has failed, and they're figuring out what moving forward looks like without it.",
     tags: ["lost", "freedom", "navigating", "emotional", "Mixtape OH"],
     stats: { happy: 2, sad: 7, hype: 3, calm: 4, alone: 6, inLove: 0, outOfLove: 2 }
   },
@@ -1788,7 +1788,7 @@ export const songs: Song[] = [
     album: "NOEASY",
     year: 2021,
     intro: "The oldest question in self-awareness: who? Disorienting and urgent.",
-    gist: "Who are you? Who am I? The question mark at the end is doing a lot of work. Identity in freefall.",
+    gist: "WHO? is the I Am series' central question finally screamed instead of whispered. After three EPs of asking it quietly through concept and metaphor, this is the moment it becomes raw: who are you? who am I? The question mark at the end is the whole crisis.",
     tags: ["identity", "existential", "urgent", "NOEASY"],
     stats: { happy: 2, sad: 6, hype: 6, calm: 1, alone: 7, inLove: 0, outOfLove: 0 }
   },
@@ -1799,7 +1799,7 @@ export const songs: Song[] = [
     album: "KARMA",
     year: 2025,
     intro: "A beautiful disaster. A joyful wreck. The kind of mess that's somehow perfect.",
-    gist: "엉망 = mess/chaos. Being a mess not as failure but as freedom — chaotic, imperfect, alive.",
+    gist: "엉망 = complete chaos. In the KARMA era — after eight years of being told to be cleaner, tighter, more manageable — this is SKZ owning every piece of accumulated entropy and deciding: we made this mess intentionally, and we like it.",
     tags: ["chaotic", "fun", "self-acceptance", "5-STAR"],
     stats: { happy: 6, sad: 2, hype: 8, calm: 1, alone: 2, inLove: 0, outOfLove: 0 }
   },
@@ -1810,7 +1810,7 @@ export const songs: Song[] = [
     album: "I Am NOT",
     year: 2018,
     intro: "Three letters, infinite directions. Sometimes the question is the whole point.",
-    gist: "Asking WHY — to the world, to themselves, to everyone who put them in boxes. A demand for explanation.",
+    gist: "Three letters pointing in every direction at once: why these rules, why this standard, why does conformity get to call itself success. Debut-era SKZ didn't have the platform yet — but they had the question. And making a song out of it was already the answer.",
     tags: ["questioning", "debut-era", "defiant", "I Am NOT"],
     stats: { happy: 2, sad: 6, hype: 7, calm: 1, alone: 5, inLove: 0, outOfLove: 2 }
   },
@@ -1823,7 +1823,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2021,
     intro: "Two of SKZ's most effortlessly cool members on a late-night drive. The vibe is immaculate.",
-    gist: "Smooth, nocturnal, cinematic. Driving without a destination, just the road and a good co-pilot.",
+    gist: "Late night, city empty, no destination — Bang Chan and Lee Know in the SKZ equivalent of a 3am drive where the only rule is honesty. Two of the most effortlessly cool members making something that feels exactly like the city looks at that hour.",
     tags: ["Bang Chan", "Lee Know", "duet", "cool", "late-night"],
     stats: { happy: 6, sad: 2, hype: 3, calm: 7, alone: 1, inLove: 3, outOfLove: 0 }
   },
@@ -1834,7 +1834,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2021,
     intro: "Under the streetlight, everything looks more honest. A late-night rap confessional.",
-    gist: "The streetlight as the only witness to something raw and real. Changbin bringing Bang Chan into his most personal space.",
+    gist: "Changbin brought Bang Chan into this because the streetlight — the only illumination on a private night — is also a witness. Something about having someone else there makes the honesty possible. A confessional that needed exactly one other person present.",
     tags: ["Changbin", "Bang Chan", "rap", "night", "reflective"],
     stats: { happy: 3, sad: 5, hype: 5, calm: 5, alone: 5, inLove: 0, outOfLove: 2 }
   },
@@ -1845,7 +1845,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2021,
     intro: "The youngest member declaring he runs this. Delightful audacity with full senior backing.",
-    gist: "막내온탑 = maknae on top. I.N flipping the hierarchy — with Bang Chan and Changbin co-signing every word.",
+    gist: "막내온탑 = the youngest on top. I.N flipping the entire hierarchy with Bang Chan and Changbin's explicit blessing — the oldest rapper and the group leader rapping backup for the youngest vocalist. Both a joke and completely serious. The most self-aware moment in their discography.",
     tags: ["I.N", "funny", "confident", "subunit", "playful"],
     stats: { happy: 9, sad: 0, hype: 8, calm: 1, alone: 0, inLove: 0, outOfLove: 0 }
   },
@@ -2164,7 +2164,7 @@ export const songs: Song[] = [
     album: "HOP (SKZHOP HIPTAPE)",
     year: 2024,
     intro: "With Epik High's TABLO — two generations of storytellers in one track. Take your time with this one.",
-    gist: "U — for you, for us, for the one who matters. TABLO adds weight and history. An unusually quiet and sincere SKZ track.",
+    gist: "TABLO has written about fatherhood, about being Korean-American in an industry that had no category for him, about surviving public humiliation. SKZ brought him in for a reason. The 'U' here is addressed to someone real, and the weight of everything TABLO's survived makes the sincerity of this collaboration land like a hand on your shoulder.",
     tags: ["TABLO", "collab", "sincere", "multi-generational", "emotional"],
     stats: { happy: 4, sad: 6, hype: 1, calm: 7, alone: 3, inLove: 6, outOfLove: 1 }
   },
@@ -2175,7 +2175,7 @@ export const songs: Song[] = [
     album: "SKZ-RECORD",
     year: 2022,
     intro: "사람이니까 = because I'm human. HAN reminding himself — and you — that it's okay to be imperfect.",
-    gist: "Being human as an excuse, a reason, and a comfort. HAN examining what it means to be fallible and alive.",
+    gist: "사람이니까 = because I'm human. HAN's most disarming solo: the reason I made mistakes, the reason I was scared, the reason I couldn't do better — is that this is what humans do. Not an excuse. Not an apology. The most precise, quietly relieving description of what being alive actually is.",
     tags: ["HAN", "solo", "human", "vulnerable", "sincere"],
     stats: { happy: 3, sad: 6, hype: 1, calm: 5, alone: 6, inLove: 0, outOfLove: 0 }
   },
@@ -2197,7 +2197,7 @@ export const songs: Song[] = [
     album: "GO生 (GO LIVE)",
     year: 2020,
     intro: "끝나지 않을 이야기 = a story that will never end. This is the promise they make to STAY.",
-    gist: "The ongoing, permanent, never-finished story between Stray Kids and the people who love them.",
+    gist: "끝나지 않을 이야기 = a story that will never end. Written during COVID when live performances were impossible and the future was genuinely uncertain — and still they made a promise with no end date. The certainty in a song from an uncertain time is the whole point.",
     tags: ["STAY", "promise", "eternal", "emotional", "sincere"],
     stats: { happy: 7, sad: 4, hype: 1, calm: 7, alone: 1, inLove: 7, outOfLove: 0 }
   },
@@ -2289,7 +2289,7 @@ export const songs: Song[] = [
     album: "DO IT",
     year: 2025,
     intro: "Stop thinking, stop planning, stop hesitating. The title says everything: just do it.",
-    gist: "Action over analysis. Do It is the rejection of overthinking — the moment you stop waiting for the right moment and move.",
+    gist: "The entire SKZ philosophy compressed into two words. Every album, every creative choice, every bet on themselves — they did it before they knew it would work. Do It is both the autobiography and the instruction.",
     tags: ["action", "title-track", "motivational", "hype", "DO IT"],
     stats: { happy: 7, sad: 1, hype: 10, calm: 0, alone: 1, inLove: 0, outOfLove: 0 }
   },
@@ -2300,7 +2300,7 @@ export const songs: Song[] = [
     album: "DO IT",
     year: 2025,
     intro: "신선놀음 is a Korean idiom for living like an immortal — effortlessly, luxuriously, above it all. They've earned it.",
-    gist: "신선놀음 = the leisurely play of immortals. Existing at a level so elevated that even effort looks effortless. Divinely unbothered.",
+    gist: "신선놀음 is a Korean idiom for the casual play of an immortal — someone so far above the struggle that even their leisure looks miraculous. After eight years, SKZ has finally earned the right to be divinely unbothered. Divine is the sequel to all the work it took to get here.",
     tags: ["divine", "luxury", "title-track", "confident", "Korean-idiom", "DO IT"],
     stats: { happy: 8, sad: 0, hype: 8, calm: 4, alone: 0, inLove: 1, outOfLove: 0 }
   },
@@ -2427,7 +2427,7 @@ export const songs: Song[] = [
     album: "★★★★★ (5-STAR)",
     year: 2023,
     intro: "Above S-tier. A classification that doesn't exist because nothing was built to contain them.",
-    gist: "S-Class: the rating above all ratings. They set the benchmark; everyone else just competes below it.",
+    gist: "S-Class is the tier above all tiers — the classification that doesn't exist because nothing was built to contain them. This is SKZ setting the benchmark and watching everyone else figure out how to approach it. There's no chart. They're the chart.",
     tags: ["confident", "flex", "S-tier", "hype", "5-STAR"],
     stats: { happy: 7, sad: 0, hype: 10, calm: 0, alone: 0, inLove: 1, outOfLove: 0 }
   },
@@ -2438,7 +2438,7 @@ export const songs: Song[] = [
     album: "★★★★★ (5-STAR)",
     year: 2023,
     intro: "Turn the lights on. Turn everything up. Get lit — the instruction is the song.",
-    gist: "Permission to ignite. Get Lit is the moment the night shifts from waiting to living.",
+    gist: "Get Lit is the instruction and the event simultaneously. The moment the lights go up on a SKZ stage and the entire crowd becomes one thing. They're not performing the ignition — they are it.",
     tags: ["hype", "party", "energetic", "5-STAR"],
     stats: { happy: 9, sad: 0, hype: 9, calm: 0, alone: 0, inLove: 2, outOfLove: 0 }
   },
@@ -2462,7 +2462,7 @@ export const songs: Song[] = [
     album: "ROCK-STAR",
     year: 2023,
     intro: "Not a universe — a megaverse. The scope of ambition here is genuinely staggering.",
-    gist: "Beyond the universe. MEGAVERSE positions SKZ at the center of something bigger than any single world — a realm they've built.",
+    gist: "Not a universe — a megaverse. ROCK-STAR opens with this because it needs to establish scale before anything else happens. After stadium tours and million-selling albums, the category SKZ occupies requires a word that didn't exist before they needed it.",
     tags: ["epic", "grandiose", "title-adjacent", "ROCK-STAR"],
     stats: { happy: 7, sad: 1, hype: 10, calm: 1, alone: 1, inLove: 0, outOfLove: 0 }
   },
@@ -2473,7 +2473,7 @@ export const songs: Song[] = [
     album: "ROCK-STAR",
     year: 2023,
     intro: "The title track of ROCK-STAR. Rock energy meets SKZ's signature chaos — and it's infectious.",
-    gist: "LALALALA is a shout into the noise: syllables become a battle cry, repetition becomes a rallying point.",
+    gist: "LALALALA is what happens when the lyrical complexity runs out and pure sound takes over. Syllables become a rallying cry. The repetition isn't emptiness — it's the moment where language hits its limit and the crowd shouts anyway, together, because the collective noise is the whole point.",
     tags: ["title-track", "rock", "anthemic", "hype", "ROCK-STAR"],
     stats: { happy: 7, sad: 2, hype: 10, calm: 0, alone: 1, inLove: 0, outOfLove: 0 }
   },
@@ -2484,7 +2484,7 @@ export const songs: Song[] = [
     album: "ROCK-STAR",
     year: 2023,
     intro: "What you can't see can still hurt you — or define you. The blind spot as metaphor.",
-    gist: "The thing in your blind spot: what you miss about yourself, what others see that you can't.",
+    gist: "A blind spot is not ignorance — it's a structural gap in what you're able to perceive. ROCK-STAR examining what exists in the space where self-awareness runs out: what others see that you can't, what you've been missing about yourself because you were too close to see it.",
     tags: ["introspective", "self-awareness", "ROCK-STAR", "rock"],
     stats: { happy: 3, sad: 6, hype: 6, calm: 2, alone: 5, inLove: 1, outOfLove: 3 }
   },
@@ -2495,7 +2495,7 @@ export const songs: Song[] = [
     album: "ROCK-STAR",
     year: 2023,
     intro: "Complex + comfort. The uneasy feeling of being at home in something complicated.",
-    gist: "COMFLEX: comfort in complexity. Finding peace not in simplicity but in the full, messy, intricate version of yourself.",
+    gist: "Complex + comfort — the uneasy feeling of being at home in something complicated. SKZ have never been simple, never been tidy, never been easy to categorize. COMFLEX is the moment they stopped wishing they were and started calling it an address.",
     tags: ["wordplay", "self-acceptance", "ROCK-STAR", "rock", "complex"],
     stats: { happy: 5, sad: 4, hype: 5, calm: 4, alone: 4, inLove: 0, outOfLove: 1 }
   },
@@ -2506,7 +2506,7 @@ export const songs: Song[] = [
     album: "ROCK-STAR",
     year: 2023,
     intro: "A request for shelter in the middle of the storm. Vulnerable and direct.",
-    gist: "Cover me — protect me, keep me safe. A rare moment of asking for help, wrapped in rock guitars.",
+    gist: "Cover me — military language for 'I'm moving, keep me protected.' A rare moment of openly asking to be kept safe rather than performing invulnerability. The rock guitars make the vulnerability harder to dismiss. You can't be soft and loud at the same time, until you can.",
     tags: ["vulnerable", "rock", "protection", "love", "ROCK-STAR"],
     stats: { happy: 4, sad: 6, hype: 4, calm: 4, alone: 5, inLove: 5, outOfLove: 1 }
   },
@@ -2517,7 +2517,7 @@ export const songs: Song[] = [
     album: "ROCK-STAR",
     year: 2023,
     intro: "The word with the most weight in any relationship. Stay or leave — and the moment of choosing.",
-    gist: "Leave — said or unsaid, the word that changes everything. A rock-leaning track about the decision neither party wants to make.",
+    gist: "The word with the most weight in any relationship — one syllable that changes the shape of everything that came before it. ROCK-STAR's most emotionally precise track. It's not angry. It's the specific heaviness of two people who know what has to happen and haven't said it yet.",
     tags: ["breakup", "heavy", "rock", "decision", "ROCK-STAR"],
     stats: { happy: 1, sad: 9, hype: 4, calm: 2, alone: 7, inLove: 2, outOfLove: 7 }
   },
@@ -2528,7 +2528,7 @@ export const songs: Song[] = [
     album: "ROCK-STAR",
     year: 2023,
     intro: "With anime legend LiSA — two forces that don't belong in the same room absolutely belonging in the same room.",
-    gist: "A path carved socially, publicly, through every stage and screen. LiSA adds anime-era gravitas to SKZ's stadium rock.",
+    gist: "LiSA has soundtracked some of the most culturally significant anime moments of the 2010s. SKZ put her on a track about paths made publicly, in front of millions, knowing the whole world is watching. Two artists who built their audiences the hard way, together in a room that sounds like a stadium.",
     tags: ["collab", "LiSA", "rock", "powerful", "ROCK-STAR"],
     stats: { happy: 6, sad: 3, hype: 9, calm: 1, alone: 2, inLove: 0, outOfLove: 0 }
   },
@@ -2552,7 +2552,7 @@ export const songs: Song[] = [
     album: "ATE",
     year: 2024,
     intro: "짬 (JJAM) is Korean for experience, seniority, clout. This is that clout, made audible.",
-    gist: "짬 = the earned credibility of time and experience. JJAM is SKZ claiming years of accumulated authority.",
+    gist: "짬 is Korean for the specific credibility that only comes from years of being in the game — seniority, experience, the quiet authority of someone who was here before you arrived. ATE-era SKZ looking back at how much they've accumulated and deciding it's time to name it.",
     tags: ["confidence", "clout", "ATE", "Korean-slang"],
     stats: { happy: 6, sad: 1, hype: 9, calm: 1, alone: 1, inLove: 0, outOfLove: 0 }
   },
@@ -2563,7 +2563,7 @@ export const songs: Song[] = [
     album: "ATE",
     year: 2024,
     intro: "The simplest songs are sometimes the most honest. I like it — full stop.",
-    gist: "Direct admission: I like it. No analysis, no overthinking, no complicated feelings. Just pure positive preference.",
+    gist: "After years of complex concepts and layered production, I Like It is SKZ saying: sometimes it really is just this simple. I like it. Full stop. No metaphor required. The simplicity is not laziness — it's earned permission to enjoy something without explaining it.",
     tags: ["simple", "fun", "honest", "ATE", "carefree"],
     stats: { happy: 9, sad: 0, hype: 6, calm: 4, alone: 0, inLove: 4, outOfLove: 0 }
   },
@@ -2574,7 +2574,7 @@ export const songs: Song[] = [
     album: "ATE",
     year: 2024,
     intro: "A song called Stray Kids by Stray Kids — the ultimate self-titled moment. This is them, distilled.",
-    gist: "What does it mean to be Stray Kids? This song is the answer: everything, all at once, completely theirs.",
+    gist: "A self-titled song is the ultimate statement of identity. After years of naming albums and tracks after everything except themselves, Stray Kids made a song called Stray Kids. It's their answer to the question the whole discography has been building toward: what does it mean to be us?",
     tags: ["self-titled", "identity", "ATE", "manifesto", "sincere"],
     stats: { happy: 7, sad: 3, hype: 6, calm: 4, alone: 1, inLove: 3, outOfLove: 0 }
   },

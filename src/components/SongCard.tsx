@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { type Song, EMOTION_COLORS, EMOTION_LABELS } from '../data/songs';
+import AlbumArt from './AlbumArt';
 
 interface Props {
   song: Song;
@@ -36,7 +37,8 @@ export default function SongCard({ song, onClick }: Props) {
         style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)`, opacity: hovered ? 1 : 0 }}
       />
 
-      <div className="flex items-start justify-between gap-3 mb-3">
+      <div className="flex items-start gap-3 mb-3">
+        <AlbumArt album={song.album} size={52} accentColor={color} />
         <div className="flex-1 min-w-0">
           <h3 className="font-bold text-base text-white truncate leading-snug">{song.title}</h3>
           <p className="text-xs mt-0.5 truncate" style={{ color: '#6b7280' }}>{song.artist}</p>

@@ -1,6 +1,7 @@
-import { ArrowLeft, Music, BookOpen, Lightbulb, Tag } from 'lucide-react';
+import { ArrowLeft, BookOpen, Lightbulb, Tag } from 'lucide-react';
 import { type Song, EMOTION_COLORS, EMOTION_LABELS } from '../data/songs';
 import VibeRadar from './VibeRadar';
+import AlbumArt from './AlbumArt';
 
 interface Props {
   song: Song;
@@ -40,10 +41,7 @@ export default function SongDetail({ song, onBack }: Props) {
         {/* Title block */}
         <div className="mb-8">
           <div className="flex items-start gap-4">
-            <div className="shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center text-2xl"
-              style={{ background: color + '22', border: `1px solid ${color}44` }}>
-              <Music size={28} style={{ color }} />
-            </div>
+            <AlbumArt album={song.album} size={80} accentColor={color} />
             <div className="flex-1 min-w-0">
               <h1 className="text-3xl font-black text-white leading-tight mb-1">{song.title}</h1>
               <p className="font-semibold" style={{ color }}>{song.artist}</p>
