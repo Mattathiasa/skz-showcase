@@ -17,28 +17,94 @@ interface LrcLibResult {
 const cache = new Map<string, LyricsData | null>();
 const pending = new Map<string, Promise<LyricsData | null>>();
 
-const HANGUL = /[\uAC00-\uD7A3]/;
-const JAPANESE = /[\u3040-\u30FF\u4E00-\u9FFF]/;
-const ONLY_LATIN = /^[a-zA-Z0-9\s\p{P}\p{S}!?.,'"()[\]{}\-:;@#$%^&*+=/<>\\|_~`\n]+$/u;
+// Revised Romanization of Korean tables
+const INITIALS = ['g','kk','n','d','tt','r','m','b','pp','s','ss','','j','jj','ch','k','t','p','h'];
+const MEDIALS = ['a','ae','ya','yae','eo','e','yeo','ye','o','wa','wae','oe','yo','u','wo','we','wi','yu','eu','ui','i'];
+const FINALS = ['','g','kk','gs','n','nj','nh','d','l','lg','lm','lb','ls','lt','lp','lh','m','b','bs','s','ss','ng','j','ch','k','t','p','h'];
+
+const HANGUL_START = 0xAC00;
+const HANGUL_END = 0xD7A3;
+
+function romanizeSyllable(code: number): string {
+  const offset = code - HANGUL_START;
+  const finalIdx = offset % 28;
+  const medialIdx = Math.floor(offset / 28) % 21;
+  const initialIdx = Math.floor(offset / 28 / 21);
+  return INITIALS[initialIdx] + MEDIALS[medialIdx] + FINALS[finalIdx];
+}
+
+function romanizeLine(line: string): string {
+  let result = '';
+  for (const ch of line) {
+    const code = ch.codePointAt(0)!;
+    if (code >= HANGUL_START && code <= HANGUL_END) {
+      result += romanizeSyllable(code);
+    } else {
+      result += ch;
+    }
+  }
+  return result;
+}
+
+function romanizeLines(lines: string[]): string[] {
+  return lines.map(romanizeLine);
+}
+
+async function translateBatch(lines: string[]): Promise<string[]> {
+  if (!lines.length) return [];
+
+  const results: string[] = new Array(lines.length).fill('');
+  const chunks: { indices: number[]; text: string }[] = [];
+
+  let currentIndices: number[] = [];
+  let currentParts: string[] = [];
+  let currentLen = 0;
+  const SEP = ' \n ';
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line.trim()) {
+      results[i] = '';
+      continue;
+    }
+    if (currentLen + line.length + SEP.length > 400 && currentParts.length > 0) {
+      chunks.push({ indices: currentIndices, text: currentParts.join(SEP) });
+      currentIndices = [];
+      currentParts = [];
+      currentLen = 0;
+    }
+    currentIndices.push(i);
+    currentParts.push(line);
+    currentLen += line.length + SEP.length;
+  }
+  if (currentParts.length > 0) {
+    chunks.push({ indices: currentIndices, text: currentParts.join(SEP) });
+  }
+
+  await Promise.all(chunks.map(async ({ indices, text }) => {
+    try {
+      const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=ko|en`;
+      const res = await fetch(url);
+      if (!res.ok) return;
+      const data = await res.json();
+      const translated: string = data?.responseData?.translatedText ?? '';
+      const parts = translated.split(SEP.trim()).map((s: string) => s.trim());
+      indices.forEach((originalIdx, partIdx) => {
+        results[originalIdx] = parts[partIdx] ?? '';
+      });
+    } catch {
+      // leave as empty
+    }
+  }));
+
+  return results;
+}
 
 function extractLines(result: LrcLibResult): string[] {
   const src = result.syncedLyrics || result.plainLyrics || '';
   return src
     .split('\n')
-    .map(line => line.replace(/^\[\d{2}:\d{2}[.:]\d{2,3}\]/, '').trim())
-    .filter(Boolean);
-}
-
-function detectLang(lines: string[]): 'original' | 'romanized' | 'english' {
-  const sample = lines.slice(0, 10).join(' ');
-  if (HANGUL.test(sample) || JAPANESE.test(sample)) return 'original';
-  if (ONLY_LATIN.test(sample)) {
-    // Heuristic: romanized lines often have syllable-style spacing (e.g. "na-reul")
-    // English tends to have longer common words
-    const hasHyphens = (sample.match(/-/g) || []).length > 2;
-    return hasHyphens ? 'romanized' : 'english';
-  }
-  return 'original';
+    .map(line => line.replace(/^\[\d{2}:\d{2}[.:]\d{2,3}\]/, '').trim());
 }
 
 async function fetchLyrics(title: string, artist: string): Promise<LyricsData | null> {
@@ -50,31 +116,29 @@ async function fetchLyrics(title: string, artist: string): Promise<LyricsData | 
     const results: LrcLibResult[] = await res.json();
     if (!results.length) return null;
 
-    const buckets: Record<'original' | 'romanized' | 'english', string[]> = {
-      original: [],
-      romanized: [],
-      english: [],
-    };
+    // Pick the best result (prefer synced, longest)
+    const scored = results.slice(0, 8).map(r => ({
+      r,
+      lines: extractLines(r),
+    })).filter(x => x.lines.some(l => l.trim()));
 
-    for (const r of results.slice(0, 8)) {
-      const lines = extractLines(r);
-      if (!lines.length) continue;
-      const lang = detectLang(lines);
-      if (!buckets[lang].length) buckets[lang] = lines;
-    }
+    if (!scored.length) return null;
 
-    // If we only got one version, put it in original
-    if (!buckets.original.length && (buckets.romanized.length || buckets.english.length)) {
-      buckets.original = buckets.romanized.length ? buckets.romanized : buckets.english;
-      if (buckets.original === buckets.romanized) buckets.romanized = [];
-      else buckets.english = [];
-    }
+    scored.sort((a, b) => {
+      const aSynced = a.r.syncedLyrics ? 1 : 0;
+      const bSynced = b.r.syncedLyrics ? 1 : 0;
+      if (bSynced !== aSynced) return bSynced - aSynced;
+      return b.lines.length - a.lines.length;
+    });
 
-    if (!buckets.original.length && !buckets.romanized.length && !buckets.english.length) {
-      return null;
-    }
+    const original = scored[0].lines;
 
-    return buckets;
+    const [romanized, english] = await Promise.all([
+      Promise.resolve(romanizeLines(original)),
+      translateBatch(original),
+    ]);
+
+    return { original, romanized, english };
   } catch {
     return null;
   }

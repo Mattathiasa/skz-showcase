@@ -1,27 +1,30 @@
 import { useState, useMemo } from 'react';
 import { Search, Music, Shuffle, SlidersHorizontal, X } from 'lucide-react';
-import { songs, type Song, EMOTION_COLORS, EMOTION_LABELS } from './data/songs';
+import { songs, type Song, EMOTION_COLORS, EMOTION_LABELS, EMOTIONAL_AXES, SUBCATEGORY_LABELS, SUBCATEGORY_COLORS } from './data/songs';
 import SongCard from './components/SongCard';
 import SongDetail from './components/SongDetail';
 
 const SORT_OPTIONS = [
   { value: 'title', label: 'A–Z' },
   { value: 'year', label: 'Year' },
-  { value: 'hype', label: 'Hype' },
+  { value: 'energetic', label: 'Energetic' },
   { value: 'sad', label: 'Sad' },
   { value: 'happy', label: 'Happy' },
   { value: 'calm', label: 'Calm' },
 ];
 
 const ALL_TAGS = Array.from(new Set(songs.flatMap(s => s.tags))).sort();
+const ALL_ARTISTS = Array.from(new Set(songs.map(s => s.artist))).sort();
 
 export default function App() {
   const [selected, setSelected] = useState<Song | null>(null);
   const [query, setQuery] = useState('');
   const [sortBy, setSortBy] = useState('title');
   const [filterTag, setFilterTag] = useState('');
+  const [filterArtist, setFilterArtist] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [vibeFilter, setVibeFilter] = useState<string>('');
+  const [filterSubcat, setFilterSubcat] = useState<string>('');
 
   const filtered = useMemo(() => {
     let list = [...songs];
@@ -36,10 +39,12 @@ export default function App() {
       );
     }
 
+    if (filterArtist) list = list.filter(s => s.artist === filterArtist);
     if (filterTag) list = list.filter(s => s.tags.includes(filterTag));
+    if (filterSubcat) list = list.filter(s => s.subcategories?.includes(filterSubcat));
 
     if (vibeFilter) {
-      list = list.filter(s => s.stats[vibeFilter as keyof typeof s.stats] >= 7);
+      list = list.filter(s => s.stats[vibeFilter as keyof typeof s.stats] >= 70);
     }
 
     list.sort((a, b) => {
@@ -50,7 +55,7 @@ export default function App() {
     });
 
     return list;
-  }, [query, sortBy, filterTag, vibeFilter]);
+  }, [query, sortBy, filterTag, filterArtist, vibeFilter]);
 
   const shuffle = () => {
     const r = songs[Math.floor(Math.random() * songs.length)];
@@ -70,8 +75,8 @@ export default function App() {
             <Music size={18} className="text-white" />
           </div>
           <div>
-            <h1 className="font-black text-white text-lg leading-none">SKZ Showcase</h1>
-            <p className="text-xs" style={{ color: '#4b5563' }}>Stray Kids Catalog</p>
+            <h1 className="font-black text-white text-lg leading-none">Vibe Showcase</h1>
+            <p className="text-xs" style={{ color: '#4b5563' }}>{songs.length} songs · 6 artists</p>
           </div>
         </div>
         <div className="flex-1" />
@@ -95,7 +100,7 @@ export default function App() {
             Find your vibe
           </h2>
           <p className="text-base" style={{ color: '#6b7280' }}>
-            Every SKZ song analyzed — with radar charts, emotional breakdowns, and a read-before-listening intro.
+            {songs.length} songs across 6 artists — each scored on 11 emotional &amp; production axes, with vibe radar and lyrics.
           </p>
         </div>
 
@@ -134,6 +139,22 @@ export default function App() {
         {/* Filter panel */}
         {showFilters && (
           <div className="rounded-2xl p-5 mb-6" style={{ background: '#141420', border: '1px solid #ffffff0d' }}>
+            <div className="mb-4">
+              <label className="text-xs font-semibold uppercase tracking-widest mb-2 block" style={{ color: '#6b7280' }}>Artist</label>
+              <div className="flex flex-wrap gap-2">
+                {ALL_ARTISTS.map(artist => (
+                  <button key={artist} onClick={() => setFilterArtist(filterArtist === artist ? '' : artist)}
+                    className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                    style={{
+                      background: filterArtist === artist ? '#7c3aed30' : '#ffffff08',
+                      border: `1px solid ${filterArtist === artist ? '#7c3aed60' : 'transparent'}`,
+                      color: filterArtist === artist ? '#a78bfa' : '#6b7280',
+                    }}>
+                    {artist}
+                  </button>
+                ))}
+              </div>
+            </div>
             <div className="flex flex-wrap gap-6 mb-4">
               <div>
                 <label className="text-xs font-semibold uppercase tracking-widest mb-2 block" style={{ color: '#6b7280' }}>Sort by</label>
@@ -154,7 +175,7 @@ export default function App() {
               <div>
                 <label className="text-xs font-semibold uppercase tracking-widest mb-2 block" style={{ color: '#6b7280' }}>Show songs with high...</label>
                 <div className="flex flex-wrap gap-2">
-                  {Object.entries(EMOTION_LABELS).map(([key, label]) => (
+                  {EMOTIONAL_AXES.map(key => (
                     <button key={key} onClick={() => setVibeFilter(vibeFilter === key ? '' : key)}
                       className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
                       style={{
@@ -162,10 +183,26 @@ export default function App() {
                         border: `1px solid ${vibeFilter === key ? EMOTION_COLORS[key] + '60' : 'transparent'}`,
                         color: vibeFilter === key ? EMOTION_COLORS[key] : '#6b7280',
                       }}>
-                      {label}
+                      {EMOTION_LABELS[key]}
                     </button>
                   ))}
                 </div>
+              </div>
+            </div>
+            <div className="mb-4">
+              <label className="text-xs font-semibold uppercase tracking-widest mb-2 block" style={{ color: '#6b7280' }}>Mood & Theme</label>
+              <div className="flex flex-wrap gap-2">
+                {Object.entries(SUBCATEGORY_LABELS).map(([key, label]) => (
+                  <button key={key} onClick={() => setFilterSubcat(filterSubcat === key ? '' : key)}
+                    className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                    style={{
+                      background: filterSubcat === key ? SUBCATEGORY_COLORS[key] + '30' : '#ffffff08',
+                      border: `1px solid ${filterSubcat === key ? SUBCATEGORY_COLORS[key] + '60' : 'transparent'}`,
+                      color: filterSubcat === key ? SUBCATEGORY_COLORS[key] : '#6b7280',
+                    }}>
+                    {label}
+                  </button>
+                ))}
               </div>
             </div>
             <div>

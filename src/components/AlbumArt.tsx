@@ -3,13 +3,14 @@ import { useAlbumArt } from '../hooks/useAlbumArt';
 
 interface Props {
   album: string;
+  artist: string;
   size: number;
   accentColor?: string;
   className?: string;
 }
 
-export default function AlbumArt({ album, size, accentColor = '#7c3aed', className = '' }: Props) {
-  const { artUrl, loading } = useAlbumArt(album);
+export default function AlbumArt({ album, artist, size, accentColor = '#7c3aed', className = '' }: Props) {
+  const { artUrl, loading } = useAlbumArt(album, artist);
 
   const baseStyle: React.CSSProperties = {
     width: size,

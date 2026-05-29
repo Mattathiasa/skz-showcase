@@ -1,21 +1,17 @@
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, Tooltip } from 'recharts';
-import { EMOTION_COLORS, EMOTION_LABELS } from '../data/songs';
+import { EMOTION_COLORS, EMOTION_LABELS, EMOTIONAL_AXES } from '../data/songs';
 
-interface Stats {
-  happy: number; sad: number; hype: number;
-  calm: number; alone: number; inLove: number; outOfLove: number;
-}
-
-interface Props { stats: Stats; size?: number; }
+type EmotionalStats = Record<string, number>;
+interface Props { stats: EmotionalStats; size?: number; }
 
 export default function VibeRadar({ stats, size = 260 }: Props) {
-  const data = Object.entries(stats).map(([key, value]) => ({
-    subject: EMOTION_LABELS[key] || key,
-    value,
+  const data = EMOTIONAL_AXES.map(key => ({
+    subject: EMOTION_LABELS[key],
+    value: stats[key] ?? 0,
     key,
   }));
 
-  const dominantKey = Object.entries(stats).reduce((a, b) => b[1] > a[1] ? b : a)[0];
+  const dominantKey = EMOTIONAL_AXES.reduce((a, b) => (stats[b] ?? 0) > (stats[a] ?? 0) ? b : a);
   const dominantColor = EMOTION_COLORS[dominantKey] || '#a78bfa';
 
   return (
@@ -40,7 +36,7 @@ export default function VibeRadar({ stats, size = 260 }: Props) {
           formatter={(v, _, entry) => {
             const k = (entry?.payload as { key?: string })?.key;
             return [
-              <span style={{ color: k ? EMOTION_COLORS[k] : '#fff' }}>{String(v)}/10</span>,
+              <span style={{ color: k ? EMOTION_COLORS[k] : '#fff' }}>{v}%</span>,
               EMOTION_LABELS[k || ''] || k,
             ];
           }}
