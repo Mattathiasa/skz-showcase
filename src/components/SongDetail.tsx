@@ -2,6 +2,7 @@ import { ArrowLeft, BookOpen, Lightbulb, Tag } from 'lucide-react';
 import { type Song, EMOTION_COLORS, EMOTION_LABELS } from '../data/songs';
 import VibeRadar from './VibeRadar';
 import AlbumArt from './AlbumArt';
+import LyricsPanel from './LyricsPanel';
 
 interface Props {
   song: Song;
@@ -92,6 +93,11 @@ export default function SongDetail({ song, onBack }: Props) {
             Vibe Radar
           </h2>
           <VibeRadar stats={song.stats} size={300} />
+        </div>
+
+        {/* Lyrics */}
+        <div className="mb-6">
+          <LyricsPanel title={song.title} artist={song.artist} accentColor={color} />
         </div>
 
         {/* Stat bars */}
