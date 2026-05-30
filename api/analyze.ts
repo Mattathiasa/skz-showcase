@@ -1,7 +1,7 @@
-import Anthropic from '@anthropic-ai/sdk';
+import Groq from 'groq-sdk';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-const client = new Anthropic();
+const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -44,13 +44,15 @@ Stats are integers 0-10. Rate each dimension honestly based on the song's actual
 - outOfLove: heartbreak, loss of love, moving on`;
 
   try {
-    const message = await client.messages.create({
-      model: 'claude-opus-4-7',
-      max_tokens: 1024,
+    const completion = await client.chat.completions.create({
+      model: 'llama-3.3-70b-versatile',
       messages: [{ role: 'user', content: prompt }],
+      max_tokens: 1024,
+      temperature: 0.7,
+      response_format: { type: 'json_object' },
     });
 
-    const text = message.content[0].type === 'text' ? message.content[0].text : '';
+    const text = completion.choices[0]?.message?.content ?? '';
     const parsed = JSON.parse(text);
 
     res.status(200).json(parsed);
