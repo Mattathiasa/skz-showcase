@@ -1,8 +1,10 @@
 import { useState, useMemo } from 'react';
-import { Search, Music, SlidersHorizontal, X, Sparkles } from 'lucide-react';
+import { Search, Music, SlidersHorizontal, X, Sparkles, Plus } from 'lucide-react';
 import { songs, type Song, EMOTION_COLORS, EMOTION_LABELS, EMOTIONAL_AXES, SUBCATEGORY_LABELS, SUBCATEGORY_COLORS } from './data/songs';
 import SongCard from './components/SongCard';
 import SongDetail from './components/SongDetail';
+import AddSongModal from './components/AddSongModal';
+import { useDynamicSongs } from './hooks/useDynamicSongs';
 
 const GOLD = '#d4a853';
 const GOLD_DIM = '#d4a85330';
@@ -17,6 +19,19 @@ const SORT_OPTIONS = [
   { value: 'calm', label: 'Calm' },
 ];
 
+const SITUATIONS = [
+  { key: 'heartbreak', label: '💔 Heartbreak', pred: (s: Song) => s.stats.sad >= 65 && s.stats.romantic <= 45 },
+  { key: 'in-love', label: '🫶 In Love', pred: (s: Song) => s.stats.romantic >= 70 },
+  { key: 'new-crush', label: '😊 New Crush', pred: (s: Song) => s.stats.romantic >= 50 && s.stats.happy >= 50 },
+  { key: 'situationship', label: '😶‍🌫️ Situationship', pred: (s: Song) => s.stats.romantic >= 35 && s.stats.lonely >= 40 },
+  { key: 'gym', label: '💪 Gym Mode', pred: (s: Song) => s.stats.energetic >= 75 },
+  { key: 'sad-hours', label: '🌧 Sad Hours', pred: (s: Song) => s.stats.sad >= 65 },
+  { key: 'good-vibes', label: '☀️ Good Vibes', pred: (s: Song) => s.stats.happy >= 70 },
+  { key: 'late-night', label: '🌙 Late Night', pred: (s: Song) => s.stats.calm >= 55 && s.stats.dark >= 35 },
+  { key: 'alone-time', label: '🧘 Alone Time', pred: (s: Song) => s.stats.lonely >= 60 },
+  { key: 'work-mode', label: '💻 Work Mode', pred: (s: Song) => s.stats.calm >= 60 && s.stats.energetic >= 30 },
+] as const;
+
 const ALL_TAGS = Array.from(new Set(songs.flatMap(s => s.tags))).sort();
 
 const MAIN_ARTISTS = ['Stray Kids', 'BTS', 'AJR', 'Lauv', 'Jon Bellion', 'Alec Benjamin'];
@@ -30,9 +45,14 @@ export default function App() {
   const [showFilters, setShowFilters] = useState(false);
   const [vibeFilter, setVibeFilter] = useState<string>('');
   const [filterSubcat, setFilterSubcat] = useState<string>('');
+  const [situation, setSituation] = useState('');
+  const [showAddModal, setShowAddModal] = useState(false);
+
+  const { dynamicSongs, addSong } = useDynamicSongs();
+  const allSongs = useMemo(() => [...dynamicSongs, ...songs], [dynamicSongs]);
 
   const filtered = useMemo(() => {
-    let list = [...songs];
+    let list = [...allSongs];
     if (query) {
       const q = query.toLowerCase();
       list = list.filter(s =>
@@ -46,6 +66,10 @@ export default function App() {
     if (filterTag) list = list.filter(s => s.tags.includes(filterTag));
     if (filterSubcat) list = list.filter(s => s.subcategories?.includes(filterSubcat));
     if (vibeFilter) list = list.filter(s => s.stats[vibeFilter as keyof typeof s.stats] >= 70);
+    if (situation) {
+      const sit = SITUATIONS.find(s => s.key === situation);
+      if (sit) list = list.filter(sit.pred);
+    }
     list.sort((a, b) => {
       if (sortBy === 'title') return a.title.localeCompare(b.title);
       if (sortBy === 'year') return b.year - a.year;
@@ -53,15 +77,15 @@ export default function App() {
       return b.stats[key] - a.stats[key];
     });
     return list;
-  }, [query, sortBy, filterTag, filterArtist, vibeFilter, filterSubcat]);
+  }, [query, sortBy, filterTag, filterArtist, vibeFilter, filterSubcat, situation, allSongs]);
 
   const shuffle = () => {
-    const r = songs[Math.floor(Math.random() * songs.length)];
+    const r = allSongs[Math.floor(Math.random() * allSongs.length)];
     setSelected(r);
   };
 
-  const hasActiveFilter = !!(query || filterArtist || filterTag || filterSubcat || vibeFilter);
-  const clearAll = () => { setQuery(''); setFilterArtist(''); setFilterTag(''); setFilterSubcat(''); setVibeFilter(''); };
+  const hasActiveFilter = !!(query || filterArtist || filterTag || filterSubcat || vibeFilter || situation);
+  const clearAll = () => { setQuery(''); setFilterArtist(''); setFilterTag(''); setFilterSubcat(''); setVibeFilter(''); setSituation(''); };
 
   if (selected) return <SongDetail song={selected} onBack={() => setSelected(null)} />;
 
@@ -96,7 +120,7 @@ export default function App() {
           </div>
           <div>
             <h1 className="font-black text-lg leading-none gold-shimmer">Vibe Showcase</h1>
-            <p className="text-xs mt-0.5" style={{ color: '#5a4f3a' }}>{songs.length} songs · 6 artists</p>
+            <p className="text-xs mt-0.5" style={{ color: '#5a4f3a' }}>{allSongs.length} songs · {dynamicSongs.length > 0 ? '6+' : '6'} artists</p>
           </div>
         </div>
 
@@ -107,6 +131,15 @@ export default function App() {
           style={{ background: '#d4a85312', color: '#d4a853', border: '1px solid #d4a85328' }}>
           {filtered.length} songs
         </span>
+
+        {/* Add song */}
+        <button onClick={() => setShowAddModal(true)}
+          className="flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all"
+          style={{ background: '#ffffff08', color: '#6b5f4a', border: '1px solid #ffffff10' }}
+          onMouseEnter={e => { e.currentTarget.style.background = '#d4a85315'; e.currentTarget.style.color = GOLD; e.currentTarget.style.borderColor = '#d4a85330'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = '#ffffff08'; e.currentTarget.style.color = '#6b5f4a'; e.currentTarget.style.borderColor = '#ffffff10'; }}>
+          <Plus size={14} /> Add Song
+        </button>
 
         {/* Surprise me */}
         <button onClick={shuffle}
@@ -121,7 +154,7 @@ export default function App() {
       <main className="max-w-7xl mx-auto px-6 py-10 relative z-10">
 
         {/* Hero */}
-        <div className="mb-12 text-center">
+        <div className="mb-10 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-5 text-xs font-semibold uppercase tracking-widest"
             style={{ background: '#d4a85312', color: '#d4a853', border: '1px solid #d4a85328' }}>
             <Sparkles size={11} /> Premium Music Discovery
@@ -152,6 +185,33 @@ export default function App() {
                 {a}
               </button>
             ))}
+          </div>
+
+          {/* Situation / mood filter */}
+          <div className="mt-5">
+            <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: '#3a3020' }}>
+              What's your mood right now?
+            </p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {SITUATIONS.map(sit => {
+                const active = situation === sit.key;
+                return (
+                  <button key={sit.key}
+                    onClick={() => setSituation(active ? '' : sit.key)}
+                    className="px-4 py-2 rounded-full text-xs font-semibold transition-all"
+                    style={{
+                      background: active ? '#d4a85322' : '#ffffff07',
+                      border: `1px solid ${active ? '#d4a85348' : '#ffffff12'}`,
+                      color: active ? GOLD : '#5a4f3a',
+                      boxShadow: active ? '0 0 16px #d4a85220' : 'none',
+                    }}
+                    onMouseEnter={e => { if (!active) { e.currentTarget.style.background = '#ffffff0e'; e.currentTarget.style.color = '#9a8f78'; } }}
+                    onMouseLeave={e => { if (!active) { e.currentTarget.style.background = '#ffffff07'; e.currentTarget.style.color = '#5a4f3a'; } }}>
+                    {sit.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
@@ -317,6 +377,7 @@ export default function App() {
           <div className="flex items-center gap-2 mb-4 flex-wrap">
             <span className="text-xs" style={{ color: '#5a4f3a' }}>Filtered:</span>
             {filterArtist && <Chip label={filterArtist} onRemove={() => setFilterArtist('')} />}
+            {situation && <Chip label={SITUATIONS.find(s => s.key === situation)?.label ?? situation} onRemove={() => setSituation('')} />}
             {filterSubcat && <Chip label={SUBCATEGORY_LABELS[filterSubcat] ?? filterSubcat} onRemove={() => setFilterSubcat('')} />}
             {vibeFilter && <Chip label={`High ${EMOTION_LABELS[vibeFilter]}`} onRemove={() => setVibeFilter('')} />}
             {filterTag && <Chip label={`#${filterTag}`} onRemove={() => setFilterTag('')} />}
@@ -354,6 +415,13 @@ export default function App() {
           </p>
         </div>
       </main>
+
+      {showAddModal && (
+        <AddSongModal
+          onClose={() => setShowAddModal(false)}
+          onAdd={song => { addSong(song); }}
+        />
+      )}
     </div>
   );
 }
