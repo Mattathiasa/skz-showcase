@@ -1,10 +1,13 @@
 import { useState, useMemo } from 'react';
-import { Search, Music, SlidersHorizontal, X, Sparkles, Plus } from 'lucide-react';
+import { Search, Music, SlidersHorizontal, X, Sparkles, Lightbulb, ShieldCheck } from 'lucide-react';
 import { songs, type Song, EMOTION_COLORS, EMOTION_LABELS, EMOTIONAL_AXES, SUBCATEGORY_LABELS, SUBCATEGORY_COLORS } from './data/songs';
 import SongCard from './components/SongCard';
 import SongDetail from './components/SongDetail';
-import AddSongModal from './components/AddSongModal';
-import { useDynamicSongs } from './hooks/useDynamicSongs';
+import SuggestSongModal from './components/SuggestSongModal';
+import AdminPanel from './components/AdminPanel';
+import AdminLoginModal from './components/AdminLoginModal';
+import { useFirebaseSongs } from './hooks/useFirebaseSongs';
+import { useAuth } from './hooks/useAuth';
 
 const GOLD = '#d4a853';
 const GOLD_DIM = '#d4a85330';
@@ -33,7 +36,6 @@ const SITUATIONS = [
 ] as const;
 
 const ALL_TAGS = Array.from(new Set(songs.flatMap(s => s.tags))).sort();
-
 const MAIN_ARTISTS = ['Stray Kids', 'BTS', 'AJR', 'Lauv', 'Jon Bellion', 'Alec Benjamin'];
 
 export default function App() {
@@ -43,13 +45,17 @@ export default function App() {
   const [filterTag, setFilterTag] = useState('');
   const [filterArtist, setFilterArtist] = useState('');
   const [showFilters, setShowFilters] = useState(false);
-  const [vibeFilter, setVibeFilter] = useState<string>('');
-  const [filterSubcat, setFilterSubcat] = useState<string>('');
+  const [vibeFilter, setVibeFilter] = useState('');
+  const [filterSubcat, setFilterSubcat] = useState('');
   const [situation, setSituation] = useState('');
-  const [showAddModal, setShowAddModal] = useState(false);
+  const [showSuggest, setShowSuggest] = useState(false);
+  const [showAdmin, setShowAdmin] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
 
-  const { dynamicSongs, addSong } = useDynamicSongs();
-  const allSongs = useMemo(() => [...dynamicSongs, ...songs], [dynamicSongs]);
+  const { firebaseSongs } = useFirebaseSongs();
+  const { isAdmin, user, logout } = useAuth();
+
+  const allSongs = useMemo(() => [...firebaseSongs, ...songs], [firebaseSongs]);
 
   const filtered = useMemo(() => {
     let list = [...allSongs];
@@ -79,10 +85,7 @@ export default function App() {
     return list;
   }, [query, sortBy, filterTag, filterArtist, vibeFilter, filterSubcat, situation, allSongs]);
 
-  const shuffle = () => {
-    const r = allSongs[Math.floor(Math.random() * allSongs.length)];
-    setSelected(r);
-  };
+  const shuffle = () => setSelected(allSongs[Math.floor(Math.random() * allSongs.length)]);
 
   const hasActiveFilter = !!(query || filterArtist || filterTag || filterSubcat || vibeFilter || situation);
   const clearAll = () => { setQuery(''); setFilterArtist(''); setFilterTag(''); setFilterSubcat(''); setVibeFilter(''); setSituation(''); };
@@ -92,56 +95,57 @@ export default function App() {
   return (
     <div className="min-h-screen" style={{ background: '#07070b' }}>
 
-      {/* Top ambient glow */}
-      <div style={{
-        position: 'fixed', top: 0, left: '50%', transform: 'translateX(-50%)',
-        width: 600, height: 300, borderRadius: '50%', pointerEvents: 'none', zIndex: 0,
-        background: 'radial-gradient(ellipse, #d4a85312 0%, transparent 70%)',
-      }} />
+      <div style={{ position: 'fixed', top: 0, left: '50%', transform: 'translateX(-50%)', width: 600, height: 300, borderRadius: '50%', pointerEvents: 'none', zIndex: 0, background: 'radial-gradient(ellipse, #d4a85312 0%, transparent 70%)' }} />
 
       {/* Nav */}
       <header className="sticky top-0 z-20 px-6 py-4 flex items-center gap-4"
-        style={{
-          background: 'rgba(7,7,11,0.92)',
-          borderBottom: '1px solid #d4a85320',
-          backdropFilter: 'blur(20px)',
-          boxShadow: '0 1px 0 #d4a85310',
-        }}>
+        style={{ background: 'rgba(7,7,11,0.92)', borderBottom: '1px solid #d4a85320', backdropFilter: 'blur(20px)', boxShadow: '0 1px 0 #d4a85310' }}>
 
-        {/* Logo */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center relative"
-            style={{
-              background: 'linear-gradient(135deg, #1a1408, #2e2010)',
-              border: '1px solid #d4a85340',
-              boxShadow: '0 0 16px #d4a85320',
-            }}>
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+            style={{ background: 'linear-gradient(135deg, #1a1408, #2e2010)', border: '1px solid #d4a85340', boxShadow: '0 0 16px #d4a85320' }}>
             <Music size={18} style={{ color: GOLD }} />
           </div>
           <div>
             <h1 className="font-black text-lg leading-none gold-shimmer">Vibe Showcase</h1>
-            <p className="text-xs mt-0.5" style={{ color: '#5a4f3a' }}>{allSongs.length} songs · {dynamicSongs.length > 0 ? '6+' : '6'} artists</p>
+            <p className="text-xs mt-0.5" style={{ color: '#5a4f3a' }}>{allSongs.length} songs</p>
           </div>
         </div>
 
         <div className="flex-1" />
 
-        {/* Song count badge */}
-        <span className="text-xs font-semibold px-3 py-1.5 rounded-full"
-          style={{ background: '#d4a85312', color: '#d4a853', border: '1px solid #d4a85328' }}>
+        <span className="text-xs font-semibold px-3 py-1.5 rounded-full" style={{ background: '#d4a85312', color: '#d4a853', border: '1px solid #d4a85328' }}>
           {filtered.length} songs
         </span>
 
-        {/* Add song */}
-        <button onClick={() => setShowAddModal(true)}
+        {/* Suggest button — always visible */}
+        <button onClick={() => setShowSuggest(true)}
           className="flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all"
           style={{ background: '#ffffff08', color: '#6b5f4a', border: '1px solid #ffffff10' }}
           onMouseEnter={e => { e.currentTarget.style.background = '#d4a85315'; e.currentTarget.style.color = GOLD; e.currentTarget.style.borderColor = '#d4a85330'; }}
           onMouseLeave={e => { e.currentTarget.style.background = '#ffffff08'; e.currentTarget.style.color = '#6b5f4a'; e.currentTarget.style.borderColor = '#ffffff10'; }}>
-          <Plus size={14} /> Add Song
+          <Lightbulb size={14} /> Suggest a Song
         </button>
 
-        {/* Surprise me */}
+        {/* Admin button */}
+        {isAdmin ? (
+          <button onClick={() => setShowAdmin(true)}
+            className="flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all"
+            style={{ background: '#d4a85315', color: GOLD, border: '1px solid #d4a85330' }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#d4a85325'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = '#d4a85315'; }}>
+            <ShieldCheck size={14} /> Admin
+          </button>
+        ) : !user ? (
+          <button onClick={() => setShowLogin(true)}
+            className="text-xs px-3 py-2 rounded-xl transition-all"
+            style={{ background: 'transparent', color: '#3a3020', border: '1px solid #ffffff08' }}
+            onMouseEnter={e => { e.currentTarget.style.color = '#5a4f3a'; }}
+            onMouseLeave={e => { e.currentTarget.style.color = '#3a3020'; }}>
+            Admin
+          </button>
+        ) : null}
+
         <button onClick={shuffle}
           className="flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all"
           style={{ background: '#d4a85315', color: '#d4a853', border: '1px solid #d4a85330' }}
@@ -187,7 +191,7 @@ export default function App() {
             ))}
           </div>
 
-          {/* Situation / mood filter */}
+          {/* Situation filter */}
           <div className="mt-5">
             <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: '#3a3020' }}>
               What's your mood right now?
@@ -215,48 +219,26 @@ export default function App() {
           </div>
         </div>
 
-        {/* Search bar */}
+        {/* Search */}
         <div className="flex gap-3 mb-4">
           <div className="flex-1 relative">
             <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: '#5a4f3a' }} />
-            <input
-              value={query}
-              onChange={e => setQuery(e.target.value)}
+            <input value={query} onChange={e => setQuery(e.target.value)}
               placeholder="Search songs, artists, albums, tags..."
-              className="w-full pl-11 pr-4 py-3.5 rounded-xl text-sm outline-none transition-all"
-              style={{
-                background: '#0e0e16',
-                border: '1px solid #d4a85320',
-                color: '#f0ead8',
-              }}
+              className="w-full pl-11 pr-4 py-3.5 rounded-xl text-sm outline-none"
+              style={{ background: '#0e0e16', border: '1px solid #d4a85320', color: '#f0ead8' }}
               onFocus={e => { e.target.style.borderColor = GOLD_BORDER; e.target.style.boxShadow = '0 0 0 3px #d4a85312'; }}
-              onBlur={e => { e.target.style.borderColor = '#d4a85320'; e.target.style.boxShadow = 'none'; }}
-            />
-            {query && (
-              <button onClick={() => setQuery('')} className="absolute right-4 top-1/2 -translate-y-1/2"
-                style={{ color: '#5a4f3a' }}>
-                <X size={14} />
-              </button>
-            )}
+              onBlur={e => { e.target.style.borderColor = '#d4a85320'; e.target.style.boxShadow = 'none'; }} />
+            {query && <button onClick={() => setQuery('')} className="absolute right-4 top-1/2 -translate-y-1/2" style={{ color: '#5a4f3a' }}><X size={14} /></button>}
           </div>
-          <button
-            onClick={() => setShowFilters(!showFilters)}
+          <button onClick={() => setShowFilters(!showFilters)}
             className="px-5 py-3 rounded-xl text-sm flex items-center gap-2 font-semibold transition-all"
-            style={{
-              background: showFilters ? '#d4a85320' : '#0e0e16',
-              border: `1px solid ${showFilters ? GOLD_BORDER : '#d4a85320'}`,
-              color: showFilters ? GOLD : '#5a4f3a',
-              boxShadow: showFilters ? '0 0 16px #d4a85220' : 'none',
-            }}>
-            <SlidersHorizontal size={14} />
-            Filters
-            {hasActiveFilter && (
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: GOLD }} />
-            )}
+            style={{ background: showFilters ? '#d4a85320' : '#0e0e16', border: `1px solid ${showFilters ? GOLD_BORDER : '#d4a85320'}`, color: showFilters ? GOLD : '#5a4f3a', boxShadow: showFilters ? '0 0 16px #d4a85220' : 'none' }}>
+            <SlidersHorizontal size={14} /> Filters
+            {hasActiveFilter && <span className="w-1.5 h-1.5 rounded-full" style={{ background: GOLD }} />}
           </button>
           {hasActiveFilter && (
-            <button onClick={clearAll}
-              className="px-4 py-3 rounded-xl text-sm font-medium transition-all"
+            <button onClick={clearAll} className="px-4 py-3 rounded-xl text-sm font-medium transition-all"
               style={{ background: '#ffffff08', color: '#5a4f3a', border: '1px solid #ffffff0a' }}
               onMouseEnter={e => { e.currentTarget.style.color = '#f0ead8'; }}
               onMouseLeave={e => { e.currentTarget.style.color = '#5a4f3a'; }}>
@@ -268,24 +250,15 @@ export default function App() {
         {/* Filter panel */}
         {showFilters && (
           <div className="rounded-2xl p-6 mb-6"
-            style={{
-              background: 'linear-gradient(135deg, #0e0e16, #0c0c13)',
-              border: '1px solid #d4a85322',
-              boxShadow: '0 8px 40px #00000060, inset 0 1px 0 #d4a85315',
-            }}>
+            style={{ background: 'linear-gradient(135deg, #0e0e16, #0c0c13)', border: '1px solid #d4a85322', boxShadow: '0 8px 40px #00000060, inset 0 1px 0 #d4a85315' }}>
 
-            {/* Artist */}
             <div className="mb-5">
               <label className="text-xs font-bold uppercase tracking-widest mb-3 block" style={{ color: GOLD }}>Artist</label>
               <div className="flex flex-wrap gap-2">
                 {MAIN_ARTISTS.map(artist => (
                   <button key={artist} onClick={() => setFilterArtist(filterArtist === artist ? '' : artist)}
                     className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
-                    style={{
-                      background: filterArtist === artist ? GOLD_DIM : '#ffffff08',
-                      border: `1px solid ${filterArtist === artist ? GOLD_BORDER : '#ffffff0a'}`,
-                      color: filterArtist === artist ? GOLD : '#5a4f3a',
-                    }}>
+                    style={{ background: filterArtist === artist ? GOLD_DIM : '#ffffff08', border: `1px solid ${filterArtist === artist ? GOLD_BORDER : '#ffffff0a'}`, color: filterArtist === artist ? GOLD : '#5a4f3a' }}>
                     {artist}
                   </button>
                 ))}
@@ -294,7 +267,6 @@ export default function App() {
 
             <div className="h-px mb-5" style={{ background: '#d4a85315' }} />
 
-            {/* Sort + Vibe */}
             <div className="flex flex-wrap gap-8 mb-5">
               <div>
                 <label className="text-xs font-bold uppercase tracking-widest mb-3 block" style={{ color: GOLD }}>Sort by</label>
@@ -302,11 +274,7 @@ export default function App() {
                   {SORT_OPTIONS.map(opt => (
                     <button key={opt.value} onClick={() => setSortBy(opt.value)}
                       className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
-                      style={{
-                        background: sortBy === opt.value ? GOLD_DIM : '#ffffff08',
-                        border: `1px solid ${sortBy === opt.value ? GOLD_BORDER : '#ffffff0a'}`,
-                        color: sortBy === opt.value ? GOLD : '#5a4f3a',
-                      }}>
+                      style={{ background: sortBy === opt.value ? GOLD_DIM : '#ffffff08', border: `1px solid ${sortBy === opt.value ? GOLD_BORDER : '#ffffff0a'}`, color: sortBy === opt.value ? GOLD : '#5a4f3a' }}>
                       {opt.label}
                     </button>
                   ))}
@@ -318,11 +286,7 @@ export default function App() {
                   {EMOTIONAL_AXES.map(key => (
                     <button key={key} onClick={() => setVibeFilter(vibeFilter === key ? '' : key)}
                       className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
-                      style={{
-                        background: vibeFilter === key ? EMOTION_COLORS[key] + '25' : '#ffffff08',
-                        border: `1px solid ${vibeFilter === key ? EMOTION_COLORS[key] + '55' : '#ffffff0a'}`,
-                        color: vibeFilter === key ? EMOTION_COLORS[key] : '#5a4f3a',
-                      }}>
+                      style={{ background: vibeFilter === key ? EMOTION_COLORS[key] + '25' : '#ffffff08', border: `1px solid ${vibeFilter === key ? EMOTION_COLORS[key] + '55' : '#ffffff0a'}`, color: vibeFilter === key ? EMOTION_COLORS[key] : '#5a4f3a' }}>
                       {EMOTION_LABELS[key]}
                     </button>
                   ))}
@@ -332,18 +296,13 @@ export default function App() {
 
             <div className="h-px mb-5" style={{ background: '#d4a85315' }} />
 
-            {/* Mood & Theme */}
             <div className="mb-5">
               <label className="text-xs font-bold uppercase tracking-widest mb-3 block" style={{ color: GOLD }}>Mood & Theme</label>
               <div className="flex flex-wrap gap-2">
                 {Object.entries(SUBCATEGORY_LABELS).map(([key, label]) => (
                   <button key={key} onClick={() => setFilterSubcat(filterSubcat === key ? '' : key)}
                     className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
-                    style={{
-                      background: filterSubcat === key ? SUBCATEGORY_COLORS[key] + '25' : '#ffffff08',
-                      border: `1px solid ${filterSubcat === key ? SUBCATEGORY_COLORS[key] + '55' : '#ffffff0a'}`,
-                      color: filterSubcat === key ? SUBCATEGORY_COLORS[key] : '#5a4f3a',
-                    }}>
+                    style={{ background: filterSubcat === key ? SUBCATEGORY_COLORS[key] + '25' : '#ffffff08', border: `1px solid ${filterSubcat === key ? SUBCATEGORY_COLORS[key] + '55' : '#ffffff0a'}`, color: filterSubcat === key ? SUBCATEGORY_COLORS[key] : '#5a4f3a' }}>
                     {label}
                   </button>
                 ))}
@@ -352,18 +311,13 @@ export default function App() {
 
             <div className="h-px mb-5" style={{ background: '#d4a85315' }} />
 
-            {/* Tags */}
             <div>
               <label className="text-xs font-bold uppercase tracking-widest mb-3 block" style={{ color: GOLD }}>Tags</label>
               <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto">
                 {ALL_TAGS.map(tag => (
                   <button key={tag} onClick={() => setFilterTag(filterTag === tag ? '' : tag)}
                     className="px-2.5 py-1 rounded-full text-xs transition-all"
-                    style={{
-                      background: filterTag === tag ? '#d4a85320' : '#ffffff07',
-                      color: filterTag === tag ? GOLD : '#5a4f3a',
-                      border: `1px solid ${filterTag === tag ? GOLD_BORDER : 'transparent'}`,
-                    }}>
+                    style={{ background: filterTag === tag ? '#d4a85320' : '#ffffff07', color: filterTag === tag ? GOLD : '#5a4f3a', border: `1px solid ${filterTag === tag ? GOLD_BORDER : 'transparent'}` }}>
                     #{tag}
                   </button>
                 ))}
@@ -372,7 +326,7 @@ export default function App() {
           </div>
         )}
 
-        {/* Active filter bar */}
+        {/* Active filter chips */}
         {hasActiveFilter && !showFilters && (
           <div className="flex items-center gap-2 mb-4 flex-wrap">
             <span className="text-xs" style={{ color: '#5a4f3a' }}>Filtered:</span>
@@ -385,17 +339,15 @@ export default function App() {
           </div>
         )}
 
-        {/* Songs grid */}
+        {/* Grid */}
         {filtered.length === 0 ? (
           <div className="text-center py-28">
-            <div className="w-16 h-16 rounded-2xl mx-auto mb-5 flex items-center justify-center"
-              style={{ background: '#d4a85310', border: '1px solid #d4a85520' }}>
+            <div className="w-16 h-16 rounded-2xl mx-auto mb-5 flex items-center justify-center" style={{ background: '#d4a85310', border: '1px solid #d4a85520' }}>
               <Music size={28} style={{ color: GOLD, opacity: 0.5 }} />
             </div>
             <p className="text-base font-semibold" style={{ color: '#5a4f3a' }}>No songs found</p>
             <p className="text-sm mt-1" style={{ color: '#3a3020' }}>Try a different search or clear filters</p>
-            <button onClick={clearAll} className="mt-4 px-5 py-2 rounded-xl text-sm font-semibold transition-all"
-              style={{ background: GOLD_DIM, color: GOLD, border: `1px solid ${GOLD_BORDER}` }}>
+            <button onClick={clearAll} className="mt-4 px-5 py-2 rounded-xl text-sm font-semibold transition-all" style={{ background: GOLD_DIM, color: GOLD, border: `1px solid ${GOLD_BORDER}` }}>
               Clear filters
             </button>
           </div>
@@ -407,33 +359,24 @@ export default function App() {
           </div>
         )}
 
-        {/* Footer */}
         <div className="mt-20 pb-8 text-center">
           <div className="h-px mb-8 mx-auto max-w-xs" style={{ background: 'linear-gradient(90deg, transparent, #d4a85330, transparent)' }} />
-          <p className="text-xs" style={{ color: '#3a3020' }}>
-            {songs.length} songs · 6 artists · 11-axis emotion scoring
-          </p>
+          <p className="text-xs" style={{ color: '#3a3020' }}>{songs.length} songs · 6 artists · 11-axis emotion scoring</p>
         </div>
       </main>
 
-      {showAddModal && (
-        <AddSongModal
-          onClose={() => setShowAddModal(false)}
-          onAdd={song => { addSong(song); }}
-        />
-      )}
+      {showSuggest && <SuggestSongModal onClose={() => setShowSuggest(false)} />}
+      {showAdmin && isAdmin && <AdminPanel onClose={() => setShowAdmin(false)} onLogout={() => { logout(); setShowAdmin(false); }} />}
+      {showLogin && <AdminLoginModal onClose={() => setShowLogin(false)} onSuccess={() => setShowAdmin(true)} />}
     </div>
   );
 }
 
 function Chip({ label, onRemove }: { label: string; onRemove: () => void }) {
   return (
-    <span className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-medium"
-      style={{ background: '#d4a85315', color: GOLD, border: '1px solid #d4a85330' }}>
+    <span className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-medium" style={{ background: '#d4a85315', color: GOLD, border: '1px solid #d4a85330' }}>
       {label}
-      <button onClick={onRemove} style={{ color: '#d4a85380' }}>
-        <X size={10} />
-      </button>
+      <button onClick={onRemove} style={{ color: '#d4a85380' }}><X size={10} /></button>
     </span>
   );
 }
