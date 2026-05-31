@@ -1,13 +1,10 @@
 import { useState, useMemo } from 'react';
-import { Search, Music, SlidersHorizontal, X, Sparkles, Lightbulb, ShieldCheck } from 'lucide-react';
+import { Search, Music, SlidersHorizontal, X, Sparkles, Lightbulb } from 'lucide-react';
 import { songs, type Song, EMOTION_COLORS, EMOTION_LABELS, EMOTIONAL_AXES, SUBCATEGORY_LABELS, SUBCATEGORY_COLORS } from './data/songs';
 import SongCard from './components/SongCard';
 import SongDetail from './components/SongDetail';
 import SuggestSongModal from './components/SuggestSongModal';
-import AdminPanel from './components/AdminPanel';
-import AdminLoginModal from './components/AdminLoginModal';
 import { useFirebaseSongs } from './hooks/useFirebaseSongs';
-import { useAuth } from './hooks/useAuth';
 
 const GOLD = '#d4a853';
 const GOLD_DIM = '#d4a85330';
@@ -49,11 +46,8 @@ export default function App() {
   const [filterSubcat, setFilterSubcat] = useState('');
   const [situation, setSituation] = useState('');
   const [showSuggest, setShowSuggest] = useState(false);
-  const [showAdmin, setShowAdmin] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
 
   const { firebaseSongs } = useFirebaseSongs();
-  const { isAdmin, user, logout } = useAuth();
 
   const allSongs = useMemo(() => [...firebaseSongs, ...songs], [firebaseSongs]);
 
@@ -126,25 +120,6 @@ export default function App() {
           onMouseLeave={e => { e.currentTarget.style.background = '#ffffff08'; e.currentTarget.style.color = '#6b5f4a'; e.currentTarget.style.borderColor = '#ffffff10'; }}>
           <Lightbulb size={14} /> Suggest a Song
         </button>
-
-        {/* Admin button */}
-        {isAdmin ? (
-          <button onClick={() => setShowAdmin(true)}
-            className="flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all"
-            style={{ background: '#d4a85315', color: GOLD, border: '1px solid #d4a85330' }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#d4a85325'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#d4a85315'; }}>
-            <ShieldCheck size={14} /> Admin
-          </button>
-        ) : !user ? (
-          <button onClick={() => setShowLogin(true)}
-            className="text-xs px-3 py-2 rounded-xl transition-all"
-            style={{ background: 'transparent', color: '#3a3020', border: '1px solid #ffffff08' }}
-            onMouseEnter={e => { e.currentTarget.style.color = '#5a4f3a'; }}
-            onMouseLeave={e => { e.currentTarget.style.color = '#3a3020'; }}>
-            Admin
-          </button>
-        ) : null}
 
         <button onClick={shuffle}
           className="flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all"
@@ -366,8 +341,6 @@ export default function App() {
       </main>
 
       {showSuggest && <SuggestSongModal onClose={() => setShowSuggest(false)} />}
-      {showAdmin && isAdmin && <AdminPanel onClose={() => setShowAdmin(false)} onLogout={() => { logout(); setShowAdmin(false); }} />}
-      {showLogin && <AdminLoginModal onClose={() => setShowLogin(false)} onSuccess={() => setShowAdmin(true)} />}
     </div>
   );
 }
