@@ -52,7 +52,7 @@ export default function SongCard({ song, onClick }: Props) {
 
       {/* Header row */}
       <div className="flex items-start gap-3 mb-3">
-        <AlbumArt album={song.album} artist={song.artist} size={54} accentColor={GOLD} />
+        <AlbumArt title={song.title} album={song.album} artist={song.artist} size={54} accentColor={GOLD} />
         <div className="flex-1 min-w-0">
           <h3 className="font-bold text-sm leading-snug truncate" style={{ color: '#f0ead8' }}>{song.title}</h3>
           <p className="text-xs mt-0.5 truncate font-medium" style={{ color: GOLD, opacity: 0.8 }}>{song.artist}</p>

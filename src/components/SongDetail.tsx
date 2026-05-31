@@ -68,7 +68,7 @@ export default function SongDetail({ song, onBack }: Props) {
 
           <div className="flex items-start gap-5">
             <div style={{ position: 'relative' }}>
-              <AlbumArt album={song.album} artist={song.artist} size={88} accentColor={GOLD} />
+              <AlbumArt title={song.title} album={song.album} artist={song.artist} size={88} accentColor={GOLD} />
               <div style={{
                 position: 'absolute', inset: -2, borderRadius: 14, pointerEvents: 'none',
                 background: `linear-gradient(135deg, ${GOLD}40, transparent 60%)`,

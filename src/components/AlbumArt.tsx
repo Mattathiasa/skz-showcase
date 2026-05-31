@@ -2,6 +2,7 @@ import { Music } from 'lucide-react';
 import { useAlbumArt } from '../hooks/useAlbumArt';
 
 interface Props {
+  title: string;
   album: string;
   artist: string;
   size: number;
@@ -9,8 +10,8 @@ interface Props {
   className?: string;
 }
 
-export default function AlbumArt({ album, artist, size, accentColor = '#d4a853', className = '' }: Props) {
-  const { artUrl, loading } = useAlbumArt(album, artist);
+export default function AlbumArt({ title, album, artist, size, accentColor = '#d4a853', className = '' }: Props) {
+  const { artUrl, loading } = useAlbumArt(title, artist, album);
   const radius = size > 80 ? 16 : 10;
 
   const baseStyle: React.CSSProperties = {
@@ -49,7 +50,6 @@ export default function AlbumArt({ album, artist, size, accentColor = '#d4a853',
     <div style={{ ...baseStyle, position: 'relative', flexShrink: 0 }} className={className}>
       <img src={artUrl} alt={album}
         style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-      {/* Gold sheen overlay */}
       <div style={{
         position: 'absolute', inset: 0, borderRadius: radius, pointerEvents: 'none',
         background: `linear-gradient(135deg, ${accentColor}12 0%, transparent 50%)`,

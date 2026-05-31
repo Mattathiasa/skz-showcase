@@ -1,6 +1,44 @@
 import Groq from 'groq-sdk';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
+async function fetchAlbumArt(title: string, artist: string, album: string): Promise<string | null> {
+  function norm(s: string) { return s.toLowerCase().replace(/[^a-z0-9\s]/g, '').trim(); }
+  function sim(a: string, b: string) {
+    const na = norm(a), nb = norm(b);
+    if (na === nb) return 1;
+    if (na.includes(nb) || nb.includes(na)) return 0.8;
+    const wa = new Set(na.split(' ')), wb = new Set(nb.split(' '));
+    return [...wa].filter(w => wb.has(w)).length / Math.max(wa.size, wb.size);
+  }
+  try {
+    const q = encodeURIComponent(`${artist} ${album || title}`);
+    const res = await fetch(`https://itunes.apple.com/search?term=${q}&entity=album&limit=10&country=us`);
+    if (res.ok) {
+      const data = await res.json();
+      const results: { collectionName: string; artistName: string; artworkUrl100: string }[] = data?.results ?? [];
+      const scored = results.filter(r => r.artworkUrl100).map(r => ({
+        url: r.artworkUrl100.replace('100x100bb', '600x600bb'),
+        score: (sim(r.collectionName, album || title) * 2 + sim(r.artistName, artist)) / 3,
+      })).sort((a, b) => b.score - a.score);
+      if (scored.length && scored[0].score > 0.35) return scored[0].url;
+    }
+  } catch { /* continue */ }
+  try {
+    const q = encodeURIComponent(`${artist} ${title}`);
+    const res = await fetch(`https://itunes.apple.com/search?term=${q}&entity=song&limit=10&country=us`);
+    if (res.ok) {
+      const data = await res.json();
+      const results: { artistName: string; trackName: string; artworkUrl100: string }[] = data?.results ?? [];
+      const scored = results.filter(r => r.artworkUrl100).map(r => ({
+        url: r.artworkUrl100.replace('100x100bb', '600x600bb'),
+        score: (sim(r.artistName, artist) + sim(r.trackName, title)) / 2,
+      })).sort((a, b) => b.score - a.score);
+      if (scored.length && scored[0].score > 0.35) return scored[0].url;
+    }
+  } catch { /* continue */ }
+  return null;
+}
+
 const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const CORS = {
@@ -97,11 +135,14 @@ Stats are integers 0-10. Rate each honestly:
 
     const raw = JSON.parse(completion.choices[0]?.message?.content ?? '{}');
 
+    const artUrl = await fetchAlbumArt(title, artist, album || '');
+
     const response = {
       title,
       artist,
       album: album || null,
       year: year ? parseInt(year) : null,
+      artUrl,
       intro: raw.intro,
       gist: raw.gist,
       lyricsAnalysis: raw.lyricsAnalysis,
