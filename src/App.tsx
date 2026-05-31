@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Fuse from 'fuse.js';
 import { Search, Music, SlidersHorizontal, X, Sparkles, Lightbulb } from 'lucide-react';
 import { songs, type Song, EMOTION_COLORS, EMOTION_LABELS, EMOTIONAL_AXES, SUBCATEGORY_LABELS, SUBCATEGORY_COLORS } from './data/songs';
 import SongCard from './components/SongCard';
@@ -54,17 +55,21 @@ export default function App() {
 
   const allSongs = useMemo(() => [...firebaseSongs, ...songs], [firebaseSongs]);
 
+  const fuse = useMemo(() => new Fuse(allSongs, {
+    keys: [
+      { name: 'title', weight: 0.5 },
+      { name: 'artist', weight: 0.3 },
+      { name: 'album', weight: 0.15 },
+      { name: 'tags', weight: 0.05 },
+    ],
+    threshold: 0.4,
+    includeScore: true,
+  }), [allSongs]);
+
   const filtered = useMemo(() => {
-    let list = [...allSongs];
-    if (query) {
-      const q = query.toLowerCase();
-      list = list.filter(s =>
-        s.title.toLowerCase().includes(q) ||
-        s.artist.toLowerCase().includes(q) ||
-        s.album.toLowerCase().includes(q) ||
-        s.tags.some(t => t.toLowerCase().includes(q))
-      );
-    }
+    let list = query
+      ? fuse.search(query).map(r => r.item)
+      : [...allSongs];
     if (filterArtist) list = list.filter(s => s.artist === filterArtist);
     if (filterTag) list = list.filter(s => s.tags.includes(filterTag));
     if (filterSubcat) list = list.filter(s => s.subcategories?.includes(filterSubcat));
@@ -117,14 +122,30 @@ export default function App() {
           {filtered.length} songs
         </span>
 
-        {/* Suggest button — always visible */}
-        <button onClick={() => setShowSuggest(true)}
-          className="hidden sm:flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all"
-          style={{ background: '#ffffff08', color: '#6b5f4a', border: '1px solid #ffffff10' }}
-          onMouseEnter={e => { e.currentTarget.style.background = '#d4a85315'; e.currentTarget.style.color = GOLD; e.currentTarget.style.borderColor = '#d4a85330'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = '#ffffff08'; e.currentTarget.style.color = '#6b5f4a'; e.currentTarget.style.borderColor = '#ffffff10'; }}>
-          <Lightbulb size={14} /> Suggest a Song
-        </button>
+        {/* Nav links */}
+        <div className="hidden sm:flex items-center gap-2">
+          <button onClick={() => navigate('/vibe-match')}
+            className="flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-xl transition-all"
+            style={{ background: 'transparent', color: '#5a4f3a', border: '1px solid transparent' }}
+            onMouseEnter={e => { e.currentTarget.style.color = GOLD; e.currentTarget.style.background = '#d4a85312'; e.currentTarget.style.borderColor = '#d4a85328'; }}
+            onMouseLeave={e => { e.currentTarget.style.color = '#5a4f3a'; e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'transparent'; }}>
+            <Sparkles size={13} /> Match
+          </button>
+          <button onClick={() => navigate('/stats')}
+            className="flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-xl transition-all"
+            style={{ background: 'transparent', color: '#5a4f3a', border: '1px solid transparent' }}
+            onMouseEnter={e => { e.currentTarget.style.color = GOLD; e.currentTarget.style.background = '#d4a85312'; e.currentTarget.style.borderColor = '#d4a85328'; }}
+            onMouseLeave={e => { e.currentTarget.style.color = '#5a4f3a'; e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'transparent'; }}>
+            📊 Stats
+          </button>
+          <button onClick={() => setShowSuggest(true)}
+            className="flex items-center gap-1.5 text-sm font-semibold px-3 py-2 rounded-xl transition-all"
+            style={{ background: '#ffffff08', color: '#6b5f4a', border: '1px solid #ffffff10' }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#d4a85315'; e.currentTarget.style.color = GOLD; e.currentTarget.style.borderColor = '#d4a85330'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = '#ffffff08'; e.currentTarget.style.color = '#6b5f4a'; e.currentTarget.style.borderColor = '#ffffff10'; }}>
+            <Lightbulb size={13} /> Suggest
+          </button>
+        </div>
 
         <button onClick={shuffle}
           className="flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all"

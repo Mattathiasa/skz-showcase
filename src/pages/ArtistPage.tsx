@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, Music } from 'lucide-react';
 import { songs, EMOTIONAL_AXES, EMOTION_COLORS, EMOTION_LABELS } from '../data/songs';
 import { useFirebaseSongs } from '../hooks/useFirebaseSongs';
@@ -56,6 +57,15 @@ export default function ArtistPage() {
   }
 
   return (
+    <>
+    <Helmet>
+      <title>{artistName} · Vibe Showcase</title>
+      <meta name="description" content={bio ?? `${artistName} — ${artistSongs.length} songs on Vibe Showcase`} />
+      <meta property="og:title" content={`${artistName} · Vibe Showcase`} />
+      <meta property="og:description" content={bio?.slice(0, 160) ?? `${artistSongs.length} songs, emotion-scored and analyzed.`} />
+      <meta property="og:url" content={`https://skz-showcase.vercel.app/artist/${encodeURIComponent(artistName)}`} />
+      <meta name="twitter:card" content="summary" />
+    </Helmet>
     <div className="min-h-screen" style={{ background: '#07070b' }}>
       <div style={{ position: 'fixed', top: 0, left: '50%', transform: 'translateX(-50%)', width: 700, height: 350, borderRadius: '50%', pointerEvents: 'none', zIndex: 0, background: `radial-gradient(ellipse, ${dominantColor}0a 0%, transparent 70%)` }} />
 
@@ -125,5 +135,6 @@ export default function ArtistPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

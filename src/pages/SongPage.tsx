@@ -1,7 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { songs } from '../data/songs';
 import SongDetail from '../components/SongDetail';
 import { useFirebaseSongs } from '../hooks/useFirebaseSongs';
+import { useAlbumArt } from '../hooks/useAlbumArt';
 import { useMemo } from 'react';
 
 export default function SongPage() {
@@ -11,6 +13,9 @@ export default function SongPage() {
 
   const allSongs = useMemo(() => [...firebaseSongs, ...songs], [firebaseSongs]);
   const song = allSongs.find(s => s.id === id);
+
+  const { artUrl } = useAlbumArt(song?.title ?? '', song?.artist ?? '', song?.album ?? '');
+  const siteUrl = 'https://skz-showcase.vercel.app';
 
   if (!song) {
     return (
@@ -24,5 +29,22 @@ export default function SongPage() {
     );
   }
 
-  return <SongDetail song={song} onBack={() => navigate('/')} />;
+  return (
+    <>
+      <Helmet>
+        <title>{song.title} — {song.artist} · Vibe Showcase</title>
+        <meta name="description" content={song.intro} />
+        <meta property="og:title" content={`${song.title} — ${song.artist}`} />
+        <meta property="og:description" content={song.gist} />
+        <meta property="og:url" content={`${siteUrl}/song/${song.id}`} />
+        <meta property="og:type" content="music.song" />
+        {artUrl && <meta property="og:image" content={artUrl} />}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${song.title} — ${song.artist}`} />
+        <meta name="twitter:description" content={song.intro} />
+        {artUrl && <meta name="twitter:image" content={artUrl} />}
+      </Helmet>
+      <SongDetail song={song} onBack={() => navigate('/')} />
+    </>
+  );
 }
