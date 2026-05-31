@@ -41,11 +41,12 @@ async function fetchAlbumArt(title: string, artist: string, album: string): Prom
 
 const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-const CORS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
+function setCORS(res: VercelResponse) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  return res;
+}
 
 function clamp(v: number) { return Math.max(0, Math.min(100, Math.round(v))); }
 
@@ -72,7 +73,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   if (req.method !== 'GET' && req.method !== 'POST') {
-    return res.status(405).set(CORS).json({ error: 'Method not allowed. Use GET or POST.' });
+    return setCORS(res).status(405).json({ error: 'Method not allowed. Use GET or POST.' });
   }
 
   // Support both GET (query params) and POST (JSON body)
@@ -82,7 +83,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const year = (req.method === 'GET' ? req.query.year : req.body?.year) as string | undefined;
 
   if (!title || !artist) {
-    return res.status(400).set(CORS).json({
+    return setCORS(res).status(400).json({
       error: 'Missing required fields: title, artist',
       usage: {
         POST: { body: { title: 'string (required)', artist: 'string (required)', album: 'string (optional)', year: 'string (optional)' } },
@@ -151,9 +152,9 @@ Stats are integers 0-10. Rate each honestly:
       rawStats: raw.stats,
     };
 
-    return res.status(200).set(CORS).json(response);
+    return setCORS(res).status(200).json(response);
   } catch (err) {
     console.error('song api error:', err);
-    return res.status(500).set(CORS).json({ error: 'Failed to generate analysis' });
+    return setCORS(res).status(500).json({ error: 'Failed to generate analysis' });
   }
 }
