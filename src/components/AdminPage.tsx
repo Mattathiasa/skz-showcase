@@ -10,18 +10,7 @@ const GOLD = '#d4a853';
 interface ApiResult {
   intro: string; gist: string; lyricsAnalysis: string;
   tags: string[]; subcategories?: string[];
-  stats: { happy: number; sad: number; hype: number; calm: number; alone: number; inLove: number; outOfLove: number };
-}
-
-function migrate(s: ApiResult['stats']): Song['stats'] {
-  const c = (v: number) => Math.max(0, Math.min(100, Math.round(v)));
-  return {
-    happy: c(s.happy * 10), sad: c(s.sad * 10), energetic: c(s.hype * 10),
-    calm: c(s.calm * 10), romantic: c(((s.inLove * 2 + s.outOfLove * 0.5) / 2.5) * 10),
-    lonely: c(s.alone * 10), dark: c(((s.sad + s.outOfLove) / 2) * 10),
-    nostalgic: c(((s.calm + s.sad) / 2) * 10),
-    acousticness: 50, vocalPresence: 70, danceability: c(s.hype * 10),
-  };
+  stats: Song['stats'];
 }
 
 function LoginView() {
@@ -129,7 +118,7 @@ function DashboardView() {
         year: parseInt(s.year || '') || new Date().getFullYear(),
         intro: data.intro, gist: data.gist, lyricsAnalysis: data.lyricsAnalysis,
         tags: data.tags, subcategories: data.subcategories,
-        stats: migrate(data.stats),
+        stats: data.stats,
       };
       await saveSong(song);
       await deleteSuggestion(s.id);
