@@ -1,9 +1,31 @@
 import { ArrowLeft, BookOpen, BookMarked, Lightbulb, Tag, Sparkles } from 'lucide-react';
-import { type Song, EMOTION_COLORS, EMOTION_LABELS, EMOTIONAL_AXES, TECHNICAL_AXES, SUBCATEGORY_LABELS, SUBCATEGORY_COLORS } from '../data/songs';
+import { useNavigate } from 'react-router-dom';
+import { useMemo } from 'react';
+import { songs, type Song, EMOTION_COLORS, EMOTION_LABELS, EMOTIONAL_AXES, TECHNICAL_AXES, SUBCATEGORY_LABELS, SUBCATEGORY_COLORS } from '../data/songs';
 import VibeRadar from './VibeRadar';
 import AlbumArt from './AlbumArt';
 import LyricsPanel from './LyricsPanel';
 import MusicPlayer from './MusicPlayer';
+
+function cosineSim(a: Song['stats'], b: Song['stats']): number {
+  const keys = EMOTIONAL_AXES as readonly string[];
+  let dot = 0, magA = 0, magB = 0;
+  for (const k of keys) {
+    const va = a[k as keyof typeof a] as number;
+    const vb = b[k as keyof typeof b] as number;
+    dot += va * vb; magA += va * va; magB += vb * vb;
+  }
+  return magA && magB ? dot / (Math.sqrt(magA) * Math.sqrt(magB)) : 0;
+}
+
+function getSimilar(song: Song, all: Song[], n = 5): Song[] {
+  return all
+    .filter(s => s.id !== song.id)
+    .map(s => ({ s, score: cosineSim(song.stats, s.stats) }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, n)
+    .map(x => x.s);
+}
 
 const GOLD = '#d4a853';
 const GOLD_DIM = '#d4a85320';
@@ -18,7 +40,9 @@ function getDominant(stats: Song['stats']): [string, number] {
 }
 
 export default function SongDetail({ song, onBack }: Props) {
+  const navigate = useNavigate();
   const [dominantKey] = getDominant(song.stats);
+  const similar = useMemo(() => getSimilar(song, songs), [song]);
   const color = EMOTION_COLORS[dominantKey];
 
   const sortedEmotional = [...EMOTIONAL_AXES]
@@ -76,7 +100,13 @@ export default function SongDetail({ song, onBack }: Props) {
             </div>
             <div className="flex-1 min-w-0">
               <h1 className="text-3xl font-black leading-tight mb-1" style={{ color: '#f0ead8' }}>{song.title}</h1>
-              <p className="font-bold text-base" style={{ color: GOLD }}>{song.artist}</p>
+              <button onClick={() => navigate(`/artist/${encodeURIComponent(song.artist)}`)}
+                className="font-bold text-base transition-all"
+                style={{ color: GOLD }}
+                onMouseEnter={e => { e.currentTarget.style.textDecoration = 'underline'; }}
+                onMouseLeave={e => { e.currentTarget.style.textDecoration = 'none'; }}>
+                {song.artist}
+              </button>
               <p className="text-sm mt-1" style={{ color: '#3a3528' }}>{song.album} · {song.year}</p>
             </div>
           </div>
@@ -113,7 +143,7 @@ export default function SongDetail({ song, onBack }: Props) {
 
         {/* Music Player */}
         <div className="mb-5">
-          <MusicPlayer title={song.title} artist={song.artist} accentColor={GOLD} />
+          <MusicPlayer song={song} accentColor={GOLD} />
         </div>
 
         {/* Read Before Listening */}
@@ -261,6 +291,40 @@ export default function SongDetail({ song, onBack }: Props) {
             </div>
           </div>
         </div>
+
+        {/* Similar songs */}
+        {similar.length > 0 && (
+          <div className="mt-8">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg, #d4a85320, transparent)' }} />
+              <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#3a3020' }}>Songs like this</span>
+              <div className="h-px flex-1" style={{ background: 'linear-gradient(270deg, #d4a85320, transparent)' }} />
+            </div>
+            <div className="flex flex-col gap-2">
+              {similar.map(s => {
+                const [domKey] = getDominant(s.stats);
+                const c = EMOTION_COLORS[domKey];
+                return (
+                  <button key={s.id} onClick={() => navigate(`/song/${s.id}`)}
+                    className="flex items-center gap-3 p-3 rounded-xl text-left transition-all w-full"
+                    style={{ background: '#0e0e18', border: '1px solid #1e1e2e' }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = '#d4a85330'; e.currentTarget.style.background = '#131320'; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = '#1e1e2e'; e.currentTarget.style.background = '#0e0e18'; }}>
+                    <AlbumArt title={s.title} album={s.album} artist={s.artist} size={40} accentColor={c} />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold truncate" style={{ color: '#f0ead8' }}>{s.title}</p>
+                      <p className="text-xs truncate" style={{ color: '#5a4f3a' }}>{s.artist}</p>
+                    </div>
+                    <span className="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0"
+                      style={{ background: c + '18', color: c, border: `1px solid ${c}28` }}>
+                      {EMOTION_LABELS[domKey]}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Footer spacer */}
         <div className="mt-12 h-px" style={{ background: 'linear-gradient(90deg, transparent, #d4a85330, transparent)' }} />

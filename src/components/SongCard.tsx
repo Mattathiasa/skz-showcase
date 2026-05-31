@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import { Heart } from 'lucide-react';
 import { type Song, EMOTION_COLORS, EMOTION_LABELS, EMOTIONAL_AXES, SUBCATEGORY_LABELS, SUBCATEGORY_COLORS } from '../data/songs';
 import AlbumArt from './AlbumArt';
 
 const GOLD = '#d4a853';
 
-interface Props { song: Song; onClick: () => void; }
+interface Props { song: Song; onClick: () => void; isFavorite?: boolean; onFavorite?: (id: string) => void; }
 
 function getDominant(stats: Song['stats']): [string, number] {
   return EMOTIONAL_AXES
@@ -12,7 +13,7 @@ function getDominant(stats: Song['stats']): [string, number] {
     .reduce((a, b) => b[1] > a[1] ? b : a);
 }
 
-export default function SongCard({ song, onClick }: Props) {
+export default function SongCard({ song, onClick, isFavorite = false, onFavorite }: Props) {
   const [hovered, setHovered] = useState(false);
   const [dominantKey, dominantVal] = getDominant(song.stats);
   const color = EMOTION_COLORS[dominantKey];
@@ -54,7 +55,18 @@ export default function SongCard({ song, onClick }: Props) {
       <div className="flex items-start gap-3 mb-3">
         <AlbumArt title={song.title} album={song.album} artist={song.artist} size={54} accentColor={GOLD} />
         <div className="flex-1 min-w-0">
-          <h3 className="font-bold text-sm leading-snug truncate" style={{ color: '#f0ead8' }}>{song.title}</h3>
+          <div className="flex items-start justify-between gap-1">
+            <h3 className="font-bold text-sm leading-snug truncate" style={{ color: '#f0ead8' }}>{song.title}</h3>
+            {onFavorite && (
+              <button onClick={e => { e.stopPropagation(); onFavorite(song.id); }}
+                className="shrink-0 p-0.5 rounded transition-all"
+                style={{ color: isFavorite ? '#e05a7a' : '#3a3020' }}
+                onMouseEnter={e => { e.currentTarget.style.color = '#e05a7a'; }}
+                onMouseLeave={e => { e.currentTarget.style.color = isFavorite ? '#e05a7a' : '#3a3020'; }}>
+                <Heart size={13} fill={isFavorite ? '#e05a7a' : 'none'} />
+              </button>
+            )}
+          </div>
           <p className="text-xs mt-0.5 truncate font-medium" style={{ color: GOLD, opacity: 0.8 }}>{song.artist}</p>
           <p className="text-xs truncate mt-0.5" style={{ color: '#3a3528' }}>{song.album} · {song.year}</p>
         </div>

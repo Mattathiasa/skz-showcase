@@ -1,10 +1,11 @@
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, Music, SlidersHorizontal, X, Sparkles, Lightbulb } from 'lucide-react';
 import { songs, type Song, EMOTION_COLORS, EMOTION_LABELS, EMOTIONAL_AXES, SUBCATEGORY_LABELS, SUBCATEGORY_COLORS } from './data/songs';
 import SongCard from './components/SongCard';
-import SongDetail from './components/SongDetail';
 import SuggestSongModal from './components/SuggestSongModal';
 import { useFirebaseSongs } from './hooks/useFirebaseSongs';
+import { useFavorites } from './hooks/useFavorites';
 
 const GOLD = '#d4a853';
 const GOLD_DIM = '#d4a85330';
@@ -36,7 +37,7 @@ const ALL_TAGS = Array.from(new Set(songs.flatMap(s => s.tags))).sort();
 const MAIN_ARTISTS = ['Stray Kids', 'BTS', 'AJR', 'Lauv', 'Jon Bellion', 'Alec Benjamin'];
 
 export default function App() {
-  const [selected, setSelected] = useState<Song | null>(null);
+  const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const [sortBy, setSortBy] = useState('title');
   const [filterTag, setFilterTag] = useState('');
@@ -46,8 +47,10 @@ export default function App() {
   const [filterSubcat, setFilterSubcat] = useState('');
   const [situation, setSituation] = useState('');
   const [showSuggest, setShowSuggest] = useState(false);
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
 
   const { firebaseSongs } = useFirebaseSongs();
+  const { isFavorite, toggle: toggleFavorite, favorites } = useFavorites();
 
   const allSongs = useMemo(() => [...firebaseSongs, ...songs], [firebaseSongs]);
 
@@ -70,6 +73,7 @@ export default function App() {
       const sit = SITUATIONS.find(s => s.key === situation);
       if (sit) list = list.filter(sit.pred);
     }
+    if (showFavoritesOnly) list = list.filter(s => favorites.has(s.id));
     list.sort((a, b) => {
       if (sortBy === 'title') return a.title.localeCompare(b.title);
       if (sortBy === 'year') return b.year - a.year;
@@ -77,14 +81,15 @@ export default function App() {
       return b.stats[key] - a.stats[key];
     });
     return list;
-  }, [query, sortBy, filterTag, filterArtist, vibeFilter, filterSubcat, situation, allSongs]);
+  }, [query, sortBy, filterTag, filterArtist, vibeFilter, filterSubcat, situation, allSongs, showFavoritesOnly, favorites]);
 
-  const shuffle = () => setSelected(allSongs[Math.floor(Math.random() * allSongs.length)]);
+  const shuffle = () => {
+    const r = allSongs[Math.floor(Math.random() * allSongs.length)];
+    navigate(`/song/${r.id}`);
+  };
 
-  const hasActiveFilter = !!(query || filterArtist || filterTag || filterSubcat || vibeFilter || situation);
-  const clearAll = () => { setQuery(''); setFilterArtist(''); setFilterTag(''); setFilterSubcat(''); setVibeFilter(''); setSituation(''); };
-
-  if (selected) return <SongDetail song={selected} onBack={() => setSelected(null)} />;
+  const hasActiveFilter = !!(query || filterArtist || filterTag || filterSubcat || vibeFilter || situation || showFavoritesOnly);
+  const clearAll = () => { setQuery(''); setFilterArtist(''); setFilterTag(''); setFilterSubcat(''); setVibeFilter(''); setSituation(''); setShowFavoritesOnly(false); };
 
   return (
     <div className="min-h-screen" style={{ background: '#07070b' }}>
@@ -114,7 +119,7 @@ export default function App() {
 
         {/* Suggest button — always visible */}
         <button onClick={() => setShowSuggest(true)}
-          className="flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all"
+          className="hidden sm:flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all"
           style={{ background: '#ffffff08', color: '#6b5f4a', border: '1px solid #ffffff10' }}
           onMouseEnter={e => { e.currentTarget.style.background = '#d4a85315'; e.currentTarget.style.color = GOLD; e.currentTarget.style.borderColor = '#d4a85330'; }}
           onMouseLeave={e => { e.currentTarget.style.background = '#ffffff08'; e.currentTarget.style.color = '#6b5f4a'; e.currentTarget.style.borderColor = '#ffffff10'; }}>
@@ -166,18 +171,33 @@ export default function App() {
             ))}
           </div>
 
+          {/* Favorites pill */}
+          <div className="mt-4 flex justify-center">
+            <button onClick={() => setShowFavoritesOnly(v => !v)}
+              className="flex items-center gap-2 px-5 py-2 rounded-full text-xs font-bold transition-all"
+              style={{
+                background: showFavoritesOnly ? '#e05a7a22' : '#ffffff07',
+                border: `1px solid ${showFavoritesOnly ? '#e05a7a45' : '#ffffff12'}`,
+                color: showFavoritesOnly ? '#e05a7a' : '#5a4f3a',
+                boxShadow: showFavoritesOnly ? '0 0 16px #e05a7a20' : 'none',
+              }}>
+              ❤️ My Favorites {favorites.size > 0 && `(${favorites.size})`}
+            </button>
+          </div>
+
           {/* Situation filter */}
           <div className="mt-5">
             <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: '#3a3020' }}>
               What's your mood right now?
             </p>
-            <div className="flex flex-wrap justify-center gap-2">
+            <div className="flex gap-2 overflow-x-auto pb-1 justify-start sm:justify-center sm:flex-wrap"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {SITUATIONS.map(sit => {
                 const active = situation === sit.key;
                 return (
                   <button key={sit.key}
                     onClick={() => setSituation(active ? '' : sit.key)}
-                    className="px-4 py-2 rounded-full text-xs font-semibold transition-all"
+                    className="px-4 py-2 rounded-full text-xs font-semibold transition-all shrink-0"
                     style={{
                       background: active ? '#d4a85322' : '#ffffff07',
                       border: `1px solid ${active ? '#d4a85348' : '#ffffff12'}`,
@@ -329,7 +349,8 @@ export default function App() {
         ) : (
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filtered.map(song => (
-              <SongCard key={song.id} song={song} onClick={() => setSelected(song)} />
+              <SongCard key={song.id} song={song} onClick={() => navigate(`/song/${song.id}`)}
+                isFavorite={isFavorite(song.id)} onFavorite={toggleFavorite} />
             ))}
           </div>
         )}
