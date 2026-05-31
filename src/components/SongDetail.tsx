@@ -6,6 +6,7 @@ import VibeRadar from './VibeRadar';
 import AlbumArt from './AlbumArt';
 import LyricsPanel from './LyricsPanel';
 import MusicPlayer from './MusicPlayer';
+import ReactionsPanel from './ReactionsPanel';
 
 function cosineSim(a: Song['stats'], b: Song['stats']): number {
   const keys = EMOTIONAL_AXES as readonly string[];
@@ -290,6 +291,11 @@ export default function SongDetail({ song, onBack }: Props) {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Reactions */}
+        <div className="mt-5 mb-5">
+          <ReactionsPanel songId={song.id} accentColor={color} />
         </div>
 
         {/* Similar songs */}
