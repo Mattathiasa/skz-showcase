@@ -2,6 +2,7 @@ import { ArrowLeft, BookOpen, BookMarked, Lightbulb, Tag, Sparkles } from 'lucid
 import { useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
 import { songs, type Song, EMOTION_COLORS, EMOTION_LABELS, EMOTIONAL_AXES, TECHNICAL_AXES, SUBCATEGORY_LABELS, SUBCATEGORY_COLORS } from '../data/songs';
+import { useFirebaseSongs } from '../hooks/useFirebaseSongs';
 import VibeRadar from './VibeRadar';
 import AlbumArt from './AlbumArt';
 import LyricsPanel from './LyricsPanel';
@@ -42,8 +43,10 @@ function getDominant(stats: Song['stats']): [string, number] {
 
 export default function SongDetail({ song, onBack }: Props) {
   const navigate = useNavigate();
+  const { firebaseSongs } = useFirebaseSongs();
   const [dominantKey] = getDominant(song.stats);
-  const similar = useMemo(() => getSimilar(song, songs), [song]);
+  const allSongs = useMemo(() => [...firebaseSongs, ...songs], [firebaseSongs]);
+  const similar = useMemo(() => getSimilar(song, allSongs), [song, allSongs]);
   const color = EMOTION_COLORS[dominantKey];
 
   const sortedEmotional = [...EMOTIONAL_AXES]
