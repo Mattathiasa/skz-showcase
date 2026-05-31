@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, type User } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 
-const ADMIN_EMAIL = 'nfmatty@gmail.com';
+const ADMIN_EMAIL = 'mattathiasabraham@gmail.com';
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
