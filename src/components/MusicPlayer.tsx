@@ -25,8 +25,8 @@ export default function MusicPlayer({ song, accentColor = '#d4a853' }: Props) {
   const handlePlay = () => {
     if (isActive) {
       togglePlay();
-    } else if (previewUrl) {
-      play(song, previewUrl);
+    } else {
+      play(song, song.youtubeId ? null : previewUrl);
     }
   };
 
@@ -48,7 +48,9 @@ export default function MusicPlayer({ song, accentColor = '#d4a853' }: Props) {
     </div>
   );
 
-  if (loading) {
+  const hasSource = song.youtubeId || previewUrl;
+
+  if (loading && !song.youtubeId) {
     return (
       <div className="rounded-2xl p-4" style={{ background: 'linear-gradient(135deg,#0e0e18,#0b0b14)', border: '1px solid #d4a85320' }}>
         <div className="flex items-center gap-3">
@@ -62,7 +64,7 @@ export default function MusicPlayer({ song, accentColor = '#d4a853' }: Props) {
     );
   }
 
-  if (!previewUrl) {
+  if (!hasSource) {
     return (
       <div className="rounded-2xl p-4" style={{ background: 'linear-gradient(135deg,#0e0e18,#0b0b14)', border: '1px solid #1e1e2e' }}>
         <div className="flex items-center justify-between gap-3 flex-wrap">
@@ -103,7 +105,7 @@ export default function MusicPlayer({ song, accentColor = '#d4a853' }: Props) {
           </div>
           <div className="flex justify-between">
             <span className="text-xs font-medium" style={{ color: accentColor, opacity: 0.7 }}>{fmt(displayTime)}</span>
-            <span className="text-xs" style={{ color: '#2a2018' }}>30-sec preview</span>
+            <span className="text-xs" style={{ color: '#2a2018' }}>{song.youtubeId ? 'YouTube Audio' : '30-sec preview'}</span>
             <span className="text-xs font-medium" style={{ color: '#3a3020' }}>{displayDuration ? fmt(displayDuration) : '0:30'}</span>
           </div>
         </div>

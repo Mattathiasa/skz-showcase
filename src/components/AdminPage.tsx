@@ -126,6 +126,22 @@ function EditModal({ song, onSave, onClose }: EditModalProps) {
   const [analyzing, setAnalyzing] = useState(false);
   const [grokError, setGrokError] = useState('');
   const [grokApplied, setGrokApplied] = useState(false);
+  const [youtubeInput, setYoutubeInput] = useState(song.youtubeId ?? '');
+
+  const extractYoutubeId = (urlOrId: string): string => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = urlOrId.match(regExp);
+    if (match && match[2].length === 11) {
+      return match[2];
+    }
+    return urlOrId.trim();
+  };
+
+  const handleYoutubeChange = (val: string) => {
+    setYoutubeInput(val);
+    const parsedId = extractYoutubeId(val);
+    setField('youtubeId', parsedId || undefined);
+  };
 
   const setField = (k: keyof Song, v: unknown) => setForm(f => ({ ...f, [k]: v }));
   const setStat = (k: string, v: number) => setForm(f => ({ ...f, stats: { ...f.stats, [k]: v } }));
@@ -261,6 +277,29 @@ function EditModal({ song, onSave, onClose }: EditModalProps) {
             </div>
             <Field label="Tags (comma-separated)" value={tagsStr} onChange={setTagsStr} />
             <Field label="Subcategories (comma-separated)" value={subCatsStr} onChange={setSubCatsStr} />
+          </Section>
+
+          <Section id="youtube" title="YouTube Preview Video">
+            <p style={{ fontSize: 11, color: '#5a4f3a', margin: '0 0 10px', lineHeight: 1.5 }}>
+              Provide a YouTube video URL or ID to use for audio playback. If empty, the app will fallback to the 30-second iTunes search clip.
+            </p>
+            <Field label="YouTube URL or Video ID" value={youtubeInput} onChange={handleYoutubeChange} />
+            {form.youtubeId && (
+              <div style={{ marginTop: 12 }}>
+                <p style={{ fontSize: 10, color: GOLD, fontWeight: 600, marginBottom: 6 }}>PREVIEW VIDEO PLAYER</p>
+                <div style={{ width: '100%', aspectRatio: '16/9', borderRadius: 8, overflow: 'hidden', border: '1px solid #d4a85330' }}>
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/${form.youtubeId}`}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              </div>
+            )}
           </Section>
 
           {/* NEW: Lyrics section */}

@@ -7,12 +7,14 @@ type RawSong = {
   id: string; title: string; artist: string; album: string; year: number;
   intro: string; gist: string; lyricsAnalysis?: string; subcategories?: string[];
   tags: string[]; stats: LegacyStats;
+  youtubeId?: string;
 }
 
 export interface Song {
   id: string; title: string; artist: string; album: string; year: number;
   intro: string; gist: string; lyricsAnalysis?: string; subcategories?: string[];
   tags: string[];
+  youtubeId?: string;
   stats: {
     happy: number; sad: number; energetic: number; calm: number;
     romantic: number; lonely: number; dark: number; nostalgic: number;
