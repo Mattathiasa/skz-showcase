@@ -253,59 +253,87 @@ export default function GalleryHome() {
     const group = new THREE.Group();
     scene.add(group);
 
-    /* ---------- layout: grid on inner sphere ---------- */
+    /* ---------- windowed layout — fixed pool, unlimited scroll ---------- */
     const n = list.length;
-    const rows = Math.min(10, Math.max(3, Math.round(Math.sqrt(n / 4))));
-    const cols = Math.ceil(n / rows);
-    const lonStep = (Math.PI * 2) / cols;
-    const latStep = Math.min(lonStep * 1.18, THREE.MathUtils.degToRad(10.5));
+    const rows = Math.min(5, Math.max(2, Math.round(Math.sqrt(n / 6))));
+    const CARD_LONN = THREE.MathUtils.degToRad(8.5); // fixed angular slot (~5 cols visible at FOV 46°)
+    const WINDOW_COLS = 16;                           // columns kept in GPU at once (8 each side)
+    const cardSize = RADIUS * CARD_LONN * 0.84;
+    const latStep = Math.min(CARD_LONN * 1.18, THREE.MathUtils.degToRad(10.5));
     const latSpan = latStep * (rows - 1);
-    const cardSize = RADIUS * Math.min(lonStep, latStep) * 0.84;
 
     const geo = new THREE.PlaneGeometry(1, 1);
-    const cards: CardEntry[] = [];
+    const pool: CardEntry[] = [];
 
-    for (let i = 0; i < n; i++) {
-      const row = i % rows;
-      const col = Math.floor(i / rows);
+    for (let i = 0; i < WINDOW_COLS * rows; i++) {
+      const tex = createCardTexture(null, list[0].song, viewModeRef.current);
+      const mat = new THREE.MeshBasicMaterial({ map: tex, fog: true });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.scale.setScalar(cardSize);
+      mesh.userData.index = i;
+      mesh.userData.itemIdx = -1;
+      group.add(mesh);
+      pool.push({ mesh, item: list[0], lon: 0, lat: 0, unit: new THREE.Vector3(0, 0, -1), artState: 'none', baseScale: cardSize });
+    }
+
+    cardsListRef.current = pool;
+
+    if (import.meta.env.DEV) {
+      (window as unknown as Record<string, unknown>).__g = { pool, camera, group, renderer, THREE };
+    }
+
+    /* -- slot assignment helpers -- */
+    let windowCenterCol = NaN;
+
+    function placeSlot(poolIdx: number, col: number, row: number) {
+      const entry = pool[poolIdx];
+      const rawIdx = ((col * rows + row) % n + n) % n;
+      if (entry.mesh.userData.itemIdx === rawIdx) return;
+
+      const item = list[rawIdx];
       const lat = -latSpan / 2 + row * latStep;
-      const lon = col * lonStep;
+      const lon = col * CARD_LONN;
       const unit = new THREE.Vector3(
         Math.cos(lat) * Math.sin(lon),
         Math.sin(lat),
         -Math.cos(lat) * Math.cos(lon),
       );
-      const initialTex = createCardTexture(null, list[i].song, viewModeRef.current);
-      const mat = new THREE.MeshBasicMaterial({ map: initialTex, fog: true });
-      const mesh = new THREE.Mesh(geo, mat);
-      mesh.position.copy(unit).multiplyScalar(RADIUS);
-      mesh.lookAt(0, 0, 0);
-      mesh.scale.setScalar(cardSize);
-      mesh.userData.index = i;
-      group.add(mesh);
-      cards.push({ mesh, item: list[i], lon, lat, unit, artState: 'none', baseScale: cardSize });
+      entry.mesh.position.copy(unit).multiplyScalar(RADIUS);
+      entry.mesh.lookAt(0, 0, 0);
+      entry.lat = lat; entry.lon = lon; entry.unit = unit.clone();
+      entry.item = item;
+      entry.mesh.userData.itemIdx = rawIdx;
+      entry.artState = 'none';
+
+      // use cached image immediately, otherwise show placeholder
+      const key = `${item.song.artist}||${item.song.album}||${item.song.title}`;
+      const cached = loadedImagesRef.current.get(key);
+      const tex = createCardTexture(cached ?? null, item.song, viewModeRef.current);
+      const old = entry.mesh.material.map;
+      entry.mesh.material.map = tex;
+      entry.mesh.material.needsUpdate = true;
+      if (old) old.dispose();
+      if (cached) entry.artState = 'done';
     }
 
-    cardsListRef.current = cards;
-
-    if (import.meta.env.DEV) {
-      (window as unknown as Record<string, unknown>).__g = { cards, camera, group, renderer, THREE };
+    function updateWindow(centerCol: number) {
+      if (centerCol === windowCenterCol) return;
+      windowCenterCol = centerCol;
+      const start = centerCol - Math.floor(WINDOW_COLS / 2);
+      for (let c = 0; c < WINDOW_COLS; c++)
+        for (let r = 0; r < rows; r++)
+          placeSlot(c * rows + r, start + c, r);
     }
 
-    /* ---------- lazy texture loading (nearest to view first) ---------- */
+    updateWindow(0);
+
+    /* ---------- lazy texture loading for visible pool slots ---------- */
     let activeLoads = 0;
     let disposed = false;
 
-    const viewDir = new THREE.Vector3();
-    const tmpQ = new THREE.Quaternion();
-
     function pumpLoads() {
       if (disposed || activeLoads >= MAX_CONCURRENT_LOADS) return;
-      tmpQ.setFromEuler(group.rotation).invert();
-      viewDir.set(0, 0, -1).applyQuaternion(tmpQ);
-      const candidates = cards
-        .filter(c => c.artState === 'none' && c.unit.dot(viewDir) > 0.35)
-        .sort((a, b) => b.unit.dot(viewDir) - a.unit.dot(viewDir));
+      const candidates = pool.filter(c => c.artState === 'none');
       for (const c of candidates) {
         if (activeLoads >= MAX_CONCURRENT_LOADS) break;
         c.artState = 'loading';
@@ -316,13 +344,11 @@ export default function GalleryHome() {
             if (disposed) return;
             const key = `${c.item.song.artist}||${c.item.song.album}||${c.item.song.title}`;
             loadedImagesRef.current.set(key, img);
-
             const tex = createCardTexture(img, c.item.song, viewModeRef.current);
             const oldTex = c.mesh.material.map;
             c.mesh.material.map = tex;
             c.mesh.material.needsUpdate = true;
             if (oldTex) oldTex.dispose();
-
             gsap.fromTo(c.mesh.material, { opacity: 0.25 }, { opacity: 1, duration: 0.6, ease: 'power2.out',
               onStart: () => { c.mesh.material.transparent = true; },
               onComplete: () => { c.mesh.material.transparent = false; } });
@@ -352,6 +378,15 @@ export default function GalleryHome() {
     let moved = 0;
     let lastX = 0, lastY = 0;
     let velX = 0, velY = 0;
+
+    /* ---------- pinch-to-zoom state ---------- */
+    const FOV_DEFAULT = 46;
+    const FOV_MIN = 18;
+    const FOV_MAX = 72;
+    let targetFov = FOV_DEFAULT;
+    const activePointers = new Map<number, { x: number; y: number }>();
+    let pinching = false;
+    let pinchDist = 0;
 
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2(99, 99);
@@ -392,7 +427,7 @@ export default function GalleryHome() {
       raycaster.setFromCamera(pointer, camera);
       const hits = raycaster.intersectObjects(group.children, false);
       if (!hits.length) return null;
-      return cards[hits[0].object.userData.index as number] ?? null;
+      return pool[hits[0].object.userData.index as number] ?? null;
     }
 
     const el = renderer.domElement;
@@ -401,16 +436,39 @@ export default function GalleryHome() {
 
     const onPointerDown = (ev: PointerEvent) => {
       if (transitioning) return;
+      activePointers.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+      el.setPointerCapture(ev.pointerId);
+
+      if (activePointers.size === 2) {
+        // second finger down — switch to pinch mode
+        pinching = true;
+        dragging = false;
+        const pts = Array.from(activePointers.values());
+        pinchDist = Math.hypot(pts[1].x - pts[0].x, pts[1].y - pts[0].y);
+        setHover(null);
+        return;
+      }
+
       dragging = true;
       moved = 0;
       lastX = ev.clientX; lastY = ev.clientY;
       velX = 0; velY = 0;
-      el.setPointerCapture(ev.pointerId);
       el.style.cursor = 'grabbing';
     };
 
     const onPointerMove = (ev: PointerEvent) => {
       if (transitioning) return;
+      activePointers.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+
+      if (pinching && activePointers.size >= 2) {
+        const pts = Array.from(activePointers.values());
+        const newDist = Math.hypot(pts[1].x - pts[0].x, pts[1].y - pts[0].y);
+        const delta = pinchDist - newDist; // positive = pinch in = zoom in (smaller FOV)
+        targetFov = THREE.MathUtils.clamp(targetFov + delta * 0.07, FOV_MIN, FOV_MAX);
+        pinchDist = newDist;
+        return;
+      }
+
       if (dragging) {
         const dx = ev.clientX - lastX;
         const dy = ev.clientY - lastY;
@@ -428,10 +486,17 @@ export default function GalleryHome() {
     };
 
     const onPointerUp = (ev: PointerEvent) => {
+      activePointers.delete(ev.pointerId);
+
+      if (pinching) {
+        if (activePointers.size < 2) pinching = false;
+        dragging = false;
+        return;
+      }
+
       if (!dragging) return;
       dragging = false;
       el.style.cursor = 'grab';
-      // fling inertia, lenis-style ease-out handled by lerp
       targetRotY -= velX * 0.055;
       targetRotX = THREE.MathUtils.clamp(targetRotX - velY * 0.055, -maxPitch, maxPitch);
       if (moved < 6 && !transitioning) {
@@ -443,7 +508,12 @@ export default function GalleryHome() {
     const onWheel = (ev: WheelEvent) => {
       if (transitioning) return;
       ev.preventDefault();
-      targetRotY += ev.deltaY * 0.00055 + ev.deltaX * 0.00055;
+      if (ev.ctrlKey) {
+        // trackpad pinch-to-zoom (browser sets ctrlKey for pinch gestures)
+        targetFov = THREE.MathUtils.clamp(targetFov + ev.deltaY * 0.4, FOV_MIN, FOV_MAX);
+      } else {
+        targetRotY += ev.deltaY * 0.00055 + ev.deltaX * 0.00055;
+      }
     };
 
     /* ---------- click → transition → song page ---------- */
@@ -470,6 +540,7 @@ export default function GalleryHome() {
           targetRotX = rotX = state.x;
           camera.position.set(0, 0, 0).addScaledVector(new THREE.Vector3(0, 0, -1), state.z);
           camera.fov = state.fov;
+          targetFov = state.fov; // keep lerp in sync
           camera.updateProjectionMatrix();
         },
       });
@@ -493,13 +564,15 @@ export default function GalleryHome() {
     if (!playedIntro.current) {
       playedIntro.current = true;
       camera.fov = 72;
+      targetFov = 72;
       camera.updateProjectionMatrix();
       gsap.to(camera, {
-        fov: 46, duration: 1.6, ease: 'power3.out', delay: 0.15,
-        onUpdate: () => camera.updateProjectionMatrix(),
+        fov: FOV_DEFAULT, duration: 1.6, ease: 'power3.out', delay: 0.15,
+        onUpdate: () => { targetFov = camera.fov; camera.updateProjectionMatrix(); },
+        onComplete: () => { targetFov = FOV_DEFAULT; },
       });
-      cards.forEach(c => c.mesh.scale.setScalar(0.0001));
-      cards.forEach(c => {
+      pool.forEach(c => c.mesh.scale.setScalar(0.0001));
+      pool.forEach(c => {
         const delay = 0.1 + Math.random() * 0.7;
         gsap.to(c.mesh.scale, { x: c.baseScale, y: c.baseScale, z: c.baseScale, duration: 0.9, delay, ease: 'back.out(1.4)' });
       });
@@ -513,6 +586,14 @@ export default function GalleryHome() {
       if (!transitioning) {
         rotY += (targetRotY - rotY) * 0.065;
         rotX += (targetRotX - rotX) * 0.065;
+        // smooth pinch zoom
+        const fovDelta = targetFov - camera.fov;
+        if (Math.abs(fovDelta) > 0.01) {
+          camera.fov += fovDelta * 0.12;
+          camera.updateProjectionMatrix();
+        }
+        // slide the pool window as user scrolls
+        updateWindow(Math.round(rotY / CARD_LONN));
       }
       group.rotation.set(rotX, rotY, 0);
       renderer.render(scene, camera);
@@ -537,7 +618,7 @@ export default function GalleryHome() {
       el.removeEventListener('pointercancel', onPointerUp);
       el.removeEventListener('wheel', onWheel);
       gsap.globalTimeline.clear();
-      cards.forEach(c => {
+      pool.forEach(c => {
         if (c.mesh.material.map) c.mesh.material.map.dispose();
         c.mesh.material.dispose();
       });
