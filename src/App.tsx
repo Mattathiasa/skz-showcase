@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Fuse from 'fuse.js';
 import { Search, Music, SlidersHorizontal, X, Sparkles, Lightbulb } from 'lucide-react';
 import { songs, type Song, EMOTION_COLORS, EMOTION_LABELS, EMOTIONAL_AXES, SUBCATEGORY_LABELS, SUBCATEGORY_COLORS } from './data/songs';
@@ -39,7 +39,8 @@ const MAIN_ARTISTS = ['Stray Kids', 'BTS', 'AJR', 'Lauv', 'Jon Bellion', 'Alec B
 
 export default function App() {
   const navigate = useNavigate();
-  const [query, setQuery] = useState('');
+  const [searchParams] = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get('q') || '');
   const [sortBy, setSortBy] = useState('title');
   const [filterTag, setFilterTag] = useState('');
   const [filterArtist, setFilterArtist] = useState('');

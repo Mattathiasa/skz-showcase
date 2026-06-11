@@ -7,6 +7,7 @@ import { PlayerProvider } from './contexts/PlayerContext';
 import MiniPlayer from './components/MiniPlayer';
 
 const App = lazy(() => import('./App'));
+const GalleryHome = lazy(() => import('./pages/GalleryHome'));
 const SongPage = lazy(() => import('./pages/SongPage'));
 const ArtistPage = lazy(() => import('./pages/ArtistPage'));
 const AdminPage = lazy(() => import('./components/AdminPage'));
@@ -28,7 +29,8 @@ createRoot(document.getElementById('root')!).render(
         <PlayerProvider>
           <Suspense fallback={<Spinner />}>
             <Routes>
-              <Route path="/" element={<App />} />
+              <Route path="/" element={<GalleryHome />} />
+              <Route path="/browse" element={<App />} />
               <Route path="/song/:id" element={<SongPage />} />
               <Route path="/artist/:name" element={<ArtistPage />} />
               <Route path="/stats" element={<StatsPage />} />
