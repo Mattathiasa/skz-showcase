@@ -102,7 +102,17 @@ function LoginView() {
 }
 
 /* ────────── Song Edit Modal ────────── */
-interface EditModalProps { song: Song & { firestoreId?: string }; onSave: (updates: Partial<Song>) => Promise<void>; onClose: () => void; }
+interface EditModalProps {
+  song: Song & { firestoreId?: string };
+  onSave: (updates: Partial<Song>) => Promise<void>;
+  onClose: () => void;
+}
+
+interface GrokInlineResult {
+  intro?: string; gist?: string; lyricsAnalysis?: string;
+  emotionalBreakdown?: string; thematicAnalysis?: string;
+  suggestedStats?: Partial<Song['stats']>; tags?: string[];
+}
 
 function EditModal({ song, onSave, onClose }: EditModalProps) {
   const [form, setForm] = useState<Song>({ ...song });
@@ -110,6 +120,12 @@ function EditModal({ song, onSave, onClose }: EditModalProps) {
   const [tagsStr, setTagsStr] = useState(song.tags.join(', '));
   const [subCatsStr, setSubCatsStr] = useState((song.subcategories ?? []).join(', '));
   const [openSection, setOpenSection] = useState<string>('meta');
+  // Lyrics (not part of Song type — used for Grok context)
+  const [lyrics, setLyrics] = useState('');
+  // Grok inline state
+  const [analyzing, setAnalyzing] = useState(false);
+  const [grokError, setGrokError] = useState('');
+  const [grokApplied, setGrokApplied] = useState(false);
 
   const setField = (k: keyof Song, v: unknown) => setForm(f => ({ ...f, [k]: v }));
   const setStat = (k: string, v: number) => setForm(f => ({ ...f, stats: { ...f.stats, [k]: v } }));
@@ -126,59 +142,118 @@ function EditModal({ song, onSave, onClose }: EditModalProps) {
     onClose();
   };
 
-  const Section = ({ id, title, children }: { id: string; title: string; children: React.ReactNode }) => (
-    <div style={{ marginBottom: 12, borderRadius: 12, overflow: 'hidden', border: '1px solid #d4a85320' }}>
+  const runGrok = async () => {
+    setAnalyzing(true);
+    setGrokError('');
+    setGrokApplied(false);
+    try {
+      const res = await fetch('/api/grok-analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: form.title, artist: form.artist, lyrics }),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      const data: GrokInlineResult = await res.json();
+
+      // Auto-apply all returned fields
+      if (data.intro)         setField('intro', data.intro);
+      if (data.gist)          setField('gist', data.gist);
+      if (data.lyricsAnalysis) setField('lyricsAnalysis', data.lyricsAnalysis);
+      if (data.tags?.length)  setTagsStr(data.tags.join(', '));
+      if (data.suggestedStats) {
+        Object.entries(data.suggestedStats).forEach(([k, v]) => {
+          if (v !== undefined) setStat(k, v as number);
+        });
+      }
+      setGrokApplied(true);
+      // Switch to analysis section so user sees the results
+      setOpenSection('analysis');
+    } catch (e: unknown) {
+      setGrokError(e instanceof Error ? e.message : 'Grok analysis failed.');
+    } finally {
+      setAnalyzing(false);
+    }
+  };
+
+  const Section = ({ id, title, badge, children }: { id: string; title: string; badge?: string; children: React.ReactNode }) => (
+    <div style={{ marginBottom: 10, borderRadius: 12, overflow: 'hidden', border: `1px solid ${openSection === id ? '#d4a85340' : '#d4a85320'}` }}>
       <button onClick={() => setOpenSection(s => s === id ? '' : id)}
-        style={{ width: '100%', padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: openSection === id ? '#d4a85310' : '#0a0a12', border: 'none', cursor: 'pointer', color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-        {title}
-        {openSection === id ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+        style={{ width: '100%', padding: '11px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: openSection === id ? '#d4a85312' : '#0a0a12', border: 'none', cursor: 'pointer', color: GOLD, fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {title}
+          {badge && <span style={{ fontSize: 9, padding: '2px 7px', borderRadius: 999, background: '#4ade8018', color: '#4ade80', border: '1px solid #4ade8030', textTransform: 'none', letterSpacing: 0 }}>{badge}</span>}
+        </span>
+        {openSection === id ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
       </button>
-      {openSection === id && <div style={{ padding: '16px', background: '#08080f' }}>{children}</div>}
+      {openSection === id && <div style={{ padding: '14px 16px', background: '#08080f' }}>{children}</div>}
     </div>
   );
 
-  const Field = ({ label, value, onChange, multiline = false }: { label: string; value: string; onChange: (v: string) => void; multiline?: boolean }) => (
-    <div style={{ marginBottom: 14 }}>
-      <label style={{ fontSize: 11, color: '#5a4f3a', fontWeight: 600, display: 'block', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{label}</label>
+  const Field = ({ label, value, onChange, multiline = false, rows = 4 }: { label: string; value: string; onChange: (v: string) => void; multiline?: boolean; rows?: number }) => (
+    <div style={{ marginBottom: 12 }}>
+      <label style={{ fontSize: 10, color: '#5a4f3a', fontWeight: 600, display: 'block', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{label}</label>
       {multiline
-        ? <textarea value={value} onChange={e => onChange(e.target.value)} rows={4}
-            style={{ width: '100%', padding: '10px 12px', borderRadius: 10, fontSize: 12, outline: 'none', background: '#0e0e18', border: '1px solid #d4a85320', color: '#f0ead8', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit' }}
+        ? <textarea value={value} onChange={e => onChange(e.target.value)} rows={rows}
+            style={{ width: '100%', padding: '9px 11px', borderRadius: 9, fontSize: 12, outline: 'none', background: '#0e0e18', border: '1px solid #d4a85320', color: '#f0ead8', resize: 'vertical', boxSizing: 'border-box', fontFamily: 'inherit', lineHeight: 1.6 }}
             onFocus={e => { e.target.style.borderColor = '#d4a85445'; }}
             onBlur={e => { e.target.style.borderColor = '#d4a85320'; }} />
         : <input value={value} onChange={e => onChange(e.target.value)}
-            style={{ width: '100%', padding: '10px 12px', borderRadius: 10, fontSize: 12, outline: 'none', background: '#0e0e18', border: '1px solid #d4a85320', color: '#f0ead8', boxSizing: 'border-box' }}
+            style={{ width: '100%', padding: '9px 11px', borderRadius: 9, fontSize: 12, outline: 'none', background: '#0e0e18', border: '1px solid #d4a85320', color: '#f0ead8', boxSizing: 'border-box' }}
             onFocus={e => { e.target.style.borderColor = '#d4a85445'; }}
             onBlur={e => { e.target.style.borderColor = '#d4a85320'; }} />}
     </div>
   );
 
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, background: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(10px)' }}
+    <div style={{ position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(12px)' }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
-      <div style={{ width: '100%', maxWidth: 680, maxHeight: '90vh', display: 'flex', flexDirection: 'column', borderRadius: 20, overflow: 'hidden', background: CARD, border: `1px solid ${BORDER}`, boxShadow: '0 32px 100px #00000090' }}>
+      <div style={{ width: '100%', maxWidth: 720, maxHeight: '92vh', display: 'flex', flexDirection: 'column', borderRadius: 20, overflow: 'hidden', background: CARD, border: `1px solid ${BORDER}`, boxShadow: '0 32px 100px #00000090' }}>
 
         {/* Header */}
-        <div style={{ padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #d4a85318', flexShrink: 0 }}>
+        <div style={{ padding: '18px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #d4a85318', flexShrink: 0 }}>
           <div>
-            <p style={{ color: '#5a4f3a', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', margin: 0 }}>Editing Song</p>
-            <h2 style={{ color: '#f0ead8', fontWeight: 800, fontSize: 17, margin: '4px 0 0' }}>{song.title}</h2>
+            <p style={{ color: '#5a4f3a', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', margin: 0 }}>Editing Song</p>
+            <h2 style={{ color: '#f0ead8', fontWeight: 800, fontSize: 16, margin: '3px 0 0' }}>{song.title}</h2>
           </div>
-          <div style={{ display: 'flex', gap: 8 }}>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            {/* Grok AI button */}
+            <button onClick={runGrok} disabled={analyzing}
+              style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 10, fontSize: 12, fontWeight: 700, cursor: analyzing ? 'not-allowed' : 'pointer', background: analyzing ? '#1a1a28' : '#d4a85318', color: analyzing ? '#5a4f3a' : GOLD, border: `1px solid ${analyzing ? '#d4a85320' : '#d4a85440'}`, transition: 'all 0.18s', opacity: analyzing ? 0.7 : 1 }}
+              onMouseEnter={e => { if (!analyzing) e.currentTarget.style.background = '#d4a85330'; }}
+              onMouseLeave={e => { if (!analyzing) e.currentTarget.style.background = '#d4a85318'; }}>
+              {analyzing ? <Loader2 size={13} className="animate-spin" /> : <Brain size={13} />}
+              {analyzing ? 'Analyzing…' : 'Grok AI'}
+            </button>
             <button onClick={handleSave} disabled={saving}
-              style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 10, fontSize: 13, fontWeight: 700, cursor: saving ? 'not-allowed' : 'pointer', background: '#d4a85322', color: GOLD, border: '1px solid #d4a85440', opacity: saving ? 0.6 : 1, transition: 'all 0.18s' }}>
-              {saving ? <Loader2 size={13} className="animate-spin" /> : <Save size={13} />}
+              style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 10, fontSize: 12, fontWeight: 700, cursor: saving ? 'not-allowed' : 'pointer', background: '#d4a85322', color: GOLD, border: '1px solid #d4a85440', opacity: saving ? 0.6 : 1, transition: 'all 0.18s' }}>
+              {saving ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />}
               {saving ? 'Saving…' : 'Save'}
             </button>
-            <button onClick={onClose} style={{ width: 34, height: 34, borderRadius: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#ffffff0a', border: '1px solid #ffffff10', color: '#5a4f3a', cursor: 'pointer' }}>
-              <X size={14} />
+            <button onClick={onClose} style={{ width: 32, height: 32, borderRadius: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#ffffff0a', border: '1px solid #ffffff10', color: '#5a4f3a', cursor: 'pointer' }}>
+              <X size={13} />
             </button>
           </div>
         </div>
 
+        {/* Status banners */}
+        {grokError && (
+          <div style={{ padding: '10px 22px', background: '#ff444410', borderBottom: '1px solid #ff444425', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+            <AlertCircle size={13} style={{ color: '#ff8888', flexShrink: 0 }} />
+            <span style={{ fontSize: 12, color: '#ff8888' }}>{grokError}</span>
+          </div>
+        )}
+        {grokApplied && (
+          <div style={{ padding: '10px 22px', background: '#4ade8010', borderBottom: '1px solid #4ade8025', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+            <Check size={13} style={{ color: '#4ade80', flexShrink: 0 }} />
+            <span style={{ fontSize: 12, color: '#4ade80' }}>Grok AI applied — review fields below, then save.</span>
+          </div>
+        )}
+
         {/* Scrollable body */}
-        <div style={{ overflowY: 'auto', flex: 1, padding: '20px 24px' }}>
+        <div style={{ overflowY: 'auto', flex: 1, padding: '16px 22px' }}>
+
           <Section id="meta" title="Metadata">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
               <Field label="Title" value={form.title} onChange={v => setField('title', v)} />
               <Field label="Artist" value={form.artist} onChange={v => setField('artist', v)} />
               <Field label="Album" value={form.album} onChange={v => setField('album', v)} />
@@ -188,19 +263,32 @@ function EditModal({ song, onSave, onClose }: EditModalProps) {
             <Field label="Subcategories (comma-separated)" value={subCatsStr} onChange={setSubCatsStr} />
           </Section>
 
-          <Section id="analysis" title="Written Analysis">
-            <Field label="Read Before Listening (intro)" value={form.intro} onChange={v => setField('intro', v)} multiline />
-            <Field label="What It's About (gist)" value={form.gist} onChange={v => setField('gist', v)} multiline />
-            <Field label="Lyrics Analysis" value={form.lyricsAnalysis ?? ''} onChange={v => setField('lyricsAnalysis', v)} multiline />
+          {/* NEW: Lyrics section */}
+          <Section id="lyrics" title="Lyrics" badge="Used by Grok AI">
+            <p style={{ fontSize: 11, color: '#5a4f3a', margin: '0 0 10px', lineHeight: 1.5 }}>
+              Paste the song lyrics here. They are used by <strong style={{ color: GOLD }}>Grok AI</strong> for deeper analysis — not stored in the database.
+            </p>
+            <Field label="Lyrics" value={lyrics} onChange={setLyrics} multiline rows={10} />
+            <button onClick={runGrok} disabled={analyzing}
+              style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 10, fontSize: 12, fontWeight: 700, cursor: analyzing ? 'not-allowed' : 'pointer', background: '#d4a85320', color: GOLD, border: '1px solid #d4a85440', opacity: analyzing ? 0.6 : 1, marginTop: 4 }}>
+              {analyzing ? <Loader2 size={12} className="animate-spin" /> : <Brain size={12} />}
+              {analyzing ? 'Running Grok analysis…' : '🧠 Analyze with Grok AI & Auto-fill Fields'}
+            </button>
           </Section>
 
-          <Section id="emotion" title="Emotional Stats (0–100)">
+          <Section id="analysis" title="Written Analysis" badge={grokApplied ? '✓ Grok filled' : undefined}>
+            <Field label="Read Before Listening (intro)" value={form.intro} onChange={v => setField('intro', v)} multiline rows={3} />
+            <Field label="What It's About (gist)" value={form.gist} onChange={v => setField('gist', v)} multiline rows={3} />
+            <Field label="Lyrics Analysis" value={form.lyricsAnalysis ?? ''} onChange={v => setField('lyricsAnalysis', v)} multiline rows={5} />
+          </Section>
+
+          <Section id="emotion" title="Emotional Stats (0–100)" badge={grokApplied ? '✓ Grok filled' : undefined}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               {EMOTIONAL_AXES.map(k => (
                 <div key={k}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                    <label style={{ fontSize: 11, color: '#5a4f3a', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{EMOTION_LABELS[k]}</label>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: GOLD }}>{form.stats[k as keyof typeof form.stats]}</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                    <label style={{ fontSize: 10, color: '#5a4f3a', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{EMOTION_LABELS[k]}</label>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: GOLD }}>{form.stats[k as keyof typeof form.stats]}</span>
                   </div>
                   <input type="range" min={0} max={100} value={form.stats[k as keyof typeof form.stats]}
                     onChange={e => setStat(k, parseInt(e.target.value))}
@@ -210,13 +298,13 @@ function EditModal({ song, onSave, onClose }: EditModalProps) {
             </div>
           </Section>
 
-          <Section id="production" title="Production Stats (0–100)">
+          <Section id="production" title="Production Stats (0–100)" badge={grokApplied ? '✓ Grok filled' : undefined}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               {TECHNICAL_AXES.map(k => (
                 <div key={k}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                    <label style={{ fontSize: 11, color: '#5a4f3a', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{EMOTION_LABELS[k]}</label>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: GOLD }}>{form.stats[k as keyof typeof form.stats]}</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                    <label style={{ fontSize: 10, color: '#5a4f3a', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em' }}>{EMOTION_LABELS[k]}</label>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: GOLD }}>{form.stats[k as keyof typeof form.stats]}</span>
                   </div>
                   <input type="range" min={0} max={100} value={form.stats[k as keyof typeof form.stats]}
                     onChange={e => setStat(k, parseInt(e.target.value))}
@@ -225,11 +313,13 @@ function EditModal({ song, onSave, onClose }: EditModalProps) {
               ))}
             </div>
           </Section>
+
         </div>
       </div>
     </div>
   );
 }
+
 
 /* ────────── Grok AI Analyzer Panel ────────── */
 interface GrokResult {
@@ -386,6 +476,8 @@ function LibraryTab() {
   const [deleting, setDeleting] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const [saveMsg, setSaveMsg] = useState<string | null>(null);
+  const [syncing, setSyncing] = useState(false);
+  const [syncProgress, setSyncProgress] = useState<{ done: number; total: number } | null>(null);
 
   // Merge: Firebase songs first (they override static ones with same id),
   // then static songs that haven't been promoted to Firebase yet.
@@ -394,6 +486,8 @@ function LibraryTab() {
     const staticOnly = songs.filter(s => !fbIds.has(s.id)).map(s => ({ ...s, isStatic: true }));
     return [...firebaseSongs, ...staticOnly];
   }, [firebaseSongs]);
+
+  const unsyncedSongs = useMemo(() => allSongs.filter(s => !s.firestoreId), [allSongs]);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
@@ -408,10 +502,8 @@ function LibraryTab() {
   const handleUpdate = async (updates: Partial<Song>) => {
     if (!editing) return;
     if (editing.firestoreId) {
-      // Firebase song — just update the doc
       await updateSong(editing.firestoreId, updates);
     } else {
-      // Static song — promote to Firebase with the edits applied
       await saveSong({ ...editing, ...updates });
     }
     setSaveMsg(editing.firestoreId ? 'Saved!' : 'Saved to Firebase!');
@@ -421,6 +513,22 @@ function LibraryTab() {
   const handleDelete = async (firestoreId: string) => {
     setDeleting(firestoreId);
     try { await deleteSong(firestoreId); } finally { setDeleting(null); setConfirmDelete(null); }
+  };
+
+  const syncAllToFirebase = async () => {
+    if (syncing || unsyncedSongs.length === 0) return;
+    setSyncing(true);
+    setSyncProgress({ done: 0, total: unsyncedSongs.length });
+    let done = 0;
+    for (const s of unsyncedSongs) {
+      try { await saveSong(s); } catch { /* continue */ }
+      done++;
+      setSyncProgress({ done, total: unsyncedSongs.length });
+    }
+    setSyncing(false);
+    setSyncProgress(null);
+    setSaveMsg(`Synced ${done} songs to Firebase!`);
+    setTimeout(() => setSaveMsg(null), 4000);
   };
 
   return (
@@ -433,20 +541,30 @@ function LibraryTab() {
         {search && <button onClick={() => setSearch('')} style={{ background: 'none', border: 'none', color: '#5a4f3a', cursor: 'pointer', padding: 0 }}><X size={13} /></button>}
       </div>
 
-      {/* Legend + count */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+      {/* Legend + count + Sync button */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, gap: 12, flexWrap: 'wrap' }}>
         <p style={{ color: '#5a4f3a', fontSize: 11, margin: 0 }}>
           {filtered.length} of {allSongs.length} songs
           &nbsp;·&nbsp;<span style={{ color: GOLD }}>{firebaseSongs.length} in Firebase</span>
-          &nbsp;·&nbsp;{songs.length - (allSongs.length - firebaseSongs.length)} built-in
+          {unsyncedSongs.length > 0 && <>&nbsp;·&nbsp;<span style={{ color: '#f87171' }}>{unsyncedSongs.length} not synced</span></>}
         </p>
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           <span style={{ fontSize: 10, color: '#5a4f3a', display: 'flex', alignItems: 'center', gap: 4 }}>
-            <span style={{ width: 8, height: 8, borderRadius: 2, background: GOLD, display: 'inline-block' }} /> Firebase
+            <span style={{ width: 7, height: 7, borderRadius: 2, background: GOLD, display: 'inline-block' }} /> Firebase
           </span>
           <span style={{ fontSize: 10, color: '#5a4f3a', display: 'flex', alignItems: 'center', gap: 4 }}>
-            <span style={{ width: 8, height: 8, borderRadius: 2, background: '#3a3a50', display: 'inline-block' }} /> Built-in (edit promotes to Firebase)
+            <span style={{ width: 7, height: 7, borderRadius: 2, background: '#3a3a50', display: 'inline-block' }} /> Built-in
           </span>
+          {unsyncedSongs.length > 0 && (
+            <button onClick={syncAllToFirebase} disabled={syncing}
+              style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 9, fontSize: 11, fontWeight: 700, cursor: syncing ? 'not-allowed' : 'pointer', background: syncing ? '#1a1a28' : '#d4a85320', color: syncing ? '#5a4f3a' : GOLD, border: `1px solid ${syncing ? '#d4a85318' : '#d4a85440'}`, transition: 'all 0.18s', opacity: syncing ? 0.7 : 1 }}
+              onMouseEnter={e => { if (!syncing) e.currentTarget.style.background = '#d4a85332'; }}
+              onMouseLeave={e => { if (!syncing) e.currentTarget.style.background = '#d4a85320'; }}>
+              {syncing
+                ? <><Loader2 size={11} className="animate-spin" /> Syncing {syncProgress?.done}/{syncProgress?.total}…</>
+                : <>⬆️ Sync {unsyncedSongs.length} to Firebase</>}
+            </button>
+          )}
         </div>
       </div>
 
