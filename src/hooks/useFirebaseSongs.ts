@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, onSnapshot, addDoc, serverTimestamp, query, orderBy } from 'firebase/firestore';
+import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, query, orderBy } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import type { Song } from '../data/songs';
 
@@ -15,9 +15,9 @@ export function useFirebaseSongs() {
   useEffect(() => {
     const q = query(collection(db, 'songs'), orderBy('addedAt', 'desc'));
     const unsub = onSnapshot(q, snapshot => {
-      const songs = snapshot.docs.map(doc => ({
-        firestoreId: doc.id,
-        ...(doc.data() as FirebaseSong),
+      const songs = snapshot.docs.map(d => ({
+        firestoreId: d.id,
+        ...(d.data() as FirebaseSong),
       }));
       setFirebaseSongs(songs);
       setLoading(false);
@@ -32,5 +32,13 @@ export function useFirebaseSongs() {
     });
   };
 
-  return { firebaseSongs, loading, saveSong };
+  const updateSong = async (firestoreId: string, updates: Partial<Song>) => {
+    await updateDoc(doc(db, 'songs', firestoreId), updates as Record<string, unknown>);
+  };
+
+  const deleteSong = async (firestoreId: string) => {
+    await deleteDoc(doc(db, 'songs', firestoreId));
+  };
+
+  return { firebaseSongs, loading, saveSong, updateSong, deleteSong };
 }

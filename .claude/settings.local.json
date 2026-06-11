@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__claude_ai_Vercel__list_projects",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"page:%{http_code}\\\\n\" http://localhost:5173/)",
+      "Bash(curl -s \"http://localhost:5173/api/album-art?title=Hellevator&artist=Stray%20Kids&album=Mixtape\")",
+      "Bash(curl -sI \"https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/25/72/52/2572525f-0b81-ff36-d430-6559309e4c8d/SKZ-MIXTAPE-Final.jpg/600x600bb.jpg\" -H \"Origin: http://localhost:5173\")",
+      "Bash(npm install *)",
+      "Bash(node scripts/gallery-check.mjs)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5173/)",
+      "Bash(node scripts/gallery-debug.mjs)",
+      "Bash(npx vite *)",
+      "Bash(node -e ' *)",
+      "Bash(npx eslint *)"
+    ]
+  }
+}
