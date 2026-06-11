@@ -31,20 +31,17 @@ export default function MusicPlayer({ song, accentColor = '#d4a853' }: Props) {
   };
 
   const fmt = (s: number) => `${Math.floor(s / 60)}:${Math.floor(s % 60).toString().padStart(2, '0')}`;
-  const ytUrl = `https://music.youtube.com/search?q=${encodeURIComponent(song.title + ' ' + song.artist)}`;
   const spotifyUrl = `https://open.spotify.com/search/${encodeURIComponent(song.title + ' ' + song.artist)}`;
 
   const externalLinks = (
     <div className="flex gap-2">
-      {[{ href: ytUrl, label: 'YouTube Music' }, { href: spotifyUrl, label: 'Spotify' }].map(l => (
-        <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
-          className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg transition-all font-medium"
-          style={{ background: '#ffffff08', color: '#5a4f3a', border: '1px solid #ffffff0a' }}
-          onMouseEnter={e => { e.currentTarget.style.color = '#f0ead8'; e.currentTarget.style.background = '#ffffff12'; }}
-          onMouseLeave={e => { e.currentTarget.style.color = '#5a4f3a'; e.currentTarget.style.background = '#ffffff08'; }}>
-          <ExternalLink size={10} /> {l.label}
-        </a>
-      ))}
+      <a href={spotifyUrl} target="_blank" rel="noopener noreferrer"
+        className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg transition-all font-medium"
+        style={{ background: '#ffffff08', color: '#5a4f3a', border: '1px solid #ffffff0a' }}
+        onMouseEnter={e => { e.currentTarget.style.color = '#f0ead8'; e.currentTarget.style.background = '#ffffff12'; }}
+        onMouseLeave={e => { e.currentTarget.style.color = '#5a4f3a'; e.currentTarget.style.background = '#ffffff08'; }}>
+        <ExternalLink size={10} /> Spotify
+      </a>
     </div>
   );
 
