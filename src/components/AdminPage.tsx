@@ -1,17 +1,17 @@
 import { useState, useMemo } from 'react';
 import {
-  Lock, Sparkles, Trash2, Loader2, Check, LogOut, Music, ShieldCheck,
+  Lock, Sparkles, Trash2, Loader2, Check, LogOut, ShieldCheck,
   Edit3, Save, X, ChevronDown, ChevronUp, Brain, Search,
   AlertCircle,
-
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useSuggestions, type Suggestion } from '../hooks/useSuggestions';
 import { useFirebaseSongs } from '../hooks/useFirebaseSongs';
 import {
-  EMOTIONAL_AXES, TECHNICAL_AXES, EMOTION_LABELS, SUBCATEGORY_LABELS,
+  songs, EMOTIONAL_AXES, TECHNICAL_AXES, EMOTION_LABELS, SUBCATEGORY_LABELS,
   type Song,
 } from '../data/songs';
+
 
 const GOLD = '#d4a853';
 const BG = '#07070b';
@@ -380,20 +380,42 @@ function GrokAnalyzerTab() {
 
 /* ────────── Library Tab ────────── */
 function LibraryTab() {
-  const { firebaseSongs, updateSong, deleteSong } = useFirebaseSongs();
+  const { firebaseSongs, updateSong, deleteSong, saveSong } = useFirebaseSongs();
   const [search, setSearch] = useState('');
   const [editing, setEditing] = useState<(Song & { firestoreId?: string }) | null>(null);
   const [deleting, setDeleting] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [saveMsg, setSaveMsg] = useState<string | null>(null);
+
+  // Merge: Firebase songs first (they override static ones with same id),
+  // then static songs that haven't been promoted to Firebase yet.
+  const allSongs = useMemo<(Song & { firestoreId?: string; isStatic?: boolean })[]>(() => {
+    const fbIds = new Set(firebaseSongs.map(s => s.id));
+    const staticOnly = songs.filter(s => !fbIds.has(s.id)).map(s => ({ ...s, isStatic: true }));
+    return [...firebaseSongs, ...staticOnly];
+  }, [firebaseSongs]);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
-    return firebaseSongs.filter(s => !q || s.title.toLowerCase().includes(q) || s.artist.toLowerCase().includes(q) || (s.album ?? '').toLowerCase().includes(q));
-  }, [firebaseSongs, search]);
+    return allSongs.filter(s =>
+      !q ||
+      s.title.toLowerCase().includes(q) ||
+      s.artist.toLowerCase().includes(q) ||
+      (s.album ?? '').toLowerCase().includes(q)
+    );
+  }, [allSongs, search]);
 
   const handleUpdate = async (updates: Partial<Song>) => {
-    if (!editing?.firestoreId) return;
-    await updateSong(editing.firestoreId, updates);
+    if (!editing) return;
+    if (editing.firestoreId) {
+      // Firebase song — just update the doc
+      await updateSong(editing.firestoreId, updates);
+    } else {
+      // Static song — promote to Firebase with the edits applied
+      await saveSong({ ...editing, ...updates });
+    }
+    setSaveMsg(editing.firestoreId ? 'Saved!' : 'Saved to Firebase!');
+    setTimeout(() => setSaveMsg(null), 2500);
   };
 
   const handleDelete = async (firestoreId: string) => {
@@ -401,68 +423,103 @@ function LibraryTab() {
     try { await deleteSong(firestoreId); } finally { setDeleting(null); setConfirmDelete(null); }
   };
 
-  if (firebaseSongs.length === 0) {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 80, gap: 12 }}>
-        <Music size={28} style={{ color: GOLD, opacity: 0.3 }} />
-        <p style={{ color: '#5a4f3a', fontSize: 14, fontWeight: 600 }}>No songs in Firebase library yet.</p>
-        <p style={{ color: '#3a3020', fontSize: 12 }}>Songs added via the Suggestions tab will appear here.</p>
-      </div>
-    );
-  }
-
   return (
     <div>
+      {/* Search bar */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, background: '#0a0a12', border: '1px solid #d4a85320', borderRadius: 12, padding: '10px 14px' }}>
         <Search size={14} style={{ color: '#5a4f3a', flexShrink: 0 }} />
-        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search Firebase library…"
+        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search all songs…"
           style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', fontSize: 13, color: '#f0ead8' }} />
         {search && <button onClick={() => setSearch('')} style={{ background: 'none', border: 'none', color: '#5a4f3a', cursor: 'pointer', padding: 0 }}><X size={13} /></button>}
       </div>
 
-      <p style={{ color: '#5a4f3a', fontSize: 11, marginBottom: 16 }}>{filtered.length} of {firebaseSongs.length} songs</p>
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {filtered.map(song => (
-          <div key={song.firestoreId} style={{ borderRadius: 14, padding: '14px 16px', background: '#0e0e18', border: '1px solid #d4a85320', display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ color: '#f0ead8', fontWeight: 700, fontSize: 14, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{song.title}</p>
-              <p style={{ color: GOLD, fontSize: 12, margin: '3px 0 0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{song.artist}{song.album ? ` · ${song.album}` : ''}</p>
-            </div>
-
-            <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
-              <button onClick={() => setEditing(song)}
-                style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 9, fontSize: 12, fontWeight: 600, cursor: 'pointer', background: '#d4a85318', color: GOLD, border: '1px solid #d4a85330', transition: 'all 0.15s' }}
-                onMouseEnter={e => { e.currentTarget.style.background = '#d4a85330'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = '#d4a85318'; }}>
-                <Edit3 size={12} /> Edit
-              </button>
-
-              {confirmDelete === song.firestoreId ? (
-                <div style={{ display: 'flex', gap: 6 }}>
-                  <button onClick={() => handleDelete(song.firestoreId!)} disabled={deleting === song.firestoreId}
-                    style={{ padding: '7px 12px', borderRadius: 9, fontSize: 12, fontWeight: 700, cursor: 'pointer', background: '#ff444418', color: '#ff6666', border: '1px solid #ff444430' }}>
-                    {deleting === song.firestoreId ? <Loader2 size={12} className="animate-spin" /> : 'Confirm'}
-                  </button>
-                  <button onClick={() => setConfirmDelete(null)} style={{ padding: '7px 12px', borderRadius: 9, fontSize: 12, cursor: 'pointer', background: '#ffffff08', color: '#5a4f3a', border: '1px solid #ffffff10' }}>Cancel</button>
-                </div>
-              ) : (
-                <button onClick={() => setConfirmDelete(song.firestoreId!)}
-                  style={{ width: 34, height: 34, borderRadius: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: '#ffffff08', color: '#5a4f3a', border: '1px solid #ffffff10', transition: 'all 0.15s' }}
-                  onMouseEnter={e => { e.currentTarget.style.color = '#ff6666'; e.currentTarget.style.background = '#ff444412'; }}
-                  onMouseLeave={e => { e.currentTarget.style.color = '#5a4f3a'; e.currentTarget.style.background = '#ffffff08'; }}>
-                  <Trash2 size={13} />
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
+      {/* Legend + count */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+        <p style={{ color: '#5a4f3a', fontSize: 11, margin: 0 }}>
+          {filtered.length} of {allSongs.length} songs
+          &nbsp;·&nbsp;<span style={{ color: GOLD }}>{firebaseSongs.length} in Firebase</span>
+          &nbsp;·&nbsp;{songs.length - (allSongs.length - firebaseSongs.length)} built-in
+        </p>
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          <span style={{ fontSize: 10, color: '#5a4f3a', display: 'flex', alignItems: 'center', gap: 4 }}>
+            <span style={{ width: 8, height: 8, borderRadius: 2, background: GOLD, display: 'inline-block' }} /> Firebase
+          </span>
+          <span style={{ fontSize: 10, color: '#5a4f3a', display: 'flex', alignItems: 'center', gap: 4 }}>
+            <span style={{ width: 8, height: 8, borderRadius: 2, background: '#3a3a50', display: 'inline-block' }} /> Built-in (edit promotes to Firebase)
+          </span>
+        </div>
       </div>
 
-      {editing && <EditModal song={editing} onSave={handleUpdate} onClose={() => setEditing(null)} />}
+      {saveMsg && (
+        <div style={{ marginBottom: 12, padding: '10px 14px', borderRadius: 10, background: '#4ade8015', border: '1px solid #4ade8030', color: '#4ade80', fontSize: 12, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
+          <Check size={13} /> {saveMsg}
+        </div>
+      )}
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {filtered.map(song => {
+          const isFirebase = !!song.firestoreId;
+          const rowKey = song.firestoreId ?? song.id;
+          return (
+            <div key={rowKey} style={{ borderRadius: 12, padding: '12px 14px', background: '#0e0e18', border: `1px solid ${isFirebase ? '#d4a85328' : '#3a3a5040'}`, display: 'flex', alignItems: 'center', gap: 12 }}>
+              {/* Source badge */}
+              <div style={{ width: 6, height: 6, borderRadius: 9999, flexShrink: 0, background: isFirebase ? GOLD : '#3a3a60' }} />
+
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <p style={{ color: '#f0ead8', fontWeight: 700, fontSize: 13, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{song.title}</p>
+                  {!isFirebase && (
+                    <span style={{ fontSize: 9, fontWeight: 700, padding: '2px 6px', borderRadius: 4, background: '#2a2a40', color: '#5a5a80', letterSpacing: '0.06em', textTransform: 'uppercase', flexShrink: 0 }}>BUILT-IN</span>
+                  )}
+                </div>
+                <p style={{ color: GOLD, fontSize: 11, margin: '2px 0 0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', opacity: 0.8 }}>
+                  {song.artist}{song.album ? ` · ${song.album}` : ''}
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+                <button onClick={() => setEditing(song)}
+                  style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '6px 12px', borderRadius: 8, fontSize: 11, fontWeight: 600, cursor: 'pointer', background: '#d4a85318', color: GOLD, border: '1px solid #d4a85330', transition: 'all 0.15s' }}
+                  onMouseEnter={e => { e.currentTarget.style.background = '#d4a85330'; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = '#d4a85318'; }}>
+                  <Edit3 size={11} /> Edit
+                </button>
+
+                {isFirebase && (
+                  confirmDelete === song.firestoreId ? (
+                    <div style={{ display: 'flex', gap: 5 }}>
+                      <button onClick={() => handleDelete(song.firestoreId!)} disabled={deleting === song.firestoreId}
+                        style={{ padding: '6px 10px', borderRadius: 8, fontSize: 11, fontWeight: 700, cursor: 'pointer', background: '#ff444418', color: '#ff6666', border: '1px solid #ff444430' }}>
+                        {deleting === song.firestoreId ? <Loader2 size={11} className="animate-spin" /> : 'Confirm'}
+                      </button>
+                      <button onClick={() => setConfirmDelete(null)} style={{ padding: '6px 10px', borderRadius: 8, fontSize: 11, cursor: 'pointer', background: '#ffffff08', color: '#5a4f3a', border: '1px solid #ffffff10' }}>Cancel</button>
+                    </div>
+                  ) : (
+                    <button onClick={() => setConfirmDelete(song.firestoreId!)}
+                      style={{ width: 30, height: 30, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: '#ffffff08', color: '#5a4f3a', border: '1px solid #ffffff10', transition: 'all 0.15s' }}
+                      onMouseEnter={e => { e.currentTarget.style.color = '#ff6666'; e.currentTarget.style.background = '#ff444412'; }}
+                      onMouseLeave={e => { e.currentTarget.style.color = '#5a4f3a'; e.currentTarget.style.background = '#ffffff08'; }}>
+                      <Trash2 size={12} />
+                    </button>
+                  )
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {editing && (
+        <EditModal
+          song={editing}
+          onSave={handleUpdate}
+          onClose={() => setEditing(null)}
+        />
+      )}
     </div>
   );
 }
+
 
 /* ────────── Suggestions Tab ────────── */
 function SuggestionsTab() {
@@ -576,7 +633,7 @@ function DashboardView() {
         </div>
         <div>
           <h1 style={{ fontSize: 15, fontWeight: 900, margin: 0 }} className="gold-shimmer">Admin Panel</h1>
-          <p style={{ fontSize: 11, color: '#5a4f3a', margin: '2px 0 0' }}>{firebaseSongs.length} songs · {suggestions.length} pending</p>
+          <p style={{ fontSize: 11, color: '#5a4f3a', margin: '2px 0 0' }}>{firebaseSongs.length + songs.length} songs · {suggestions.length} pending</p>
         </div>
         <div style={{ flex: 1 }} />
         <a href="/" style={{ fontSize: 12, padding: '7px 14px', borderRadius: 9, background: '#ffffff08', color: '#5a4f3a', border: '1px solid #ffffff0a', textDecoration: 'none', transition: 'color 0.15s' }}
@@ -595,7 +652,7 @@ function DashboardView() {
         {/* Tabs */}
         <div style={{ display: 'flex', gap: 6, marginBottom: 28, background: '#0a0a12', border: '1px solid #d4a85318', borderRadius: 14, padding: 4, width: 'fit-content' }}>
           <TabBtn label={`✉️ Suggestions ${suggestions.length > 0 ? `(${suggestions.length})` : ''}`} active={tab === 'suggestions'} onClick={() => setTab('suggestions')} />
-          <TabBtn label={`📚 Library ${firebaseSongs.length > 0 ? `(${firebaseSongs.length})` : ''}`} active={tab === 'library'} onClick={() => setTab('library')} />
+          <TabBtn label={`📚 Library (${firebaseSongs.length + songs.length})`} active={tab === 'library'} onClick={() => setTab('library')} />
           <TabBtn label="🧠 Grok AI" active={tab === 'grok'} onClick={() => setTab('grok')} />
         </div>
 
